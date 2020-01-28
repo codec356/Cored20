@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{#{% load bootstrap3 %}#}
+{##}
+{#{% bootstrap_css %}#}
+{#{% bootstrap_javascript %}#}
+{#{% bootstrap_messages %}#}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
+    <link rel="stylesheet" href="{% static 'fancybox/jquery.fancybox.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css"/>
+
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        <div class="content" id="region-filter">
+            <div class="filter-header"><p>지구</p></div>
+            <ul class="filters">
+                <li data-region-id="0" class="selected">모두</li>
+                {% for region in regions %}
+                    <li data-region-id="{{ region.id }}">{{ region.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="content" id="category-filter">
+            <div class="filter-header"><p>카테고리</p></div>
+            <ul class="filters">
+                <li data-category-id="0" class="selected">모두</li>
+                {% for category in categories %}
+                    <li data-category-id="{{ category.id }}">{{ category.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <ul class="opi-actions right">
+            <li>
+                <a class="opi-button" href="{% url 'core:create_review' %}"><i class="fas fa-edit"></i>리뷰 쓰기</a>
+            </li>
+        </ul>
+        <div style="all:unset;">
+            <table id="reviews-table" class="display hover" style="width: 100%">
+                <thead>
+                <tr>
+                    <td style="text-align: center">번호</td>
+                    <td style="text-align: center">v_name_town</td>
+                    <td style="text-align: center">v_name_region</td>
+                    <td style="text-align: center">v_name_offer</td>
+                    <td style="text-align: center">제목</td>
+                    <td style="text-align: center">작성자</td>
+                    <td style="text-align: center">날짜</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts_src %}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
+    <script src="{% static 'js/offer/reviews_board.js' %}"></script>
+    <script src="{% static 'lib/moment/moment.min.js' %}"></script>
+
+    <script>
+        let l_town_id = {{ town }};
+        let l_region_id = 0;
+        let l_category_id = 0;
+        const l_crsf_token = "{{ csrf_token }}";
+    </script>
+
+    <script>
+        let USERS_LIST_JSON_URL = '{% url "core:review_list_json" %}';
+        let G_REVIEW_PAGE_URL =
+            {% if user.is_authenticated %}
+                "{% url 'core:page_review' review=99999999999999 %}";
+            {% else %}
+                "{% url 'core:login_url' %}";
+            {% endif %}
+    </script>
+{% endblock %}

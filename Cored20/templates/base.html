@@ -1,0 +1,189 @@
+{% load menu_tags %}
+{% load static %}
+{% load staticfiles %}
+{% load pool_extras %}
+{% load mathfilters %}
+
+{% load i18n %}
+{% load cms_tags menu_tags sekizai_tags %}
+
+{% base_info request as data %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+
+<!doctype html>
+<html lang="">
+<head>
+    <title>{% block title %}This is my new project home page{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/wrapper.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
+
+    {% block style_src %}
+    {% endblock %}
+</head>
+{#        {% cms_toolbar %}#}
+<body class="opi-body">
+
+<nav class="navbar navbar-default navbar-fixed-top nav-bar-opi">
+    <div class="container">
+        <div class="navbar-header" style="padding: 0 15px 0 10px">
+            <a type="button" class="opi-navbar-toggle opi-navigation-icon opi collapsed" data-toggle="collapse"
+               data-target="#nav-bar-horizontal"
+               aria-expanded="false" aria-controls="nav-bar-horizontal">
+                <i class="fas fa-align-justify"></i>
+            </a>
+            <a href="/" class="opi-navigation-icon">
+                <i class="fa fa-home"></i>
+            </a>
+        </div>
+        <div id="nav-bar-horizontal" class="opi-navigation navbar-collapse collapse" role="navigation">
+            <ul class="opi-navigation-ul">
+                <li>
+                </li>
+                {% show_menu 0 10 10 10 "menu/custom-menu.html" %}
+            </ul>
+            <ul class="navbar-right opi-navbar-socials">
+                <li><a href="./" class="opi-navigation-icon"><i class="fab fa-telegram" style=""></i></a>
+                </li>
+                <li><a href="./" class="opi-navigation-icon"><i class="fab fa-twitter-square" style=""></i></a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'core:logout_url' %}" class="opi-navigation-icon"
+                           style="font-size: 30px;line-height: 20px;">Logout <i
+                            class="fas fa-sign-out-alt"></i></a></li>
+                {% else %}
+                    <li><a href="{% url 'core:register_url' %}" class="opi-navigation-icon"
+                           style="font-size: 30px;line-height: 20px;">SignUp <i
+                            class="fa fa-user-plus"></i></a></li>
+                    <li><a href="{% url 'core:login_url' %}" class="opi-navigation-icon"
+                           style="font-size: 30px;line-height: 20px;">Login <i
+                            class="fas fa-sign-in-alt"></i></a></li>
+
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="wrapper"
+     style="background-size: 115%; background-image: url(/media/static_site/backgroud.jpg)">
+    <div class="container">
+        <ul class="opi-wrapper-ul">
+            <li class="opi-wrapper-logo opi-wrapper">
+                {#                <img src="/media/filer_public/e4/59/e4594aad-e435-47da-9fbf-c49136fd5eee/backgroud.jpg">#}
+            </li>
+            {% if request.user.is_staff %}
+                <li class="opi-wrapper-user-actions opi-wrapper text-center align-center">
+                    <h3>동작</h3>
+                    <ul class="opi-actions">
+                        <li>
+                            <a class="far fa-edit opi-button" href="{% url 'core:create_offer' %}">광고를 만들다</a>
+                        </li>
+
+                        {% if request.user.is_superuser %}
+                            <li>
+                                <a class="fa fa-user opi-button" href="{% url 'core:adm_main' %}">Админка</a>
+                            </li>
+                        {% endif %}
+                        {#                        <li><a class="fas fa-calendar-check opi-button" href="{% url 'core:checkin' %}">내 리스팅</a>#}
+                        {#                        </li>#}
+                    </ul>
+                </li>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <li class="opi-wrapper-user-info opi-wrapper">
+                    <div class="user-card">
+                        <div class="avatar">
+                            {% if request.user.profile.avatar %}
+                                <img class="avatar"
+                                     src="{{ MEDIA_URL }}{{ request.user.profile.avatar }}"
+                                     alt="">
+                            {% else %}
+                                <i class="fa fa-user avatar"></i>
+                            {% endif %}
+                        </div>
+                        <div class="info">
+                            <div class="nickname">
+                                <b>{{ request.user.profile.nickname }}</b>
+                            </div>
+                            <div class="level-bar">
+                                <span style="width: {{ request.user.profile.experience|mul:100|intdiv:request.user.profile.level.value_to }}%">
+                                    {{ request.user.profile.experience|mul:100|intdiv:request.user.profile.level.value_to }}%
+                                </span>
+                            </div>
+                            <div class="actions">
+                                <a class="fas fa-calendar-check" href="{% url 'core:checkin' %}"></a>
+                                <a class="fas fa-clipboard-list" href="{% url 'core:profile' %}"></a>
+                                <a class="fa fa-user"></a>
+                            </div>
+                            <div class="balances">
+                                <span class="fas fa-gem"> {{ data.balances.value }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+            <li class="opi-wrapper-login-form opi-wrapper">
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="opi-left-menu col-sm-2">
+        <div class="opi-side-bar col-sm-12">
+            <div class="opi-side-bar-block-header col-sm-12">
+                <a><i class="fa fa-bullhorn"></i> 업소리스트</a>
+            </div>
+            <ul class="opi-side-bar-ul col-sm-12">
+                {% for town in data.towns %}
+                    <li class="opi-side-bar-item col-sm-12">
+                        <ul>
+                            <li class="opi-side-title"><a class="opi-side-bar-li-title">{{ town.name }}</a></li>
+                            <li class="opi-side-actions">
+                                <div class="opi-fawpforms">
+                                    <a href="{% url 'core:town_board' town.id %}"
+                                       aria-expanded="true"><i
+                                            class="fab fa-wpforms"></i><br>출근부</a>
+                                </div>
+                                <div class="opi-facomments">
+                                    <a href="{% url 'core:table_reviews_board' town.id %}"
+                                       aria-expanded="true"><i
+                                            class="far fa-comment"></i><br>후기</a>
+                                </div>
+
+                            </li>
+                            {#                            <li class="opi-fawpforms col-sm-3"><a href="{% url 'core:town_board' town.id %}"#}
+                            {#                                                                  aria-expanded="true"><i#}
+                            {#                                    class="fab fa-wpforms"></i><br>출근부</a>#}
+                            {#                            </li>#}
+                            {#                            <li class="opi-facomments col-sm-3"><a href="{% url 'core:table_reviews_board' town.id %}"#}
+                            {#                                                                   aria-expanded="true"><i#}
+                            {#                                    class="far fa-comment"></i><br>후기</a>#}
+                            {#                            </li>#}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="opi-content col-sm-10">
+        {% block content %}{% endblock content %}
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'jquery/js/jquery-3.3.1.min.js' %}"></script>
+{% bootstrap_javascript %}
+
+
+{% block scripts_src %}
+{% endblock %}
+
+</body>
+</html>

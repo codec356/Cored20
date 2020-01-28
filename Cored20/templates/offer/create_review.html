@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static '/starrating/css/star-rating.min.css' %}">
+    <link rel="stylesheet" href="{% static '/starrating/themes/krajee-fa/theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
+    {{ form.media.css }}
+
+    <style>
+        .summernote-div {
+            width: 100% !important;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger col-sm-offset-1 col-sm-8">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% bootstrap_form_errors form layout='inline' %}
+    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background: #f96e5b; color: white;"><strong><i class="fa fa-star fa-lg"></i>피드백</strong></div>
+            <div class="panel-body">
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger col-sm-offset-1 col-sm-8">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% csrf_token %}
+                {#        {% bootstrap_form form %}#}
+                {% bootstrap_field form.town layout='horizontal' horizontal_label_class='col-sm-1' horizontal_field_class='col-sm-6 col-xs-12' label='지역' %}
+                {% bootstrap_field form.region layout='horizontal' horizontal_label_class='col-sm-1' horizontal_field_class='col-sm-6 col-xs-12' label='지구' %}
+                {% bootstrap_field form.category layout='horizontal' horizontal_label_class='col-sm-1' horizontal_field_class='col-sm-6 col-xs-12' label='카테고리' %}
+                {% bootstrap_field form.offer layout='horizontal' horizontal_label_class='col-sm-1' horizontal_field_class='col-sm-6 col-xs-12' label='제품' %}
+                {% bootstrap_field form.title layout='horizontal' horizontal_label_class='col-sm-1' horizontal_field_class='col-sm-6 col-xs-12' label='헤드 라인' placeholder='' %}
+                {% if ratings %}
+                    <ul class="opi-ratings">
+                        {% for rating in ratings %}
+                            <li class="opi-rating-item">
+                                <b>{{ rating.name }}</b>
+                                <label>
+                                    <input class="rating" name="rating_{{ rating.id }}"
+                                           value="0"
+                                           type="text">
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <br>
+
+                {{ form.html_content }}
+                {% bootstrap_field form.author %}
+            </div>
+            {% buttons %}
+                <div class="text-center">
+                    <button type="submit" id="btn_submit" class="btn btn-color" accesskey="s">저장</button>
+                </div>
+            {% endbuttons %}
+        </div>
+
+
+    </form>
+
+
+{% endblock %}
+
+{% block scripts_src %}
+    <script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "starrating/themes/krajee-fa/theme.min.js" %}"></script>
+    <script>
+        $(".rating").rating({
+            min: 0,
+            max: 5,
+            step: 1,
+            size: 'md',
+            showClear: false,
+            captionElement: null,
+            showCaption: false,
+        });
+        $(".rating-sm").rating({
+            min: 0,
+            max: 5,
+            step: 1,
+            size: 'xs',
+            showClear: false,
+            captionElement: null,
+            showCaption: false,
+            displayOnly: true,
+        });
+    </script>
+    <script>initSummernote()</script>
+    {{ form.media.js }}
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block style_src %}
+    {{ form.media.css }}
+{#    {{ form.media }}#}
+{% endblock %}
+
+
+{% block content %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger col-sm-offset-1 col-sm-8">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% bootstrap_form_errors form layout='inline' %}
+    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background: #f96e5b; color: white;"><strong><i class="fa fa-star fa-lg"></i>제품</strong></div>
+            <div class="panel-body">
+                {% bootstrap_field form.name_offer layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='카테고리' addon_after='<span class="fa fa-id-card"></span>' %}
+                {% bootstrap_field form.phone layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='전화번호' addon_after='<span class="fa fa-phone"></span>' %}
+                {% bootstrap_field form.time_work layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='작업 일정' addon_after='<span class="fa fa-calendar"></span>' %}
+
+                {% bootstrap_field form.is_new layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='새로운' %}
+                {% bootstrap_field form.category layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='카테고리' %}
+
+                {% bootstrap_field form.discount layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='할인' %}
+
+                {% bootstrap_field form.town layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='지역' %}
+                {% bootstrap_field form.region layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='지구' %}
+
+                {{ form.html_content }}
+
+                {% for error in form.region.errors %}
+                    <div class="alert alert-danger col-sm-offset-1 col-sm-8">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+                {% for error in form.town.errors %}
+                    <div class="alert alert-danger col-sm-offset-1 col-sm-8">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+                {{ form.author }}
+                {{ form.dt_created }}
+                {{ form.dt_expiration }}
+                {{ form.dt_updated }}
+            </div>
+            {% buttons %}
+                <div class="text-center">
+                    <button type="submit" id="btn_submit" class="btn btn-color" accesskey="s">저장</button>
+                </div>
+            {% endbuttons %}
+        </div>
+
+
+    </form>
+
+
+{% endblock %}
+
+{% block scripts_src %}
+    <script>initSummernote()</script>
+{#    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>#}
+{#    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>#}
+    {#    {% bootstrap_javascript %}#}
+    {{ form.media.js }}
+
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static '/starrating/css/star-rating.min.css' %}">
+    <link rel="stylesheet" href="{% static '/starrating/themes/krajee-fa/theme.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
+    <link rel="stylesheet" href="{% static '/css/reviews.css' %}">
+
+    <style>
+        .summernote-div {
+            width: 100% !important;
+        }
+    </style>
+    {{ form_comment.media.css }}
+{% endblock %}
+
+
+{% block content %}
+    <div class="opi-offer-content" style="border-radius: 10px">
+        <ul class="opi-offer-content-ul">
+            <li class="opi-offer-content-title">
+                {{ review.title }}
+            </li>
+            <li class="opi-offer-content-info">
+                <ul class="opi-offer-content-info-ul">
+                    <li class="info">
+                        <p>{{ review.author.nickname }} <i class="fa fa-clock-o"></i>수정일: {{ review.dt_created }}</p>
+                    </li>
+                    <li class="actions">
+                        <ul class="opi-actions right">
+                            <li><a class="opi-button" href="{% url 'core:page_offer' review.offer.id %}"><i
+                                    class="fa fa-share"></i>오픈</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="opi-offer-content-html">
+                {{ review.html_content | safe }}
+            </li>
+            <li class="opi-offer-content-html">
+                {% if ratings %}
+                    <ul class="opi-ratings">
+                        {% for rating in ratings %}
+                            <li class="opi-rating-item">
+                                <b>{{ rating.rate_type.name }}</b>
+                                <label>
+                                    <input class="rating-sm"
+                                           value="{{ rating.n_rate }}"
+                                           type="text">
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+            <li class="opi-offer-comments">
+                <h2>의견</h2>
+                {% if comments %}
+                    <ul class="opi-comments">
+                        {% for comment in comments %}
+                            <li class="comment">
+                                <ul class="comment-item">
+                                    <li class="avatar">
+                                        {% if comment.avatar %}
+                                            <img src="{{ MEDIA_URL }}{{ comment.avatar }}" alt="">
+                                        {% else %}
+                                            <i class="fa fa-user avatar"></i>
+                                        {% endif %}
+                                    </li>
+                                    <li class="body">
+                                        <ul class="body">
+                                            <li class="info"><p class="nickname">{{ comment.nickname }} </p><i
+                                                    class="fa fa-clock-o" aria-hidden="true"></i>
+                                                <p class="time"> {{ comment.time }}</p></li>
+                                            <li class="actions"></li>
+                                            <li class="content">{{ comment.content|safe }}</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        </ul>
+
+    </div>
+
+    <form class="form-horizontal" role="form" action="{% url 'core:review_comment' %}" method="post"
+          enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+
+        {{ form_comment.html_content }}
+        {{ form_comment.author }}
+        {{ form_comment.dt_created }}
+        {{ form_comment.review }}
+
+        {% buttons %}
+            <div class="text-center">
+                <button type="submit" id="btn_submit" class="btn btn-color" accesskey="s">창조하다</button>
+            </div>
+        {% endbuttons %}
+
+
+    </form>
+
+{% endblock %}
+
+{% block scripts_src %}
+    <script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "starrating/themes/krajee-fa/theme.min.js" %}"></script>
+    <script>
+        $(".rating").rating({
+            min: 0,
+            max: 5,
+            step: 1,
+            size: 'md',
+            showClear: false,
+            captionElement: null,
+            showCaption: false,
+        });
+        $(".rating-sm").rating({
+            min: 0,
+            max: 5,
+            step: 1,
+            size: 'xs',
+            showClear: false,
+            captionElement: null,
+            showCaption: false,
+            displayOnly: true,
+        });
+    </script>
+    <script>initSummernote()</script>
+    {{ form_comment.media.js }}
+{% endblock %}

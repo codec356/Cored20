@@ -1,0 +1,157 @@
+
+.opi-wrapper-ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    flex-wrap: wrap;
+    height: min-content;
+    margin: 5px;
+}
+
+@media screen and (max-width: 767px) {
+    .opi-wrapper-ul{
+        justify-content: center;
+    }
+}
+
+.opi-wrapper-ul li.opi-wrapper {
+    display: inline-block;
+    height: 115px;
+}
+
+.opi-wrapper-ul .opi-wrapper-logo {
+    line-height: 125px;
+}
+
+.opi-wrapper-ul .opi-wrapper-logo img {
+    height: 125px;
+}
+
+.opi-wrapper-ul li.opi-wrapper-user-actions {
+    float: right;
+    padding: 8px;
+    background: white;
+    border-radius: 6px;
+margin: 5px;}
+
+.opi-wrapper-ul li.opi-wrapper-user-actions h3 {
+    margin: 0;
+}
+
+.opi-wrapper-ul li.opi-wrapper-user-info {
+    float: right;
+    padding: 8px;
+    background: white;
+    border-radius: 6px;
+    margin: 5px;
+}
+
+.opi-wrapper-ul li.opi-wrapper-user-info ul.opi-user-info-form {
+    float: left;
+    padding: 0;
+}
+
+.opi-wrapper-ul li.opi-wrapper-user-info ul.opi-user-info-form li.opi-user-form-li {
+    display: inline-block;
+    padding: 1px;
+}
+
+.opi-wrapper-ul li.opi-wrapper-user-info ul.opi-user-info-form li ul.opi-user-ul {
+    padding: 0;
+    list-style: none;
+}
+
+div.user-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100px;
+}
+
+div.user-card div.avatar {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+div.user-card div.avatar i.avatar {
+    font-size: 5em;
+}
+
+div.user-card div.avatar img.avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+div.user-card div.info {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 5px 5px;
+}
+
+div.user-card div.info div.level-bar {
+    padding: 0;
+    margin: 0;
+    width: 120px;
+    height: 20px;
+    background: white;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+div.level-bar span {
+    background: #f96e5b;
+    padding: 0;
+    margin: 0;
+    line-height: 18px;
+    display: block;
+}
+
+div.level-bar span.progress-1 {
+
+}
+
+div.user-card div.info div.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 4px 0 0 0;
+}
+
+div.actions a {
+    border-radius: 3px;
+    padding: 2px;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    background: #f96e5b;
+    color: white;
+    font-size: 23px;
+    -webkit-transition: color .55s;
+    -moz-transition: color .55s;
+    -ms-transition: color .55s;
+    -o-transition: color .55s;
+    transition: color .55s;
+}
+
+div.actions a:hover {
+    color: #000;
+}
+
+div.user-card div.info div.balances {
+    display: flex;
+    flex-direction: row;
+    padding: 4px 0 0 0;
+}
+
+div.balances span {
+    border-radius: 3px 3px 6px 6px;
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #f96e5b;
+    color: #f96e5b;
+    font-size: 15px;
+}

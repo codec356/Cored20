@@ -1,0 +1,144 @@
+.opi-left-menu {
+    padding: 15px 5px 5px 5px;
+}
+
+.opi-side-bar {
+    padding: 2px;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+}
+
+.opi-side-bar .opi-side-bar-ul {
+    display: flex;
+    width: 100%;
+    padding: 2px 0 0 0;
+    list-style: none;
+    margin: 0;
+    flex-direction: column;
+}
+
+.opi-side-bar .opi-side-bar-ul li.opi-side-bar-item {
+    display: flex;
+    padding: 2px 0;
+    border-bottom: 1px dashed #eee;
+    flex: 0 0 100%;
+}
+
+.opi-side-bar .opi-side-bar-ul li.opi-side-bar-item > ul {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex: 0 0 100%;
+    justify-content: space-between;
+}
+
+.opi-side-bar .opi-side-bar-ul li.opi-side-bar-item > ul > li.opi-side-title {
+    padding: 3px 0 0 0;
+    display: flex;
+}
+
+.opi-side-bar .opi-side-bar-ul li.opi-side-bar-item > ul > li.opi-side-actions {
+    padding: 3px 0 0 0;
+    display: flex;
+    flex: 0 0 120px;
+}
+
+.opi-side-bar .opi-side-bar-ul li.opi-side-bar-item > ul > li.opi-side-actions > div {
+    flex: 0 0 50%;
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.opi-side-bar .opi-side-bar-ul li.opi-side-bar-item ul li {
+    padding: 3px 0 0 0;
+    display: inline-block;
+}
+
+.opi-side-bar .opi-side-bar-ul li.opi-side-bar-item ul li a.opi-side-bar-li-title {
+    height: 40px;
+    display: block;
+    line-height: 40px;
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
+}
+
+ul {
+    list-style: none;
+}
+
+div.opi-fawpforms {
+    border: 2px solid #f96e5b;
+    border-radius: 7px;
+    height: 44px;
+    text-align: center;
+    margin-inline-start: -2px;
+    -webkit-transition: color .25s;
+    -moz-transition: color .25s;
+    -ms-transition: color .25s;
+    -o-transition: color .25s;
+    transition: color .25s;
+}
+
+div.opi-fawpforms a {
+    color: #f96e5b
+}
+
+div.opi-fawpforms:hover {
+    border: 2px solid #a74a3d;
+}
+
+div.opi-fawpforms a:hover {
+    color: #a74a3d;
+}
+
+div.opi-facomments {
+    border: 2px solid #f3bd49;
+    border-radius: 7px;
+    height: 44px;
+    text-align: center;
+    margin-inline-start: 2px;
+    -webkit-transition: color .25s;
+    -moz-transition: color .25s;
+    -ms-transition: color .25s;
+    -o-transition: color .25s;
+    transition: color .25s;
+}
+
+div.opi-facomments a {
+    color: #f3bd49
+}
+
+div.opi-facomments:hover {
+    border: 2px solid #c7983b;
+}
+
+div.opi-facomments a:hover {
+    color: #c7983b;
+}
+
+
+div.opi-facomments a,
+div.opi-fawpforms a {
+    white-space: nowrap;
+    clear: both;
+    display: block;
+    text-decoration: unset;
+    cursor: pointer;
+}
+
+.opi-side-bar div.opi-side-bar-block-header {
+    text-align: center;
+    border-bottom: 2px solid #f96e5b;
+}
+
+.opi-side-bar div.opi-side-bar-block-header a {
+    text-align: center;
+    cursor: default;
+    text-decoration: unset;
+    color: black;
+    line-height: 35px;
+    font-weight: bold;
+}

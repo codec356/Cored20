@@ -1,0 +1,75 @@
+{% load bootstrap3 %}
+{% load static %}
+
+{% bootstrap_css %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>{{ offer.name }}</title>
+    <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
+    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
+</head>
+
+<body>
+<div class="opi-offer-content" style="border-radius: 10px">
+    <ul class="opi-offer-content-ul">
+        <li class="opi-offer-content-title">
+            {{ offer.name_offer }}
+        </li>
+        <li class="opi-offer-content-info">
+            <ul class="opi-offer-content-info-ul">
+                <li class="info">
+                    <p>{{ offer.author.nickname }} <i
+                            class="fa fa-clock-o"></i>수정일: {{ dt_updated }} {{ offer.dt_updated }} <i
+                            class="fas fa-phone"></i> {{ offer.phone }}</p>
+                </li>
+            </ul>
+        </li>
+        <li class="actions">
+            <ul class="actions right">
+                <li><a class="action redirect" href="{% url 'core:page_offer' offer.id %}" target="_top"><i class="fa fa-share"></i>오픈</a></li>
+{#                <li><a class="action"><i class="fa fa-share"></i></a></li>#}
+{#                <li class="right"><a class="action right"><i class="fa fa-share"></i></a></li>#}
+            </ul>
+
+        </li>
+        <li class="opi-offer-content-html">
+            {{ offer.html_content | safe }}
+        </li>
+    </ul>
+
+</div>
+
+
+<script type="text/javascript" src="{% static "jquery/js/jquery-3.3.1.min.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>
+<script type="text/javascript" src="{% static "starrating/themes/krajee-fa/theme.min.js" %}"></script>
+<script>
+    $(".rating").rating({
+        min: 0,
+        max: 5,
+        step: 1,
+        size: 'md',
+        showClear: false,
+        captionElement: null,
+        showCaption: false,
+    });
+    $(".rating-sm").rating({
+        min: 0,
+        max: 5,
+        step: 1,
+        size: 'xs',
+        showClear: false,
+        captionElement: null,
+        showCaption: false,
+        displayOnly: true,
+    });
+</script>
+{% bootstrap_javascript %}
+
+
+</body>
+</html>

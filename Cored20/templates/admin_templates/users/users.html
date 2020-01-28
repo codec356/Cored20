@@ -1,0 +1,86 @@
+{% extends "admin_templates/base.html" %}
+{% load static %}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static 'fancybox/jquery.fancybox.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/tingle/tingle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_css/main.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css"/>
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        <form>
+            <div class="form-group">
+                <label for="username">Логин</label>
+                <input type="email" class="form-control" id="username">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input class="form-control" id="email">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="is_fake"> Фейковый
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="is_staff"> Диллер
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="is_want_staff"> Хочет стать диллером
+                </label>
+            </div>
+            <button id="btn-search" type="button" class="btn btn-success">Найти</button>
+        </form>
+        <div style="all:unset;">
+            <table id="users-table" class="display hover" style="width: 100%">
+                <thead>
+                <tr>
+                    <td>Логин</td>
+                    <td>Ник</td>
+                    <td>Баланс</td>
+                    <td>Уровень</td>
+                    <td>Является<br>диллером</td>
+                    <td>Хочет стать<br>диллером</td>
+                    <td>Фейковый</td>
+                    <td>Действия</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts_src %}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
+    <script src="{% static 'admin_js/users.js' %}"></script>
+    <script src="{% static 'lib/tingle/tingle.min.js' %}"></script>
+    <script src="{% static 'lib/moment/moment.min.js' %}"></script>
+
+    <script>
+    </script>
+
+    <script>
+        const l_csrf_token = "{{ csrf_token }}";
+        let USERS_LIST_JSON_URL = '{% url "core:users_list_json" %}';
+        let USER_STAFF_STATUS_URL = '{% url 'core:change_user_staff_status' %}';
+        let USER_OFFERS_URL = '{% url 'core:adm_offers_table_username' username=999999 %}';
+        let G_REVIEW_PAGE_URL =
+            {% if user.is_authenticated %}
+                "{% url 'core:page_review' review=99999999999999 %}";
+            {% else %}
+                "{% url 'core:login_url' %}";
+            {% endif %}
+    </script>
+{% endblock %}

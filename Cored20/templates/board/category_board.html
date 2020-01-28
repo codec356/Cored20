@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static 'fancybox/jquery.fancybox.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="content" id="text-filter">
+        <div class="filter-header"><p>이름으로 검색</p></div>
+        <div class="filter-search">
+            <input type="text" class="form-control" id="search_field" style="width: unset;"
+                   maxlength="100">
+            <a class="opi-button" id="search_btn">찾기</a>
+        </div>
+    </div>
+    <div class="content" id="town-filter">
+        <div class="filter-header"><p>지역</p></div>
+        <ul class="filters">
+            <li data-town-id="0" class="selected">모두</li>
+            {% for town in towns %}
+                <li data-town-id="{{ town.id }}">{{ town.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="content" id="region-filter">
+        <div class="filter-header"><p>지구</p></div>
+        <ul class="filters">
+            <li data-region-id="0" class="selected">모두</li>
+            {% for region in regions %}
+                <li data-region-id="{{ region.id }}">{{ region.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="opi-board" id="opi-board">
+    </div>
+{% endblock %}
+
+{% block scripts_src %}
+    <script src="{% static 'fancybox/jquery.fancybox.pack.js' %}"></script>
+    <script src="{% static 'fancybox/jquery.fancybox.js' %}"></script>
+    <script src="{% static 'js/boards/category_board.js' %}"></script>
+    <script>
+        let is_auth;
+        let login_url;
+        {% if user.is_authenticated %}
+            is_auth = true;
+        {% else %}
+            is_auth = false;
+            login_url = "{% url 'core:login_url' %}";
+        {% endif %}
+        let g_offer_url = "{% url 'core:iframe_offer' offer=99999999999999 %}";
+        let g_reviews_url = "{% url 'core:iframe_offer' offer=99999999999999 %}";
+        const l_need_auth = "{% url 'core:login_url' %}";
+        const l_ajax_get_offers = "{% url 'core:ajax_get_offers_body' %}";
+        const l_ajax_get_regions = "{% url 'core:ajax_get_regions' %}";
+        let l_text_search = '';
+        let l_category_id = {{ category }};
+        let l_town_id = 0;
+        let l_region_id = 0;
+        const MEDIA_URL = "{{ MEDIA_URL }}";
+        const l_csrf_token = "{{ csrf_token }}";
+    </script>
+{% endblock %}

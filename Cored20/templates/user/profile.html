@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+
+{% block content %}
+
+    {% if user_form.non_field_errors %}
+        {% for error in user_form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        {{ user_form.media }}
+        {{ profile_form.media }}
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background: #f96e5b; color: white;"><strong><i class="fa fa-star fa-lg"></i>프로필</strong></div>
+            <div class="panel-body">
+                {% bootstrap_field profile_form.nickname layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='별명' %}
+                {% bootstrap_field user_form.first_name layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='이름' %}
+                {% bootstrap_field user_form.last_name layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='성' %}
+
+                {% bootstrap_field profile_form.avatar layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='아바타' %}
+
+
+            </div>
+            {% buttons %}
+                <div class="text-center" style="margin:30px 0px;">
+                    <button type="submit" id="btn_submit" class="btn btn-color btn-success-opi" accesskey="s">창조하다</button>
+                </div>
+            {% endbuttons %}
+        </div>
+
+
+    </form>
+
+{% endblock %}

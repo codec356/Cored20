@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% load i18n %}
+
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static '/font-awesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static '/starrating/css/star-rating.min.css' %}">
+    <link rel="stylesheet" href="{% static '/starrating/themes/krajee-fa/theme.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="alert alert-danger col-sm-offset-1 col-sm-8">
+                    <strong>{{ error }}</strong>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+
+{% block scripts_src %}
+    <script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "starrating/themes/krajee-fa/theme.min.js" %}"></script>
+{% endblock %}
+

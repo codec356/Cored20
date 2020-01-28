@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
+    <link rel="stylesheet" href="{% static '/css/reviews.css' %}">
+
+    {{ form_comment.media.css }}
+{% endblock %}
+
+
+{% block content %}
+    <div class="opi-offer-content" style="border-radius: 10px">
+        <ul class="opi-offer-content-ul">
+            <li class="opi-offer-content-title">
+                {{ topic.title }}
+            </li>
+            <li class="opi-offer-content-info">
+                <ul class="opi-offer-content-info-ul">
+                    <li class="info">
+                        <p>{{ topic.user.profile.nickname }} <i class="fa fa-clock-o"></i>수정일: {{ topic.dt_created }}</p>
+                    </li>
+                    <li class="actions"></li>
+                </ul>
+            </li>
+            <li class="opi-offer-content-html">
+                {{ topic.content | safe }}
+            </li>
+
+            <li class="opi-offer-comments">
+                {% if comments %}
+                    <ul class="opi-comments">
+                        {% for comment in comments %}
+                            <li class="comment">
+                                <ul class="comment-item">
+                                    <li class="avatar">
+                                        <img src="{{ MEDIA_URL }}{{ comment.avatar }}" alt="">
+                                    </li>
+                                    <li class="body">
+                                        <ul class="body">
+                                            <li class="info"><p class="nickname">{{ comment.nickname }} </p><i
+                                                    class="fa fa-clock-o" aria-hidden="true"></i>
+                                                <p class="time"> {{ comment.time }}</p></li>
+                                            <li class="actions"></li>
+                                            <li class="content">{{ comment.html_content|safe }}</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        </ul>
+
+    </div>
+
+    <form class="form-horizontal" role="form" action="{% url 'core:topic_comment' %}" method="post"
+          enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+
+        {{ form_comment.content }}
+        {{ form_comment.user }}
+        {{ form_comment.dt_created }}
+        {{ form_comment.topic }}
+
+        {% buttons %}
+            <div class="text-center">
+                <button type="submit" id="btn_submit" class="btn btn-color" accesskey="s">창조하다</button>
+            </div>
+        {% endbuttons %}
+
+
+    </form>
+
+{% endblock %}
+
+{% block scripts_src %}
+    <script>initSummernote()</script>
+    {{ form_comment.media.js }}
+{% endblock %}

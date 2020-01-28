@@ -1,0 +1,151 @@
+div.opi-offer-content ul.opi-offer-content-ul {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    font-size: calc(13px + 0.15vw);
+}
+
+div.opi-offer-content ul.opi-offer-content-ul li.opi-offer-content-title {
+    width: 100%;
+    padding: 5px;
+    margin: 0;
+    line-height: 1.5em;
+    height: min-content;
+    font-size: calc(1em + 0.5vw);
+}
+
+div.opi-offer-content ul.opi-offer-content-ul li.opi-offer-content-info {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: #f96e5b;
+    border: 1px solid #bdc3c7;
+    height: 40px;
+    line-height: 40px;
+    font-size: calc(1em + 0.5vw);
+    color: white;
+    font-weight: bold;
+}
+
+
+div.opi-offer-content ul.opi-offer-content-ul li.opi-offer-content-html {
+    width: 100%;
+    padding: 20px 0;
+    margin: 0;
+}
+
+div.opi-offer-content ul.opi-offer-content-ul li.opi-offer-content-html img {
+    width: 100% !important;
+}
+
+div.opi-offer-content ul.opi-offer-content-ul li.opi-offer-content-info ul.opi-offer-content-info-ul {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #f96e5b;
+}
+
+ul.opi-offer-content-ul li.actions ul.actions.right {
+    float: right;
+}
+
+ul.opi-offer-content-ul li.actions ul.actions {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+ul.opi-offer-content-ul li.actions ul.actions li {
+    padding: 0 0 0 5px;
+}
+
+ul.opi-offer-content-ul li.actions ul.actions a.action {
+    border: 1px solid #f96e5b;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: default;
+    text-decoration: unset;
+    font-size: 1.3em;
+    color: #f96e5b;
+    -webkit-transition: background-color .25s;
+    -moz-transition: background-color .25s;
+    -ms-transition: background-color .25s;
+    -o-transition: background-color .25s;
+    transition: background-color .25s;
+}
+
+ul.opi-offer-content-ul li.actions ul.actions a.action:hover {
+    border: 1px solid #f96e5b;
+    color: black;
+    background-color: #f96e5b;
+}
+
+ul.opi-offer-content-ul li.actions ul.actions li.right {
+    float: right;
+}
+
+
+ul.opi-comments {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.opi-comments li.comment ul.comment-item {
+    list-style: none;
+    padding: 0 0 10px 0;
+    margin: 0;
+    display: flex;
+    border-top: 1px solid #f96e5b;
+}
+
+ul.opi-comments li.comment ul.comment-item li.avatar i {
+    padding: 5px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    font-size: 3em;
+    text-align: center;
+}
+
+
+ul.opi-comments li.comment ul.comment-item li.avatar img {
+    padding: 5px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+ul.comment-item li.body {
+    padding: 0 10px;
+}
+
+ul.comment-item li.body ul.body {
+    list-style: none;
+    padding: 0 10px 0 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+ul.comment-item li.body ul.body li.info {
+    display: flex;
+    flex-direction: row;
+}
+
+ul.comment-item li.body ul.body li.info p.nickname {
+    font-weight: bold;
+    padding: 0 5px 0 0;
+}
+
+ul.comment-item li.body ul.body li.content {
+    all: unset;
+}

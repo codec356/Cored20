@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block style_src %}
+    {{ form.media.css }}
+{% endblock %}
+
+
+{% block content %}
+    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong><i class="fa fa-star fa-lg"></i>광고 만들기</strong></div>
+            <div class="panel-body">
+                {% bootstrap_field form.username layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='로그인' %}
+                {% bootstrap_field form.password layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='비밀번호' %}
+
+            {% buttons %}
+                <div class="text-center">
+                    <button type="submit" id="btn_submit" class="btn btn-color btn-success-opi" accesskey="s">창조하다
+                    </button>
+                </div>
+            {% endbuttons %}
+
+            </div>
+        </div>
+    </form>
+    <div class="form-footer">
+        <p class="text-center">
+            <a href="{% url 'core:register_url' %}"><i class="fa fa-sign-in"></i> 회원가입</a>
+        </p>
+    </div>
+{% endblock %}

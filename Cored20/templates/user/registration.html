@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block style_src %}
+{% endblock %}
+
+
+{% block content %}
+
+    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background: #f96e5b; color: white;"><strong><i
+                    class="fa fa-star fa-lg"></i>프로필</strong></div>
+            <div class="panel-body">
+                {% bootstrap_form_errors form %}
+                {% bootstrap_field form.nickname layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label='닉네임' %}
+                {% bootstrap_field form.username layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label='로그인' %}
+                {% bootstrap_field form.is_want_staff layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label='상품 게시' %}
+                {% bootstrap_field form.phone layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label='연락 번호 (제품 배치에 필수)' %}
+                {% bootstrap_field form.email layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label='로그인' %}
+                {% bootstrap_field form.password1 layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label='비밀번호' %}
+                {% bootstrap_field form.password2 layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label='비밀번호 확인' %}
+                {% bootstrap_field form.captcha layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' label=' ' %}
+
+            </div>
+            {% buttons %}
+                <div class="text-center" style="margin:30px 0px;">
+                    <button type="submit" id="btn_submit" class="btn btn-color btn-success-opi" accesskey="s">창조하다
+                    </button>
+                </div>
+            {% endbuttons %}
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block scripts_src %}
+    <script src='https://www.google.com/recaptcha/api.js?hl=ko'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let form = document.querySelector('#fregisterform');
+            document.getElementById('btn_submit').addEventListener('click', function () {
+                let response = grecaptcha.getResponse();
+                if (response.length === 0)
+                    1;
+                else
+                    form.submit();
+            });
+        })
+    </script>
+{% endblock %}
+
