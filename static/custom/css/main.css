@@ -107,7 +107,7 @@
     bottom: 0;
     height: 3px;
     width: 0;
-    background: #333333;
+    background: #f96e5b;
     -webkit-transition: width .25s;
     -moz-transition: width .25s;
     -ms-transition: width .25s;
@@ -164,7 +164,9 @@
     }
 
     .opi-dropdown-menu {
-        width: 100%!important;
+        width: 100% !important;
+        overflow-x: scroll;
+        max-height: 60vh;
     }
 
     .opi-navigation {
@@ -185,6 +187,7 @@
         flex-direction: row;
         justify-content: center;
         padding: 0;
+        flex-wrap: wrap;
     }
 
     .opi-navigation ul.opi-navigation-ul li a {
@@ -212,6 +215,11 @@
 .opi-dropdown-menu {
     min-width: inherit;
     background-color: #f96e5b;
+    -webkit-transition: opacity .25s;
+    -moz-transition: opacity .25s;
+    -ms-transition: opacity .25s;
+    -o-transition: opacity .25s;
+    transition: opacity .25s;
 }
 
 .opi-dropdown-menu li {
@@ -226,12 +234,6 @@
     content: "";
     display: none;
 }
-
-
-body.opi-body {
-    padding-top: 50px;
-}
-
 
 .opi-navigation ul.opi-navigation-ul.opi-right {
     float: right;
@@ -266,7 +268,7 @@ body.opi-body {
 }
 
 .opi-content {
-    padding: 5px;
+    padding: 15px 5px 5px;
 }
 
 body {
@@ -316,3 +318,5 @@ ul.opi-actions li {
     padding: 0 5px;
     margin: 0;
 }
+
+

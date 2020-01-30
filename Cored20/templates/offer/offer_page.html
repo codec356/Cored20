@@ -30,6 +30,11 @@
                         <ul class="opi-actions right">
                             <li><a class="opi-button" href="{% url 'core:create_review' %}"><i class="fas fa-edit"></i>리뷰
                                 쓰기</a>
+{#                                <a class="opi-button" href="{% url 'core:' offer.id %}">#}
+{#                                    <i class="fas fa-th-list">리뷰</i>#}
+{#                                </a>#}
+
+
                             </li>
                             {#                            <li><a class="opi-button" href="{% url 'core:page_offer' review.offer.id %}"><i#}
                             {#                                    class="fa fa-list"></i>오픈</a></li>#}
@@ -47,11 +52,13 @@
                         {% for comment in comments %}
                             <li class="comment">
                                 <ul class="comment-item">
-                                    {% if comment.avatar %}
-                                        <img src="{{ MEDIA_URL }}{{ comment.avatar }}" alt="">
-                                    {% else %}
-                                        <i class="fa fa-user avatar"></i>
-                                    {% endif %}
+                                    <li class="avatar">
+                                        {% if comment.avatar %}
+                                            <img src="{{ MEDIA_URL }}{{ comment.avatar }}" alt="">
+                                        {% else %}
+                                            <i class="fa fa-user avatar"></i>
+                                        {% endif %}
+                                    </li>
                                     <li class="body">
                                         <ul class="body">
                                             <li class="info"><p class="nickname">{{ comment.nickname }} </p><i

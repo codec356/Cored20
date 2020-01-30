@@ -6,7 +6,7 @@ from filebrowser.sites import site
 from core import views
 import core.forms.admin.views as admin_views
 from core.forms.board.views import town_board, category_board, ajax_get_offers_url, \
-    ajax_get_offers_body, ajax_get_regions
+    ajax_get_offers_body, ajax_get_regions, TownOffersListJson
 from core.forms.forum.views import topic, topic_board, TopicListJson, topic_page, topic_comment
 from core.forms.offer.views import create_offer, get_offer_iframe, get_reviews_iframe, get_offer_page, offer_comment, \
     get_offer_reviews_board, ReviewListJson, offer_review, get_review_page, review_comment
@@ -46,6 +46,7 @@ urlpatterns += [
 
 urlpatterns += [
     url(r'^tn_board=(?P<town>[0-9]+)/', town_board, name='town_board'),
+    url(r'^datatable/towns/$', TownOffersListJson.as_view(), name='town_offers_list_json'),
     url(r'^tn=(?P<town>[0-9]+)&_rg=(?P<region>[0-9]+)&_cg=(?P<category>[0-9]+)&pg=(?P<page>[0-9]+)/',
         ajax_get_offers_url, name='ajax_get_offers_url'),
     url(r'^get_ajax_offers/', ajax_get_offers_body, name='ajax_get_offers_body'),

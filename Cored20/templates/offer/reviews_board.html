@@ -19,21 +19,25 @@
     <div>
         <div class="content" id="region-filter">
             <div class="filter-header"><p>지구</p></div>
-            <ul class="filters">
-                <li data-region-id="0" class="selected">모두</li>
-                {% for region in regions %}
-                    <li data-region-id="{{ region.id }}">{{ region.name }}</li>
-                {% endfor %}
-            </ul>
+            <div class="filter">
+                <ul class="filters">
+                    <li data-region-id="0" class="selected">모두</li>
+                    {% for region in regions %}
+                        <li data-region-id="{{ region.id }}">{{ region.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <div class="content" id="category-filter">
             <div class="filter-header"><p>카테고리</p></div>
-            <ul class="filters">
-                <li data-category-id="0" class="selected">모두</li>
-                {% for category in categories %}
-                    <li data-category-id="{{ category.id }}">{{ category.name }}</li>
-                {% endfor %}
-            </ul>
+            <div class="filter">
+                <ul class="filters">
+                    <li data-category-id="0" class="selected">모두</li>
+                    {% for category in categories %}
+                        <li data-category-id="{{ category.id }}">{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         <ul class="opi-actions right">
             <li>

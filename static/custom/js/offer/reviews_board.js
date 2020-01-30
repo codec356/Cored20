@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "oLanguage": oLanguages,
         "bFilter": true,
         "iDisplayLength": 25,
+        "searching": false,
         oPaginate: true,
         "bAutoWidth": true,
         columns: [

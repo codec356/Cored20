@@ -6,6 +6,7 @@ from django.core import serializers
 from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render
+from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from core.models import Offers, Regions, Category, Towns
 
@@ -119,3 +120,38 @@ def ajax_get_regions(request):
         regions = Regions.objects.filter(id_town=town)
     return HttpResponse(serializers.serialize('json', regions),
                         content_type='application/json')
+
+
+class TownOffersListJson(BaseDatatableView):
+    model = Offers
+    columns = ['offer_id', 'title', 'phone_number', 'nickname']
+    order_columns = ['offer_id', 'title', 'phone_number', 'nickname']
+
+    def filter_queryset(self, qs):
+        town = self.request.GET.get('town')
+        region = self.request.GET.get('region')
+        category = self.request.GET.get('category')
+        name = self.request.GET.get('name')
+        result = Offers.objects.filter(town=town)
+
+        if int(region) != 0:
+            result = result.filter(region=region)
+
+        if int(category) != 0:
+            result = result.filter(category=category)
+
+        if name is not None:
+            result = result.filter(name_offer__contains=name)
+
+        return result.values(offer_id=F('id'),
+                             title=F('name_offer'),
+                             phone_number=F('phone'),
+                             nickname=F('author__profile__nickname'))
+        #
+        # return Offers.objects.filter(offer__town_id=town).values(review_id=F('id'),
+        #                                                          town=F('offer__town__name'),
+        #                                                          region=F('offer__region__name'),
+        #                                                          offer_title=F('offer__name_offer'),
+        #                                                          review_title=F('title'),
+        #                                                          nickname=F('author__profile__nickname'),
+        #                                                          time=F('dt_created'))

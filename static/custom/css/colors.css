@@ -1,0 +1,75 @@
+body.opi-body {
+    padding-top: 50px;
+    background: black;
+    color: white;
+}
+
+.opi-body .panel {
+    background: black;
+}
+
+.opi-body a {
+    color: white;
+}
+
+.opi-body .panel-heading {
+    background-color: #f96e5b;
+}
+
+body.opi-body .summernote-div {
+    all: initial;
+}
+
+body.opi-body .note-status-output {
+    background-color: white;
+}
+
+.nav-bar-opi,
+.opi-navigation,
+.opi-dropdown-menu {
+    background: #232323;
+}
+
+.opi-navigation ul.opi-navigation-ul li a:hover {
+    color: #f96e5b;
+}
+
+div.container div.filter ul.filters li {
+    color: white;
+}
+
+.opi-navigation-icon:hover {
+    color: #f96e5b;
+}
+
+.opi-dropdown-menu {
+    border: 1px solid white !important;
+}
+
+
+.fg-toolbar {
+    background-color: #232323 !important;
+    color: white !important;
+}
+
+.dataTable td {
+    background: #232323 !important;
+    color: white !important;
+}
+
+.dataTable tbody > tr:hover td,
+.dataTable tbody > tr:hover {
+    background: #f96e5b !important;
+}
+
+
+
+.dataTable tr td {
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
+
+.opi-body .opi-offer-ul,
+.opi-body .opi-side-bar {
+    background: #232323;
+}

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/wrapper.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}" type="text/css">
 
     {% block style_src %}
     {% endblock %}
@@ -146,7 +147,7 @@
                 {% for town in data.towns %}
                     <li class="opi-side-bar-item col-sm-12">
                         <ul>
-                            <li class="opi-side-title"><a class="opi-side-bar-li-title">{{ town.name }}</a></li>
+                            <li class="opi-side-title"><a class="opi-side-bar-li-title"><b>{{ town.name }}</b></a></li>
                             <li class="opi-side-actions">
                                 <div class="opi-fawpforms">
                                     <a href="{% url 'core:town_board' town.id %}"
@@ -179,6 +180,32 @@
     </div>
 </div>
 <script type="text/javascript" src="{% static 'jquery/js/jquery-3.3.1.min.js' %}"></script>
+<script>
+    (function (d) {
+        function c(k) {
+            return (d.cookie.match('(^|; )' + k + '=([^;]*)') || 0)[2];
+        }
+
+        var ua = navigator.userAgent,
+            ismobile = / mobile/i.test(ua),
+            mgecko = !!(/ gecko/i.test(ua) && / firefox\//i.test(ua)),
+            wasmobile = c('wasmobile') === "was",
+            desktopvp = 'user-scalable=yes, width=1310, minimum-width=1310',
+            el;
+        if (ismobile && !wasmobile) {
+            d.cookie = "wasmobile=was";
+        } else if (!ismobile && wasmobile) {
+            if (mgecko) {
+                el = d.createElement('meta');
+                el.setAttribute('content', desktopvp);
+                el.setAttribute('name', 'viewport');
+                d.getElementsByTagName('head')[0].appendChild(el);
+            } else {
+                d.getElementsByName('viewport')[0].setAttribute('content', desktopvp);
+            }
+        }
+    }(document));
+</script>
 {% bootstrap_javascript %}
 
 

@@ -21,7 +21,8 @@
     display: flex;
     padding: 2px 0;
     border-bottom: 1px dashed #eee;
-    flex: 0 0 100%;
+    /*flex: 0 0 100%;*/
+    height: min-content;
 }
 
 .opi-side-bar .opi-side-bar-ul li.opi-side-bar-item > ul {
@@ -62,7 +63,7 @@
     line-height: 40px;
     text-decoration: none;
     cursor: pointer;
-    color: black;
+    color: white;
 }
 
 ul {
@@ -138,7 +139,7 @@ div.opi-fawpforms a {
     text-align: center;
     cursor: default;
     text-decoration: unset;
-    color: black;
+    color: white;
     line-height: 35px;
     font-weight: bold;
 }

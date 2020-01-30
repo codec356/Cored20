@@ -11,16 +11,20 @@ div.opi-offer ul.opi-offer-ul {
     padding: 0;
     margin: 0;
     list-style: none;
-    -webkit-transition: border-color .45s;
-    -moz-transition: border-color .45s;
-    -ms-transition: border-color .45s;
-    -o-transition: border-color .45s;
-    transition: border-color .45s;
+    -webkit-transition: border, box-shadow .45s;
+    -moz-transition: border, box-shadow .45s;
+    -ms-transition: border, box-shadow .45s;
+    -o-transition: border, box-shadow .45s;
+    transition: border, box-shadow .45s;
 }
 
-div.opi-offer ul.opi-offer-ul:hover {
+div.opi-offer ul.opi-offer-ul:hover,
+div.opi-offer ul.opi-offer-ul:focus {
     border: 1px solid #f96e5b;
     border-radius: 3px;
+    -webkit-box-shadow: 0 0 10px 0 rgba(199, 77, 36, 1);
+    -moz-box-shadow: 0 0 10px 0 rgba(199, 77, 36, 1);
+    box-shadow: 0 0 10px 0 rgba(199, 77, 36, 1);
 }
 
 div.opi-offer ul.opi-offer-ul li.opi-offer-image {
@@ -90,7 +94,6 @@ div.opi-offer ul.opi-offer-ul ul.opi-offer-info-ul li.opi-offer-phone b {
 
 div.opi-offer ul.opi-offer-ul ul.opi-offer-info-ul li.opi-offer-phone a {
     cursor: pointer;
-    color: black;
 }
 
 div.opi-offer ul.opi-offer-ul ul.opi-offer-info-ul li.opi-offer-phone a:hover {
@@ -107,7 +110,6 @@ div.opi-offer ul.opi-offer-ul li.opi-offer-actions {
 div.opi-offer ul.opi-offer-ul li.opi-offer-actions ul.opi-offer-action-ul {
     padding: 0;
     margin: 0;
-    background: rgb(255, 243, 243);
 }
 
 ul.opi-offer-action-ul li.opi-action-li {
@@ -178,16 +180,23 @@ div.opi-action-fawpforms a {
     font-weight: bold;
 }
 
-div.container ul.filters {
+div.container div.filter {
+    padding: 10px;
+}
+
+div.container div.filter ul.filters {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    padding: 10px;
-    color: black;
+    padding: 0;
+    color: white;
     font-weight: bold;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #f96e5b;
 }
 
-div.container ul.filters li {
+div.container div.filter ul.filters li {
     min-width: 60px;
     padding: 5px 10px 5px 10px;
     border: 1px solid #f96e5b;
@@ -201,20 +210,20 @@ div.container ul.filters li {
     transition: background-color .25s;
 }
 
-div.container ul.filters li:first-child {
-    border-radius: 5px 0 0 5px;
+div.container div.filter ul.filters li:first-child {
+    /*border-radius: 5px 0 0 5px;*/
 }
 
-div.container ul.filters li:last-child {
-    border-radius: 0 5px 5px 0;
+div.container div.filter ul.filters li:last-child {
+    /*border-radius: 0 5px 5px 0;*/
 }
 
-div.container ul.filters li:hover {
+div.container div.filter ul.filters li:hover {
     color: black;
     background-color: rgba(249, 110, 91, 0.86);
 }
 
-div.container ul.filters li.selected {
+div.container div.filter ul.filters li.selected {
     color: black;
     background-color: #f96e5b;
 }

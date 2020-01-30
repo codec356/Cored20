@@ -3,6 +3,8 @@
 
 {% block style_src %}
     <link rel="stylesheet" href="{% static 'fancybox/jquery.fancybox.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css"/>
 {% endblock %}
 
 {% block content %}
@@ -16,23 +18,27 @@
     </div>
     <div class="content" id="region-filter">
         <div class="filter-header"><p>지구</p></div>
-        <ul class="filters">
-            <li data-region-id="0" class="selected">모두</li>
-            {% for region in regions %}
-                <li data-region-id="{{ region.id }}">{{ region.name }}</li>
-            {% endfor %}
-        </ul>
+        <div class="filter">
+            <ul class="filters">
+                <li data-region-id="0" class="selected">모두</li>
+                {% for region in regions %}
+                    <li data-region-id="{{ region.id }}">{{ region.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     <div class="content" id="category-filter">
         <div class="filter-header"><p>카테고리</p></div>
-        <ul class="filters">
-            <li data-category-id="0" class="selected">모두</li>
-            {% for category in categories %}
-                <li data-category-id="{{ category.id }}">{{ category.name }}</li>
-            {% endfor %}
-        </ul>
+        <div class="filter">
+            <ul class="filters">
+                <li data-category-id="0" class="selected">모두</li>
+                {% for category in categories %}
+                    <li data-category-id="{{ category.id }}">{{ category.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    <div class="opi-board" id="opi-board">
+{#    <div class="opi-board" id="opi-board">#}
         {#        <div class="opi-offer col-sm-3">#}
         {#            <ul class="opi-offer-ul">#}
         {#                <li class="opi-offer-image">#}
@@ -72,31 +78,64 @@
         {#                </li>#}
         {#            </ul>#}
         {#        </div>#}
-    </div>
+        <div style="all:unset;">
+            <table id="town-table" class="display hover" style="width: 100%">
+                <thead>
+                <tr>
+                    <td style="text-align: center">번호</td>
+                    <td style="text-align: center">발표</td>
+                    <td style="text-align: center">전화 번호</td>
+                    <td style="text-align: center">별명</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+{#    </div>#}
 {% endblock %}
 
 {% block scripts_src %}
+
     <script src="{% static 'fancybox/jquery.fancybox.pack.js' %}"></script>
     <script src="{% static 'fancybox/jquery.fancybox.js' %}"></script>
     <script src="{% static 'js/boards/town_board.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
+    <script src="{% static 'lib/moment/moment.min.js' %}"></script>
+{#    <script>#}
+{#        let is_auth;#}
+{#        let login_url;#}
+{#        {% if user.is_authenticated %}#}
+{#            is_auth = true;#}
+{#        {% else %}#}
+{#            is_auth = false;#}
+{#            login_url = "{% url 'core:login_url' %}";#}
+{#        {% endif %}#}
+{#        let g_offer_url = "{% url 'core:iframe_offer' offer=99999999999999 %}";#}
+{#        let g_reviews_url = "{% url 'core:iframe_reviews' offer=99999999999999 %}";#}
+{#        const l_need_auth = "{% url 'core:login_url' %}";#}
+{#        const l_ajax_get_offers = "{% url 'core:ajax_get_offers_body' %}";#}
+{#        let l_text_search = '';#}
+{#        let l_town_id = {{ town }};#}
+{#        let l_region_id = 0;#}
+{#        let l_category_id = 0;#}
+{#        const MEDIA_URL = "{{ MEDIA_URL }}";#}
+{#        const l_csrf_token = "{{ csrf_token }}";#}
+{#    </script>#}
+
     <script>
-        let is_auth;
-        let login_url;
-        {% if user.is_authenticated %}
-            is_auth = true;
-        {% else %}
-            is_auth = false;
-            login_url = "{% url 'core:login_url' %}";
-        {% endif %}
-        let g_offer_url = "{% url 'core:iframe_offer' offer=99999999999999 %}";
-        let g_reviews_url = "{% url 'core:iframe_reviews' offer=99999999999999 %}";
-        const l_need_auth = "{% url 'core:login_url' %}";
-        const l_ajax_get_offers = "{% url 'core:ajax_get_offers_body' %}";
-        let l_text_search = '';
         let l_town_id = {{ town }};
         let l_region_id = 0;
         let l_category_id = 0;
-        const MEDIA_URL = "{{ MEDIA_URL }}";
+        let l_text_search;
         const l_csrf_token = "{{ csrf_token }}";
+        let TOWN_OFFERS_LIST_JSON_URL = '{% url "core:town_offers_list_json" %}';
+        let G_OFFER_PAGE_URL =
+            {% if user.is_authenticated %}
+                "{% url 'core:page_offer' offer=99999999999999 %}";
+            {% else %}
+                "{% url 'core:login_url' %}";
+            {% endif %}
     </script>
 {% endblock %}

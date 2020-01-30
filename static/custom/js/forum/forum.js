@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let dt_table = $('#forum-table').dataTable({
         "oLanguage": oLanguages,
         "bFilter": true,
+        "searching": false,
         "iDisplayLength": 25,
         oPaginate: true,
         "bAutoWidth": true,
