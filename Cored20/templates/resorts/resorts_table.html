@@ -1,57 +1,39 @@
 {% extends "base.html" %}
 {% load static %}
-{% load bootstrap3 %}
-
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% bootstrap_messages %}
 
 {% block style_src %}
+    <link rel="stylesheet" href="{% static 'fancybox/jquery.fancybox.css' %}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css"/>
 {% endblock %}
 
-
 {% block content %}
-    <div>
-        <ul class="opi-actions right">
-            <li>
-                <a class="opi-button" href="{% url 'core:create_topic' section %}" style="font-size: 1.7em;"><i class="fas fa-edit"></i>리뷰 쓰기</a>
-            </li>
-        </ul>
         <div style="all:unset;">
-            <table id="forum-table" class="display hover" style="width: 100%">
+            <table id="resorts-table" class="display hover" style="width: 100%">
                 <thead>
                 <tr>
                     <td style="text-align: center">번호</td>
-                    <td style="text-align: center">테마</td>
-                    <td style="text-align: center">저자</td>
+                    <td style="text-align: center">헤드 라인</td>
                     <td style="text-align: center">작성일</td>
                 </tr>
                 </thead>
             </table>
         </div>
-    </div>
+{#    </div>#}
 {% endblock %}
 
-
 {% block scripts_src %}
+
+    <script src="{% static 'js/resorts/resorts_table.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
-    <script src="{% static 'js/forum/forum.js' %}"></script>
     <script src="{% static 'lib/moment/moment.min.js' %}"></script>
 
     <script>
-        let l_section_id = {{ section }};
         const l_csrf_token = "{{ csrf_token }}";
-        let TOPIC_LIST_JSON_URL = '{% url "core:topic_list_json" %}';
-        let G_TOPIC_PAGE_URL =
-            {% if user.is_authenticated %}
-                "{% url 'core:page_topic' topic=99999999999999 %}";
-            {% else %}
-                "{% url 'core:login_url' %}";
-            {% endif %}
+        let RESORT_LIST_JSON_URL = '{% url "core:resort_list_json" %}';
+        let G_RESORT_PAGE_URL = "{% url 'core:resort_page' resort=99999999999999 %}";
     </script>
 {% endblock %}

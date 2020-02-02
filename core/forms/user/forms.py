@@ -12,7 +12,6 @@ from django.dispatch import receiver
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext as _
-from meta.decompiler.instructions import level
 
 from core.models import Profile, Balances
 
@@ -42,10 +41,15 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     user = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput(), required=False)
     avatar = forms.ImageField(required=False)
+    SEX_CHOICES = (
+        ('m', u"남성"),
+        ('w', u"여성"),
+    )
+    sex = forms.ChoiceField(label=u'성별', choices=SEX_CHOICES)
 
     class Meta:
         model = Profile
-        fields = ['avatar', 'nickname']
+        fields = ['avatar', 'nickname', 'sex']
 
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
@@ -94,9 +98,13 @@ class UserCreationForm(forms.ModelForm):
         help_text=_("Enter the same password as before, for verification."),
     )
     nickname = forms.CharField(max_length=16)
-    is_want_staff = forms.BooleanField(required=False)
+    # is_want_staff = forms.BooleanField(required=False)
     phone = forms.CharField(required=False)
-
+    SEX_CHOICES = (
+        ('m', u"남성"),
+        ('w', u"여성"),
+    )
+    sex = forms.ChoiceField(label=u'성별', choices=SEX_CHOICES)
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox(attrs={'class': 'validate'}, api_params={'hl': 'ko'}))
 
     class Meta:

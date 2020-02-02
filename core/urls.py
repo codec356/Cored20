@@ -5,13 +5,15 @@ from filebrowser.sites import site
 
 from core import views
 import core.forms.admin.views as admin_views
+from core.forms.auction.views import auction_board
 from core.forms.board.views import town_board, category_board, ajax_get_offers_url, \
     ajax_get_offers_body, ajax_get_regions, TownOffersListJson
 from core.forms.forum.views import topic, topic_board, TopicListJson, topic_page, topic_comment
 from core.forms.offer.views import create_offer, get_offer_iframe, get_reviews_iframe, get_offer_page, offer_comment, \
     get_offer_reviews_board, ReviewListJson, offer_review, get_review_page, review_comment
+from core.forms.resorts.views import create_resort, ResortsListJson, resorts, resort_page, resort_message
 from core.forms.user.forms import CustomLoginForm, logout_request
-from core.forms.user.views import profile_view, check_in, create_user
+from core.forms.user.views import profile_view, check_in, create_user, attendance_page, attend
 
 urlpatterns = [
     path('', views.core, name='main_page'),
@@ -41,7 +43,6 @@ urlpatterns += [
     url(r'^login/$', CustomLoginForm.as_view(), name="login_url"),
     url(r'^accounts/logout/$', logout_request, name='logout_url'),
     url(r'^profile/$', profile_view, name='profile'),
-    url(r'^checkin/$', check_in, name='checkin'),
 ]
 
 urlpatterns += [
@@ -61,6 +62,23 @@ urlpatterns += [
     url(r'^topic=(?P<topic>[0-9]+)$', topic_page, name='page_topic'),
     url(r'^topic_comment/$', permission_required('is_authenticated')(topic_comment),
         name="topic_comment"),
+]
+
+urlpatterns += [
+    url(r'^create_resort/$', create_resort, name="create_resort"),
+    url(r'^resorts/$', resorts, name='resorts_table'),
+    url(r'^datatable/resorts/$', ResortsListJson.as_view(), name='resort_list_json'),
+    url(r'^resort=(?P<resort>[0-9]+)/$', resort_page, name="resort_page"),
+    url(r'^resort_message/$', resort_message, name="resort_message"),
+]
+
+urlpatterns += [
+    url(r'^attendance/$', attendance_page, name="attendance_page"),
+    url(r'^attend/$', attend, name="attend"),
+]
+
+urlpatterns += [
+    url(r'^auction/$', auction_board, name="auction_board"),
 ]
 
 urlpatterns += [

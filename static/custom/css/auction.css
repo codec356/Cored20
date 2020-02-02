@@ -1,0 +1,182 @@
+div.opi-auction-item {
+    padding: 10px;
+    margin: 0;
+}
+
+
+div.opi-auction-item ul.opi-auction-item-ul {
+    background: #262626;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    -webkit-transition: border, box-shadow .45s;
+    -moz-transition: border, box-shadow .45s;
+    -ms-transition: border, box-shadow .45s;
+    -o-transition: border, box-shadow .45s;
+    transition: border, box-shadow .45s;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul:hover,
+div.opi-auction-item ul.opi-auction-item-ul:focus {
+    border: 1px solid #f96e5b;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 10px 0 rgba(199, 77, 36, 1);
+    -moz-box-shadow: 0 0 10px 0 rgba(199, 77, 36, 1);
+    box-shadow: 0 0 10px 0 rgba(199, 77, 36, 1);
+}
+
+div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-image {
+    padding: 0;
+    overflow: hidden;
+    max-height: 160px;
+    min-height: 160px;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-image img {
+    padding: 0;
+    height: auto;
+    width: 100%;
+    object-fit: cover;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-title {
+    padding: 5px;
+    font-weight: bold;
+    overflow: hidden;
+    border-bottom: 1px dashed #eee;
+    height: 100px;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-info {
+    padding: 5px;
+    overflow: hidden;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border-bottom: 1px dashed #eee;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-category {
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.1em;
+    overflow: hidden;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-timework {
+    padding: 4px 0;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-timework b {
+    color: white;
+    background: #f96e5b;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-phone {
+    padding: 4px 0;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-phone b {
+    color: white;
+    background: #f96e5b;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-phone a {
+    cursor: pointer;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-phone a:hover {
+    cursor: pointer;
+    color: #f96e5b;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-actions {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-actions ul.opi-auction-item-action-ul {
+    padding: 0;
+    margin: 0;
+}
+
+ul.opi-auction-item-action-ul li.opi-action-li {
+    width: 49%;
+    padding: 5px;
+    display: inline-block;
+}
+
+
+div.opi-action-fawpforms {
+    border: 2px solid #f96e5b;
+    border-radius: 7px;
+    height: 44px;
+    text-align: center;
+    -webkit-transition: border-color, background-color .95s;
+    -moz-transition: border-color, background-color .95s;
+    -ms-transition: border-color, background-color .95s;
+    -o-transition: border-color, background-color .95s;
+    transition: border-color, background-color .95s;
+    padding: 3px 0;
+}
+
+div.opi-action-fawpforms a {
+    color: #f96e5b
+}
+
+div.opi-action-fawpforms:hover {
+    border: 2px solid #a74a3d;
+}
+
+div.opi-action-fawpforms a:hover {
+    color: #a74a3d;
+}
+
+div.opi-action-facomments {
+    border: 2px solid #f3bd49;
+    border-radius: 7px;
+    height: 44px;
+    text-align: center;
+    -webkit-transition: border-color .45s;
+    -moz-transition: border-color .45s;
+    -ms-transition: border-color .45s;
+    -o-transition: border-color .45s;
+    transition: border-color .45s;
+    padding: 3px 0;
+}
+
+div.opi-action-facomments a {
+    color: #f3bd49
+}
+
+div.opi-action-facomments:hover {
+    border: 2px solid #c7983b;
+}
+
+div.opi-action-facomments a:hover {
+    color: #c7983b;
+}
+
+
+div.opi-action-facomments a,
+div.opi-action-fawpforms a {
+    white-space: nowrap;
+    clear: both;
+    display: block;
+    text-decoration: unset;
+    cursor: pointer;
+    font-weight: bold;
+}

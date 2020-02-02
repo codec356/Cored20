@@ -67,7 +67,6 @@ def topic_comment(request):
         form = TopicCommentForm(request.POST)
         form.content = request.POST.get('content')
         form.topic = request.POST.get('topic')
-        print(request.POST.get('topic'))
         form.user = request.POST.get('user')
         form.dt_created = request.POST.get('dt_created')
 

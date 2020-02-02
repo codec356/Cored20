@@ -145,6 +145,7 @@ INSTALLED_APPS = [
     'django_summernote',
     'bootstrap3_datepicker',
     'captcha',
+    'django_celery_results',
 ]
 
 LANGUAGES = (

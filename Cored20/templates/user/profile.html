@@ -23,11 +23,13 @@
         {{ user_form.media }}
         {{ profile_form.media }}
         <div class="panel panel-default">
-            <div class="panel-heading" style="background: #f96e5b; color: white;"><strong><i class="fa fa-star fa-lg"></i>프로필</strong></div>
+            <div class="panel-heading" style="background: #f96e5b; color: white;"><strong><i
+                    class="fa fa-star fa-lg"></i>프로필</strong></div>
             <div class="panel-body">
                 {% bootstrap_field profile_form.nickname layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='별명' %}
                 {% bootstrap_field user_form.first_name layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='이름' %}
                 {% bootstrap_field user_form.last_name layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='성' %}
+                {% bootstrap_field profile_form.sex layout='horizontal' horizontal_label_class='col-sm-2 col-xs-12' horizontal_field_class='col-sm-6 col-xs-12' %}
 
                 {% bootstrap_field profile_form.avatar layout='horizontal' horizontal_label_class='col-sm-2' horizontal_field_class='col-sm-6' label='아바타' %}
 
@@ -35,7 +37,8 @@
             </div>
             {% buttons %}
                 <div class="text-center" style="margin:30px 0px;">
-                    <button type="submit" id="btn_submit" class="btn btn-color btn-success-opi" accesskey="s">창조하다</button>
+                    <button type="submit" id="btn_submit" class="btn btn-color btn-success-opi" accesskey="s">창조하다
+                    </button>
                 </div>
             {% endbuttons %}
         </div>

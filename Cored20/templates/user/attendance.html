@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static 'css/attendance.css' %}">
+    <link rel="stylesheet" href="{% static 'css/offer.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="opi-offer-content" style="border-radius: 4px; padding: 20px">
+        <ul class="opi-offer-content-ul">
+            <li class="opi-offer-content-html">
+                <div class="attendance-div">
+                    <table class="attendance-table">
+                        <tbody>
+                        <tr class="atd_trbox">
+                            <td class="head">출석 포인트</td>
+                            <td>50 <i class="fas fa-gem"></i> + 50 <i class="fas fa-gem"></i></td>
+                            <td class="head">출석 남은시간</td>
+                            <td>
+                                <div id="at-timer">21:15:48</div>
+                            </td>
+                            <td class="head">진행상태</td>
+                            <td><strong>O</strong></td>
+                        </tr>
+                        <tr class="atd_trbox">
+                            <td class="head">1등 보너스</td>
+                            <td>300 <i class="fas fa-gem"></i></td>
+                            <td class="head">2등 보너스</td>
+                            <td>200 <i class="fas fa-gem"></i></td>
+                            <td class="head">3등 보너스</td>
+                            <td>100 <i class="fas fa-gem"></i></td>
+                        </tr>
+                        <tr class="atd_trbox">
+                            <td class="head">7일 개근</td>
+                            <td>300 <i class="fas fa-gem"></i></td>
+                            <td class="head">30일 개근</td>
+                            <td>3,000 <i class="fas fa-gem"></i></td>
+                            <td class="head">365일 개근</td>
+                            <td>60,000 <i class="fas fa-gem"></i></td>
+                        </tr>
+                        <tr class="atd_trbox">
+                            <td class="head">500일 개근</td>
+                            <td>100,000 <i class="fas fa-gem"></i></td>
+                            <td class="head">730일 개근</td>
+                            <td>150,000 <i class="fas fa-gem"></i></td>
+                            <td class="head">1000일 개근</td>
+                            <td>200,000 <i class="fas fa-gem"></i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li class="opi-offer-content-html">
+                <div style="display: flex;justify-content: center;padding: 10px;font-size: 2em;">
+                    <a class="opi-button" href="{% url 'core:attend' %}"><i class="fas fa-calendar-check"></i>가입</a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+
+    {#    <div style="width: 99%;margin-top: 34px;position: absolute;border: 1px solid white;"></div>#}
+    {##}
+    {#    <ul class="attend-time-line">#}
+    {#        {% for day in days %}#}
+    {#            <li>#}
+    {#                <input class="day-cb-attend" type="radio" id="day" checked disabled>#}
+    {#                <label for="day">1</label>#}
+    {#            </li>#}
+    {#        {% endfor %}#}
+    {#    </ul>#}
+
+{% endblock %}

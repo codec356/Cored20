@@ -73,3 +73,13 @@ div.container div.filter ul.filters li {
 .opi-body .opi-side-bar {
     background: #232323;
 }
+
+
+.select2-container {
+    color: black;
+}
+
+.opi-offer-content {
+    background: #232323;
+    border: 1px solid #d3d3d3;
+}

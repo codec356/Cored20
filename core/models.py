@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 from io import BytesIO
 
 from PIL import Image
@@ -32,6 +33,11 @@ class Profile(models.Model):
     is_fake = models.BooleanField(default=False)
     is_want_staff = models.BooleanField(default=False)
     phone = models.CharField(max_length=16, null=True, default=None)
+    SEX_CHOICES = (
+        ('m', u"남성"),
+        ('w', u"여성"),
+    )
+    sex = models.CharField(max_length=1, verbose_name=u"성별", choices=SEX_CHOICES, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.avatar:
@@ -276,9 +282,15 @@ class BalanceMovements(models.Model):
     type = models.ForeignKey(TypesIncomes, on_delete=models.DO_NOTHING, db_column='type')
 
 
+class SectionType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128, blank=True, null=True)
+
+
 class Section(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=150, blank=True, null=True)
+    type = models.ForeignKey(SectionType, on_delete=models.DO_NOTHING, null=True)
     is_private = models.BooleanField(default=False)
 
     class Meta:
@@ -313,3 +325,94 @@ class TopicComment(models.Model):
 
     class Meta:
         verbose_name = 'Topic comment'
+
+
+class ResortType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=32, blank=False, null=False)
+
+    class Meta:
+        verbose_name = 'Типы обращений'
+
+    def __str__(self):
+        return '%(name)s' % {'name': self.name}
+
+
+class Resort(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, db_column='user')
+    type = models.ForeignKey(ResortType, models.DO_NOTHING)
+    title = models.CharField(max_length=128, blank=False, null=False)
+    solved = models.BooleanField(default=False)
+    dt_created = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Обращения'
+
+    def __str__(self):
+        return '[%(type)s] %(title)s' % {'type': self.type.name, 'title': self.title}
+
+
+class ResortMessages(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, db_column='user')
+    resort = models.ForeignKey(Resort, models.DO_NOTHING)
+    content = RichTextField(blank=False, null=False)
+    dt_created = models.DateTimeField(auto_now=True)
+
+
+class Auction(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    offer = models.ForeignKey(Offers, models.DO_NOTHING)
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=512)
+    start_price = models.IntegerField(blank=False, null=False)
+    current_price = models.IntegerField(blank=False, null=False)
+    dt_created = models.DateTimeField(auto_now=True)
+    dt_expiration = models.DateTimeField(auto_now=False)
+    user_winner = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='user_winner')
+    secret_key = models.CharField(max_length=64, null=True)
+
+    class Meta:
+        verbose_name = 'Auction'
+
+    def update_auction(self, user, amount):
+        self.user_winner = user
+        self.current_price = amount
+        self.save()
+
+
+class AuctionBets(models.Model):
+    id = models.AutoField(primary_key=True)
+    auction = models.ForeignKey(Auction, models.DO_NOTHING)
+    user = models.ForeignKey(User, models.DO_NOTHING, db_column='user')
+    amount = models.IntegerField()
+    dt_created = models.DateField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Bets'
+
+    def save(self, *args, **kwargs):
+        if Auction.objects.filter(auction=self.auction, auction__current_price__lt=self.amount,
+                                  dt_expiration__gte=datetime.utcnow()).count() != 0:
+
+            cancel_bet = TypesIncomes.objects.get(action='cancel_bet')
+            betting = TypesIncomes.objects.get(action='bet')
+
+            expense = BalanceMovements.objects.create(user=self.user,
+                                                      dt_income=datetime.utcnow(),
+                                                      value=-self.amount,
+                                                      type=betting)
+            expense.save()
+
+            Balances.objects.filter(user=self.user)[0].cut_balance(self.amount)
+
+            Auction.objects.get(id=self.auction.id).update_auction(self.user, self.amount)
+
+            for rec in AuctionBets.objects.filter(auction=self.auction):
+                apv = BalanceMovements(user=rec.user, dt_income=datetime.now(), value=rec.amount, type=cancel_bet)
+                apv.save()
+                usr = Balances.objects.filter(user=rec.user)[0]
+                usr.add_balance(rec.amount)
+            self.save()

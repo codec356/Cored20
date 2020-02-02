@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static 'fancybox/jquery.fancybox.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auction.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="opi-board">
+    {% if auctions %}
+        {% for auction in auctions %}
+            <div class="opi-auction-item col-sm-6 col-md-3 col-xs-12">
+                <ul class="opi-auction-item-ul">
+                    <li class="opi-auction-item-title">
+                        <p>{{ auction.title }}</p>
+                    </li>
+                    <li class="opi-auction-item-info">
+                        <ul class="opi-auction-item-info-ul">
+                            <li class="opi-auction-item-category">
+                                <p>{{ auction.category_name }}</p>
+                            </li>
+                            <li class="opi-auction-item-timework">
+                                <b>영업시간</b> {{ auction.auction_timework }}
+                            </li>
+                            <li class="opi-auction-item-phone">
+                                <b>전화번호</b><a href="tel:${phone}"> {{ auction.auction_phone }}</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="opi-auction-item-actions">
+                        <ul class="opi-auction-item-action-ul">
+                            <li class="opi-action-li">
+                                <div class="opi-action-fawpforms"><a aria-expanded="true"
+                                                                     data-auction-id="{{ auction.auction_id }}"
+                                                                     class="auction auction-iframe">
+                                    <i class="fas fa-money-bill-alt"></i><br>출근부</a>
+                                </div>
+                            </li>
+                            <li class="opi-action-li">
+                                <div class="opi-action-facomments"><a aria-expanded="true"
+                                                                      data-auction-id="{{ auction.auction_id }}"
+                                                                      class="auction-comments reviews-iframe">
+                                    <i class="far fa-comment"></i><br>후기</a></div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts_src %}
+    <script src="{% static 'fancybox/jquery.fancybox.pack.js' %}"></script>
+    <script src="{% static 'fancybox/jquery.fancybox.js' %}"></script>
+    <script>
+        {% if user.is_authenticated %}
+            let is_auth = true;
+        {% else %}
+            let is_auth = false;
+            let login_url = "{% url 'core:login_url' %}";
+        {% endif %}
+        const l_need_auth = "{% url 'core:login_url' %}";
+
+        $(".offer-iframe").click(function () {
+            if (is_auth) {
+                $.fancybox.open({
+                    href: is_auth ? 'iframe_offer=' + this.dataset.offerId : login_url,
+                    type: 'iframe',
+                    padding: 0,
+                    height: 800,
+                });
+            } else {
+                location.href = login_url
+            }
+        });
+        $(".reviews-iframe").click(function () {
+            if (is_auth) {
+                $.fancybox.open({
+                    href: is_auth ? 'iframe_reviews=' + this.dataset.offerId : login_url,
+                    type: 'iframe',
+                    padding: 0,
+                    height: 800,
+                    autoSize: false
+                });
+            } else {
+                location.href = login_url
+            }
+        });
+        {#const l_ajax_get_offers = "{% url 'core:get_ajax_offers' %}";#}
+    </script>
+{% endblock %}

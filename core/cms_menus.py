@@ -51,7 +51,7 @@ class ForumMenu(CMSAttachMenu):
         nodes = []
 
         if request.user.is_staff:
-            sections = Section.objects.all()
+            sections = Section.objects.filter(type__name='community')
         else:
             sections = Section.objects.filter(is_private=False)
         for sec in sections:
@@ -60,7 +60,36 @@ class ForumMenu(CMSAttachMenu):
         return nodes
 
 
+class ClientService(CMSAttachMenu):
+    name = _("Service")
+
+    def get_nodes(self, request):
+        nodes = [
+            NavigationNode('제휴문의', reverse("core:create_resort"), '제휴문의'),
+            NavigationNode('나의 호소', reverse("core:resorts_table"), '나의 호소'),
+        ]
+        if request.user.is_staff:
+            sections = Section.objects.filter(type__name='service')
+        else:
+            sections = Section.objects.filter(is_private=False,
+                                              type__name='service')
+        for sec in sections:
+            nodes.append(NavigationNode(sec.title, reverse("core:table_topic_board", kwargs={'section': sec.id}),
+                                        sec.title))
+        return nodes
+
+    #
+    # def get_nodes(self, request):
+    #     nodes = []
+    #     categories = Category.objects.all().values('name', 'id')
+    #     for cat in categories:
+    #         nodes.append(
+    #             NavigationNode(cat['name'], reverse("core:category_board", kwargs={'category': cat['id']}), cat['id']))
+    #     return nodes
+
+
 menu_pool.register_menu(LocationMenu)
 menu_pool.register_menu(ReviewsMenu)
 menu_pool.register_menu(CategoryMenu)
 menu_pool.register_menu(ForumMenu)
+menu_pool.register_menu(ClientService)

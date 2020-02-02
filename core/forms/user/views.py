@@ -1,15 +1,16 @@
 # in views.py
+import calendar
 from datetime import datetime
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.db import transaction
+from django.contrib.auth import authenticate, login, user_logged_in
+from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from core.forms.user.forms import UserForm, UserProfileForm, UserCreationForm
-from core.models import BalanceMovements, TypesIncomes, Balances
+from core.models import BalanceMovements, TypesIncomes, Balances, Profile
 
 
 def profile_view(request):
@@ -25,14 +26,12 @@ def profile_view(request):
             profile = profile.save(commit=False)
             profile.user = user
             profile.save()
-            print("success")
             return redirect(reverse('core:profile'))
         else:
             for rec in user.errors:
                 messages.error(request, rec)
             for rec in profile.errors:
                 messages.error(request, rec)
-            print("error")
             messages.error(request=request, message='편집 중 오류')
             return render(request=request, context={
                 "user_form": user,
@@ -50,7 +49,8 @@ def profile_view(request):
         })
 
 
-def check_in(request):
+@receiver(user_logged_in)
+def check_in(sender, user, request, **kwargs):
     dt = datetime.utcnow()
     if BalanceMovements.objects.filter(user=request.user.id,
                                        type_id=TypesIncomes.objects.get(action='Login').id,
@@ -68,11 +68,12 @@ def award_points(user, type_income, value=None):
     local_value = (value if value else type_income.value)
     apv = BalanceMovements(user=user, dt_income=datetime.now(), value=local_value, type=type_income)
     apv.save()
-    usr = Balances.objects.get(user=user)
-    usr.add_balance(local_value)
-    user.profile.experience += local_value
-    user.save()
-    return usr
+    usr_bal = Balances.objects.get(user=user)
+    usr_bal.add_balance(local_value)
+    usr_profile = Profile.objects.get(user=user)
+    usr_profile.experience += local_value
+    usr_profile.save()
+    return usr_bal
 
 
 def create_user(request):
@@ -83,8 +84,9 @@ def create_user(request):
             user.refresh_from_db()
             user.profile.nickname = form.cleaned_data.get('nickname')
             user.profile.level_id = 1
-            user.profile.is_want_staff = form.cleaned_data.get('is_want_staff')
+            # user.profile.is_want_staff = form.cleaned_data.get('is_want_staff')
             user.profile.phone = form.cleaned_data.get('phone')
+            user.profile.sex = form.cleaned_data.get('sex')
 
             user.save()
             username = form.cleaned_data.get('username')
@@ -95,3 +97,55 @@ def create_user(request):
     else:
         form = UserCreationForm()
     return render(request, 'user/registration.html', {'form': form})
+
+
+def attendance_page(request):
+    days_count = calendar.mdays[datetime.utcnow().month]
+    return render(request=request, template_name='user/attendance.html', context={
+        'days_count': days_count
+    })
+
+
+def attend(request):
+    dt_cts = datetime.utcnow()
+    if BalanceMovements.objects.filter(user=request.user.id,
+                                       type_id=TypesIncomes.objects.get(action='attend').id,
+                                       dt_income__gte=datetime(dt_cts.year, dt_cts.month, dt_cts.day)).count() == 0:
+        award_points(request.user, TypesIncomes.objects.get(action='attend'))
+        current_attend_count = BalanceMovements.objects.filter(type_id=TypesIncomes.objects.get(action='attend').id,
+                                                               dt_income__gte=datetime(dt_cts.year, dt_cts.month,
+                                                                                       dt_cts.day)).count()
+        print(current_attend_count)
+        if current_attend_count == 1:
+            award_points(request.user, TypesIncomes.objects.get(action='first'))
+        elif current_attend_count == 2:
+            award_points(request.user, TypesIncomes.objects.get(action='second'))
+        elif current_attend_count == 3:
+            award_points(request.user, TypesIncomes.objects.get(action='third'))
+
+        total_attend_count = BalanceMovements.objects.filter(user=request.user.id,
+                                                             type_id=TypesIncomes.objects.get(
+                                                                 action='attend').id).count()
+        print(total_attend_count)
+
+        if total_attend_count == 7:
+            award_points(request.user, TypesIncomes.objects.get(action='seven_days'))
+        elif total_attend_count == 30:
+            award_points(request.user, TypesIncomes.objects.get(action='thirty_days'))
+        elif total_attend_count == 365:
+            award_points(request.user, TypesIncomes.objects.get(action='365_days'))
+        elif total_attend_count == 500:
+            award_points(request.user, TypesIncomes.objects.get(action='500_days'))
+        elif total_attend_count == 730:
+            award_points(request.user, TypesIncomes.objects.get(action='730_days'))
+        elif total_attend_count == 1000:
+            award_points(request.user, TypesIncomes.objects.get(action='1000_days'))
+        else:
+            pass
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def count_attends(user):
+    return BalanceMovements.objects.filter(user=user,
+                                           type_id=TypesIncomes.objects.get(action='attend').id).count()

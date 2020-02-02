@@ -18,6 +18,11 @@ admin.site.register(RateType)
 admin.site.register(OfferReviewRates)
 admin.site.register(OfferReviews)
 
-
+admin.site.register(SectionType)
 admin.site.register(Topic)
 admin.site.register(Section)
+
+
+admin.site.register(ResortType)
+admin.site.register(Resort)
+admin.site.register(ResortMessages)
