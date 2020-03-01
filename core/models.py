@@ -7,6 +7,7 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
+from django.utils import timezone
 from tinymce import models as tinymce_models
 
 
@@ -32,7 +33,7 @@ class Profile(models.Model):
     level = models.ForeignKey(LevelMap, on_delete=models.DO_NOTHING, null=True)
     is_fake = models.BooleanField(default=False)
     is_want_staff = models.BooleanField(default=False)
-    phone = models.CharField(max_length=16, null=True, default=None)
+    phone = models.CharField(max_length=64, null=True, default=None)
     SEX_CHOICES = (
         ('m', u"남성"),
         ('w', u"여성"),
@@ -133,6 +134,15 @@ class Discounts(models.Model):
         super(Discounts, self).save()
 
 
+class OfferTypes(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(null=False, max_length=16)
+    ident = models.CharField(null=False, max_length=16)
+
+    def __str__(self):
+        return self.name
+
+
 class Offers(models.Model):
     id = models.AutoField(primary_key=True)
     name_offer = models.CharField(max_length=255)
@@ -146,12 +156,14 @@ class Offers(models.Model):
     html_content = tinymce_models.HTMLField()
     time_work = models.CharField(max_length=50, blank=False, null=False)
     dt_created = models.DateTimeField(null=False, auto_now=True)
-    dt_start = models.DateTimeField(null=True)
-    dt_expiration = models.DateTimeField(null=True)
+    dt_start = models.DateTimeField(null=True, blank=True)
+    dt_expiration = models.DateTimeField(null=True, blank=True)
     dt_updated = models.DateTimeField(null=False, auto_now=True)
     is_fake = models.BooleanField(null=False, default=False)
     ext_ident = models.IntegerField(null=True, blank=True)
     is_published = models.BooleanField(null=False, blank=False, default=False)
+    views = models.IntegerField('Просмотры', default=0, blank=True)
+    type = models.ForeignKey(OfferTypes, models.DO_NOTHING, default=1)
 
     def __str__(self):
         return self.name_offer
@@ -175,6 +187,27 @@ class OfferComments(models.Model):
         return OfferComments.objects.filter(offer=offer_inst).order_by('dt_created')
 
 
+class OfferStatistic(models.Model):
+    offer = models.ForeignKey(Offers, models.DO_NOTHING)
+    date = models.DateField('Дата', default=timezone.now)
+    views = models.IntegerField('Просмотры', default=0)
+
+    def __str__(self):
+        return self.offer.name_offer
+
+    @staticmethod
+    def inc_views(offer):
+        obj, created = OfferStatistic.objects.get_or_create(
+            defaults={
+                "offer": offer,
+                "date": timezone.now()
+            },
+            date=timezone.now(), offer=offer
+        )
+        obj.views += 1
+        obj.save(update_fields=['views'])
+
+
 class OfferReviews(models.Model):
     id = models.AutoField(primary_key=True)
     offer = models.ForeignKey(Offers, models.DO_NOTHING)
@@ -182,9 +215,31 @@ class OfferReviews(models.Model):
     title = models.CharField(max_length=128, blank=False, null=False)
     html_content = RichTextField(max_length=4096, blank=False, null=False)
     dt_created = models.DateTimeField(auto_now=True)
+    views = models.IntegerField('Просмотры', default=0, blank=True)
 
     class Meta:
         verbose_name = 'Reviews'
+
+
+class ReviewStatistic(models.Model):
+    review = models.ForeignKey(OfferReviews, models.DO_NOTHING)
+    date = models.DateField('Дата', default=timezone.now)
+    views = models.IntegerField('Просмотры', default=0)
+
+    def __str__(self):
+        return self.review.title
+
+    @staticmethod
+    def inc_views(review):
+        obj, created = ReviewStatistic.objects.get_or_create(
+            defaults={
+                "review": review,
+                "date": timezone.now()
+            },
+            date=timezone.now(), review=review
+        )
+        obj.views += 1
+        obj.save(update_fields=['views'])
 
 
 class RateType(models.Model):
@@ -253,6 +308,10 @@ class Balances(models.Model):
         Profile.calc_level(self.user.profile, value)
         self.save()
 
+    def add_balance_lazy(self, value):
+        self.value += value
+        self.save()
+
     def cut_balance(self, value):
         self.value -= value
         self.save()
@@ -280,6 +339,7 @@ class BalanceMovements(models.Model):
     dt_income = models.DateTimeField(auto_now=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     type = models.ForeignKey(TypesIncomes, on_delete=models.DO_NOTHING, db_column='type')
+    deleted = models.BooleanField(default=False)
 
 
 class SectionType(models.Model):
@@ -308,12 +368,34 @@ class Topic(models.Model):
     dt_created = models.DateTimeField(auto_now=True)
     section = models.ForeignKey(Section, models.DO_NOTHING)
     is_fixed = models.BooleanField(default=False)
+    views = models.IntegerField('Просмотры', default=0, blank=True)
 
     class Meta:
         verbose_name = 'Topic'
 
     def __str__(self):
         return '[%(section)s] %(title)s' % {'section': self.section.title, 'title': self.title}
+
+
+class TopicStatistic(models.Model):
+    topic = models.ForeignKey(Topic, models.DO_NOTHING)
+    date = models.DateField('Дата', default=timezone.now)
+    views = models.IntegerField('Просмотры', default=0)
+
+    def __str__(self):
+        return self.topic.title
+
+    @staticmethod
+    def inc_views(topic):
+        obj, created = TopicStatistic.objects.get_or_create(
+            defaults={
+                "topic": topic,
+                "date": timezone.now()
+            },
+            date=timezone.now(), topic=topic
+        )
+        obj.views += 1
+        obj.save(update_fields=['views'])
 
 
 class TopicComment(models.Model):
@@ -364,11 +446,11 @@ class ResortMessages(models.Model):
 class Auction(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
-    offer = models.ForeignKey(Offers, models.DO_NOTHING)
+    offer = models.ForeignKey(Offers, models.DO_NOTHING, null=True, blank=True)
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=512)
+    description = models.CharField(max_length=512, null=True, blank=True)
     start_price = models.IntegerField(blank=False, null=False)
-    current_price = models.IntegerField(blank=False, null=False)
+    current_price = models.IntegerField(blank=False, null=True)
     dt_created = models.DateTimeField(auto_now=True)
     dt_expiration = models.DateTimeField(auto_now=False)
     user_winner = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='user_winner')
@@ -388,31 +470,132 @@ class AuctionBets(models.Model):
     auction = models.ForeignKey(Auction, models.DO_NOTHING)
     user = models.ForeignKey(User, models.DO_NOTHING, db_column='user')
     amount = models.IntegerField()
-    dt_created = models.DateField(auto_now=True)
+    dt_created = models.DateTimeField(auto_now=True)
+    deleted = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Bets'
 
     def save(self, *args, **kwargs):
-        if Auction.objects.filter(auction=self.auction, auction__current_price__lt=self.amount,
-                                  dt_expiration__gte=datetime.utcnow()).count() != 0:
+        if self._state.adding is True:
+            auction_obj = Auction.objects.filter(id=self.auction.id, dt_expiration__gte=datetime.utcnow())
 
-            cancel_bet = TypesIncomes.objects.get(action='cancel_bet')
-            betting = TypesIncomes.objects.get(action='bet')
+            if auction_obj.count() == 0:
+                return {
+                    'code': 404,
+                    'message': '경매가 종료되었습니다'
+                }
+            elif ((auction_obj[0].current_price is not None and auction_obj[0].current_price >= self.amount)
+                  or (auction_obj[0].current_price is None and auction_obj[0].start_price >= self.amount)):
+                return {
+                    'code': 404,
+                    'message': '금액은 현재보다 커야합니다'
+                }
+            else:
+                user_balance = Balances.objects.filter(user=self.user)[0]
+                if user_balance.value > self.amount:
+                    cancel_bet = TypesIncomes.objects.get(action='cancel_bet')
+                    betting = TypesIncomes.objects.get(action='bet')
 
-            expense = BalanceMovements.objects.create(user=self.user,
-                                                      dt_income=datetime.utcnow(),
-                                                      value=-self.amount,
-                                                      type=betting)
-            expense.save()
+                    expense = BalanceMovements.objects.create(user=self.user,
+                                                              dt_income=datetime.utcnow(),
+                                                              value=-self.amount,
+                                                              type=betting)
+                    expense.save()
 
-            Balances.objects.filter(user=self.user)[0].cut_balance(self.amount)
+                    user_balance.cut_balance(self.amount)
 
-            Auction.objects.get(id=self.auction.id).update_auction(self.user, self.amount)
+                    Auction.objects.get(id=self.auction.id).update_auction(self.user, self.amount)
 
-            for rec in AuctionBets.objects.filter(auction=self.auction):
-                apv = BalanceMovements(user=rec.user, dt_income=datetime.now(), value=rec.amount, type=cancel_bet)
-                apv.save()
-                usr = Balances.objects.filter(user=rec.user)[0]
-                usr.add_balance(rec.amount)
-            self.save()
+                    for rec in AuctionBets.objects.filter(auction=self.auction, deleted=False):
+                        apv = BalanceMovements.objects.create(user=rec.user, dt_income=datetime.now(), value=rec.amount,
+                                                              type=cancel_bet)
+                        apv.save()
+                        usr = Balances.objects.filter(user=rec.user)[0]
+                        usr.add_balance_lazy(rec.amount)
+                        rec.deleted = True
+                        rec.save()
+
+                    super(AuctionBets, self).save(*args, **kwargs)
+                    print('saved')
+                    result = {
+                        'code': 200,
+                        'message': 'Success'
+                    }
+                    return result
+
+                else:
+                    return {
+                        'code': 404,
+                        'message': '대차 대조표에 부족한 자금'
+                    }
+        else:
+            super().save(*args, **kwargs)
+
+
+class SectionResourceType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128, blank=True, null=True)
+
+
+class SectionResource(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=150, blank=True, null=True)
+    type = models.ForeignKey(SectionResourceType, on_delete=models.DO_NOTHING, null=True)
+    is_private = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Section resources forum'
+
+    def __str__(self):
+        return self.title
+
+
+class ResourceTopic(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, db_column='user')
+    preview = models.ImageField(upload_to='resource_forum/%Y/%m/%d', blank=True, null=True)
+    title = models.CharField(max_length=150, blank=True, null=True)
+    content = RichTextField(blank=True, null=False)
+    dt_created = models.DateTimeField(auto_now=True)
+    section = models.ForeignKey(SectionResource, models.DO_NOTHING)
+    is_fixed = models.BooleanField(default=False)
+    views = models.IntegerField('Просмотры', default=0, blank=True)
+
+    class Meta:
+        verbose_name = 'Topic'
+
+    def __str__(self):
+        return '[%(section)s] %(title)s' % {'section': self.section.title, 'title': self.title}
+
+
+class ResourceTopicStatistic(models.Model):
+    topic = models.ForeignKey(ResourceTopic, models.DO_NOTHING)
+    date = models.DateField('Дата', default=timezone.now)
+    views = models.IntegerField('Просмотры', default=0)
+
+    def __str__(self):
+        return self.topic.title
+
+    @staticmethod
+    def inc_views(topic):
+        obj, created = ResourceTopicStatistic.objects.get_or_create(
+            defaults={
+                "topic": topic,
+                "date": timezone.now()
+            },
+            date=timezone.now(), topic=topic
+        )
+        obj.views += 1
+        obj.save(update_fields=['views'])
+
+
+class ResourceTopicComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, db_column='user')
+    topic = models.ForeignKey(ResourceTopic, models.DO_NOTHING)
+    content = RichTextField(blank=True, null=False)
+    dt_created = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Topic comment'

@@ -8,48 +8,63 @@
 
 {% block content %}
     <div class="opi-board">
-    {% if auctions %}
-        {% for auction in auctions %}
-            <div class="opi-auction-item col-sm-6 col-md-3 col-xs-12">
-                <ul class="opi-auction-item-ul">
-                    <li class="opi-auction-item-title">
-                        <p>{{ auction.title }}</p>
-                    </li>
-                    <li class="opi-auction-item-info">
-                        <ul class="opi-auction-item-info-ul">
-                            <li class="opi-auction-item-category">
-                                <p>{{ auction.category_name }}</p>
-                            </li>
-                            <li class="opi-auction-item-timework">
-                                <b>영업시간</b> {{ auction.auction_timework }}
-                            </li>
-                            <li class="opi-auction-item-phone">
-                                <b>전화번호</b><a href="tel:${phone}"> {{ auction.auction_phone }}</a>
-                            </li>
+        {% if auctions %}
+            {% for auction in auctions %}
+                <div class="opi-auction-item col-sm-12 col-md-12 col-xs-12">
+                    <ul class="opi-auction-item-ul">
+                        <li class="opi-auction-item-image">
+                            <img src="{{ MEDIA_URL }}{{ auction.user.profile.avatar }}" alt="">
+                        </li>
+                        <li class="opi-auction-item-info">
+                            <ul class="opi-auction-item-info-ul">
+                                <li class="opi-auction-item-title">
+                                    <p>{{ auction.title }}</p>
+                                </li>
+{#                                <li class="opi-auction-item-category">#}
+{#                                    <p>{{ auction.description }}</p>#}
+{#                                </li>#}
+                                <li class="opi-auction-item-timework">
+                                    <div class="opi-auction-info-bl" style="">
+                                        <div>
+                                            <b>마지막 입찰</b>
+                                            {% if auction.current_price %}
+                                                {{ auction.current_price }}
+                                            {% else %}
+                                                {{ auction.start_price }}
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <b>별명</b><a> {{ auction.user_winner.profile.nickname }}</a>
+                                        </div>
+                                        <div>
+                                            <b>종료일</b><a> {{ auction.dt_expiration }}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="opi-auction-item-actions">
+                                    <ul class="opi-auction-item-action-ul">
+                                        <li class="opi-action-li">
+                                            <div class="opi-action-fawpforms"><a aria-expanded="true"
+                                                                                 data-auction-id="{{ auction.id }}"
+                                                                                 class="auction auction-iframe">
+                                                <i class="fas fa-money-bill-alt"></i><br>내기</a>
+                                            </div>
+                                        </li>
+                                        <li class="opi-action-li">
+                                            <div class="opi-action-facomments"><a aria-expanded="true"
+                                                                                  data-auction-id="{{ auction.id }}"
+                                                                                  class="auction-comments history-iframe">
+                                                <i class="far fa-list"></i><br>입찰 기록</a></div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
 
-                        </ul>
-                    </li>
-                    <li class="opi-auction-item-actions">
-                        <ul class="opi-auction-item-action-ul">
-                            <li class="opi-action-li">
-                                <div class="opi-action-fawpforms"><a aria-expanded="true"
-                                                                     data-auction-id="{{ auction.auction_id }}"
-                                                                     class="auction auction-iframe">
-                                    <i class="fas fa-money-bill-alt"></i><br>출근부</a>
-                                </div>
-                            </li>
-                            <li class="opi-action-li">
-                                <div class="opi-action-facomments"><a aria-expanded="true"
-                                                                      data-auction-id="{{ auction.auction_id }}"
-                                                                      class="auction-comments reviews-iframe">
-                                    <i class="far fa-comment"></i><br>후기</a></div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        {% endfor %}
-    {% endif %}
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}
 
@@ -57,39 +72,23 @@
     <script src="{% static 'fancybox/jquery.fancybox.pack.js' %}"></script>
     <script src="{% static 'fancybox/jquery.fancybox.js' %}"></script>
     <script>
-        {% if user.is_authenticated %}
-            let is_auth = true;
-        {% else %}
-            let is_auth = false;
-            let login_url = "{% url 'core:login_url' %}";
-        {% endif %}
-        const l_need_auth = "{% url 'core:login_url' %}";
+        $(".auction-iframe").click(function () {
+            $.fancybox.open({
+                href: "{% url 'core:create_bet_iframe' auction=99999999 %}".replace("99999999", this.dataset.auctionId),
+                type: 'iframe',
+                padding: 0,
+            });
+        });
+        $(".history-iframe").click(function () {
+            $.fancybox.open({
+                href: "{% url 'core:auction_history' auction=99999999 %}".replace("99999999", this.dataset.auctionId),
+                type: 'iframe',
+                autoscale: true,
+                padding: 0,
+                'scrolling': 'yes',
+            });
+        });
 
-        $(".offer-iframe").click(function () {
-            if (is_auth) {
-                $.fancybox.open({
-                    href: is_auth ? 'iframe_offer=' + this.dataset.offerId : login_url,
-                    type: 'iframe',
-                    padding: 0,
-                    height: 800,
-                });
-            } else {
-                location.href = login_url
-            }
-        });
-        $(".reviews-iframe").click(function () {
-            if (is_auth) {
-                $.fancybox.open({
-                    href: is_auth ? 'iframe_reviews=' + this.dataset.offerId : login_url,
-                    type: 'iframe',
-                    padding: 0,
-                    height: 800,
-                    autoSize: false
-                });
-            } else {
-                location.href = login_url
-            }
-        });
         {#const l_ajax_get_offers = "{% url 'core:get_ajax_offers' %}";#}
     </script>
 {% endblock %}

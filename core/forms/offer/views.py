@@ -3,14 +3,15 @@ from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import F
+from django.db.models import F, Sum
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from core.forms.offer.forms import OffersForm, OfferCommentsForm, OfferReviewsForm, OfferReviewCommentsForm
 from core.models import Offers, OfferComments, Regions, Category, OfferReviews, RateType, OfferReviewRates, \
-    OfferReviewComments
+    OfferReviewComments, OfferStatistic, ReviewStatistic
 
 
 @staff_member_required
@@ -83,6 +84,10 @@ def get_reviews_iframe(request, offer):
 
 def get_offer_page(request, offer):
     offer = Offers.objects.get(pk=offer)
+    offer.views += 1
+    offer.save(update_fields=['views'])
+    OfferStatistic.inc_views(offer)
+    # print(offer.views)
     comments = OfferComments.objects.filter(offer=offer).values(avatar=F('author__profile__avatar'),
                                                                 nickname=F('author__profile__nickname'),
                                                                 author_id=F('author_id'),
@@ -109,6 +114,40 @@ def offer_comment(request):
 
 
 def get_offer_reviews_board(request, town):
+    popular_day = ReviewStatistic.objects.filter(date__range=[timezone.now(), timezone.now()]).values(
+        offer_id=F('review__offer'),
+        offer_name=F('review__offer__name_offer')).annotate(
+        views=Sum('views')).order_by('-views')[:10]
+    if popular_day.count() == 0:
+        popular_day = OfferReviews.objects.filter(offer__town_id=town).values(offer_id=F('offer'),
+                                                                              offer_name=F(
+                                                                                  'offer__name_offer')).order_by(
+            '-views')[:10]
+
+    popular_week = ReviewStatistic.objects.filter(
+        date__range=[timezone.now() - timezone.timedelta(7), timezone.now()]).values(offer_id=F('review__offer'),
+                                                                                     offer_name=F(
+                                                                                         'review__offer__name_offer')).annotate(
+        views=Sum('views')).order_by('-views')[:10]
+    if popular_week.count() == 0:
+        popular_week = OfferReviews.objects.filter(offer__town_id=town).values(offer_id=F('offer'),
+                                                                               offer_name=F(
+                                                                                   'offer__name_offer')).order_by(
+            '-views')[
+                       :10]
+
+    popular_month = ReviewStatistic.objects.filter(
+        date__range=[timezone.now() - timezone.timedelta(30), timezone.now()]).values(offer_id=F('review__offer'),
+                                                                                      offer_name=F(
+                                                                                          'review__offer__name_offer')).annotate(
+        views=Sum('views')).order_by('-views')[:10]
+    if popular_month.count() == 0:
+        popular_month = OfferReviews.objects.filter(offer__town_id=town).values(offer_id=F('offer'),
+                                                                                offer_name=F(
+                                                                                    'offer__name_offer')).order_by(
+            '-views')[
+                        :10]
+
     regions = Regions.objects.filter(id_town=town)
     categories = Category.objects.all()
 
@@ -116,59 +155,39 @@ def get_offer_reviews_board(request, town):
         'regions': regions,
         'categories': categories,
         'town': town,
+        'popular_day': popular_day,
+        'popular_week': popular_week,
+        'popular_month': popular_month,
     }
     return render(request, 'offer/reviews_board.html', context)
 
 
 class ReviewListJson(BaseDatatableView):
     model = OfferReviews
-    columns = ['review_id', 'town', 'region', 'offer_title', 'review_title', 'nickname', 'time']
-    order_columns = ['review_id', 'town', 'region', 'offer_title', 'review_title', 'nickname', 'time']
+    columns = ['review_id', 'town', 'region', 'offer_title', 'review_title', 'nickname', 'time', 'lookups']
+    order_columns = ['review_id', 'town', 'region', 'offer_title', 'review_title', 'nickname', 'time', 'lookups']
 
     def filter_queryset(self, qs):
         town = self.request.GET.get('town')
         region = self.request.GET.get('region')
         category = self.request.GET.get('category')
-        if int(region) != 0 and int(category) != 0:
 
-            return OfferReviews.objects.filter(offer__town=town,
-                                               offer__region=region,
-                                               offer__category=category).values(review_id=F('id'),
-                                                                                town=F('offer__town__name'),
-                                                                                region=F(
-                                                                                    'offer__region__name'),
-                                                                                offer_title=F('offer__name_offer'),
-                                                                                review_title=F('title'),
-                                                                                nickname=F('author__profile__nickname'),
-                                                                                time=F('dt_created'))
-        elif int(region) != 0 and int(category) == 0:
+        result = OfferReviews.objects.filter(offer__town=town).order_by('-dt_created', '-views')
 
-            return OfferReviews.objects.filter(offer__town=town,
-                                               offer__region=region).values(review_id=F('id'),
-                                                                            town=F('offer__town__name'),
-                                                                            region=F('offer__region__name'),
-                                                                            offer_title=F('offer__name_offer'),
-                                                                            review_title=F('title'),
-                                                                            nickname=F('author__profile__nickname'),
-                                                                            time=F('dt_created'))
-        elif int(region) == 0 and int(category) != 0:
-            return OfferReviews.objects.filter(offer__town=town,
-                                               offer__category=category).values(review_id=F('id'),
-                                                                                town=F('offer__town__name'),
-                                                                                region=F(
-                                                                                    'offer__region__name'),
-                                                                                offer_title=F('offer__name_offer'),
-                                                                                review_review_title=F('title'),
-                                                                                nickname=F('author__profile__nickname'),
-                                                                                time=F('dt_created'))
-        else:
-            return OfferReviews.objects.filter(offer__town_id=town).values(review_id=F('id'),
-                                                                           town=F('offer__town__name'),
-                                                                           region=F('offer__region__name'),
-                                                                           offer_title=F('offer__name_offer'),
-                                                                           review_title=F('title'),
-                                                                           nickname=F('author__profile__nickname'),
-                                                                           time=F('dt_created'))
+        if int(region) != 0:
+            result.filter(offer__region=region)
+        if int(category) != 0:
+            result.filter(offer__category=category)
+
+        return result.values(review_id=F('id'),
+                             town=F('offer__town__name'),
+                             region=F(
+                                 'offer__region__name'),
+                             offer_title=F('offer__name_offer'),
+                             review_title=F('title'),
+                             nickname=F('author__profile__nickname'),
+                             time=F('dt_created'),
+                             lookups=F('views'))
 
 
 def offer_review(request):
@@ -202,8 +221,10 @@ def offer_review(request):
 
 def get_review_page(request, review):
     review = OfferReviews.objects.get(pk=review)
+    review.views += 1
+    review.save(update_fields=['views'])
     ratings = OfferReviewRates.objects.filter(review_id=review)
-
+    ReviewStatistic.inc_views(review)
     comments = OfferReviewComments.objects.filter(review=review).values(avatar=F('author__profile__avatar'),
                                                                         nickname=F('author__profile__nickname'),
                                                                         author_id=F('author_id'),

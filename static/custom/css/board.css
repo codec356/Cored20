@@ -244,3 +244,15 @@ div.container div.filter ul.filters li.selected {
     flex-direction: row;
     justify-content: center;
 }
+
+.offer-vip {
+    border: 3px solid rgba(255, 238, 0, 1) !important;
+    -webkit-box-shadow: 0 0 12px 0 rgba(255, 238, 0, 1);
+    -moz-box-shadow: 0 0 12px 0 rgba(255, 238, 0, 1);
+    box-shadow: 0 0 12px 0 rgba(255, 238, 0, 1);
+}
+
+.opi-offer .opi-offer-info-ul li > b {
+    background: gold !important;
+    color: black !important;
+}

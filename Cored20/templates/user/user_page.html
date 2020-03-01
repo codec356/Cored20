@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+
+{% block content %}
+    <div class="opi-default-page">
+
+        <div class="content">
+            <div class="filter-header"><p>지역</p></div>
+            <div class="filter">
+                <ul class="filters">
+                    <li><a href="{% url 'core:profile' %}"><i class="fa fa-user"></i>회원정보</a></li>
+                    <li><a href="{% url 'core:user_balance_history' %}">공덕획득 내역</a></li>
+{#                    <li><a href=""><i class="fa fa-handshake-o"></i>쿠폰관리</a></li>#}
+                </ul>
+            </div>
+        </div>
+
+        {% block for_child %} {% endblock %}
+
+    </div>
+{% endblock %}

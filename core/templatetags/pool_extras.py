@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Count, F
 from django.template.loader_tags import register
 
-from core.models import Towns, Category, Balances
+from core.models import Towns, Category, Balances, Offers
 
 
 @register.simple_tag(name='base_info')
@@ -17,11 +19,22 @@ def base_info(request):
     else:
         balances = ''
 
+    offers_vip = Offers.objects.filter(is_published=True,
+                                       dt_expiration__gte=datetime.now(),
+                                       type__ident='VIP').values(name=F('name_offer'),
+                                                                 category_name=F('category__name'),
+                                                                 offer_phone=F('phone'),
+                                                                 offer_timework=F('time_work'),
+                                                                 offer_avatar=F('author__profile__avatar'),
+                                                                 offer_id=F('id')).order_by(
+        'dt_updated')[:4]
+
     return {
         'towns': all_towns,
         'categories': all_categories,
         # 'community': top_users,
-        'balances': balances
+        'balances': balances,
+        'offers_vip': offers_vip
     }
 
 # register.filter('base_info', base_info)

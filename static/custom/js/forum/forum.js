@@ -47,6 +47,10 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 data: '3',
                 className: "center"
+            },
+            {
+                data: '4',
+                className: "center"
             }
         ],
         "bProcessing": true,

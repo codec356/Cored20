@@ -11,17 +11,15 @@ from core.models import Topic, TopicComment
 
 def topic(request, section):
     if request.method == 'POST':
-        form = TopicForm(request=request.POST)
+        form = TopicForm(request.POST)
         if form.is_valid():
             topic_obj = form.save()
-            return redirect(reverse('core:page_topic', kwargs={'topic': topic_obj.pk}))
-        else:
-            return redirect(request.META.get('HTTP_REFERER'))
+            print('valid')
     else:
         form = TopicForm(None, initial={'user': request.user.id, 'section': section})
-        return render(request, 'forum/create_topic.html', {
-            'form': form,
-        })
+    return render(request, 'forum/create_topic.html', {
+        'form': form,
+    })
 
 
 def topic_board(request, section):
@@ -33,15 +31,16 @@ def topic_board(request, section):
 
 class TopicListJson(BaseDatatableView):
     model = Topic
-    columns = ['topic_id', 'topic_title', 'nickname', 'datetime']
-    order_columns = ['topic_id', 'topic_title', 'nickname', 'datetime']
+    columns = ['topic_id', 'topic_title', 'nickname', 'datetime', 'lookups']
+    order_columns = ['topic_id', 'topic_title', 'nickname', 'datetime', 'lookups']
 
     def filter_queryset(self, qs):
         section = self.request.GET.get('section')
         return Topic.objects.filter(section=section).values(topic_id=F('id'),
                                                             topic_title=F('title'),
                                                             nickname=F('user__profile__nickname'),
-                                                            datetime=F('dt_created'))
+                                                            datetime=F('dt_created'),
+                                                            lookups=F('views'))
 
 
 def topic_page(request, topic):

@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from menus.base import NavigationNode
 from menus.menu_pool import menu_pool
 
-from core.models import Towns, Category, Section
+from core.models import Towns, Category, Section, SectionResource, SectionResourceType
 
 
 class LocationMenu(CMSAttachMenu):
@@ -57,6 +57,21 @@ class ForumMenu(CMSAttachMenu):
         for sec in sections:
             nodes.append(NavigationNode(sec.title, reverse("core:table_topic_board", kwargs={'section': sec.id}),
                                         sec.title))
+
+        nodes.append(NavigationNode('경매', reverse("core:auction_board"),
+                                    '경매'))
+        return nodes
+
+
+class ResourceForumMenu(CMSAttachMenu):
+    name = _("Resource forum menu")
+
+    def get_nodes(self, request):
+        nodes = []
+        sections = SectionResourceType.objects.all()
+        for sec in sections:
+            nodes.append(NavigationNode(sec.name, reverse("core:rs_table_topic_board", kwargs={'section_type': sec.id}),
+                                        sec.name))
         return nodes
 
 
@@ -93,3 +108,4 @@ menu_pool.register_menu(ReviewsMenu)
 menu_pool.register_menu(CategoryMenu)
 menu_pool.register_menu(ForumMenu)
 menu_pool.register_menu(ClientService)
+menu_pool.register_menu(ResourceForumMenu)

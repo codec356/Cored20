@@ -1,0 +1,109 @@
+{% extends "user/user_page.html" %}
+{% load bootstrap3 %}
+{% load static %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+{% block style_src %}
+    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
+    <link rel="stylesheet" href="{% static 'fancybox/jquery.fancybox.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.jqueryui.min.css"/>
+{% endblock %}
+
+{% block for_child %}
+
+    <div style="all:unset;">
+        <table id="history-table" class="display hover" style="width: 100%">
+            <thead>
+            <tr>
+                <td style="text-align: center">일시</td>
+                <td style="text-align: center">내용</td>
+                <td style="text-align: center">지급공덕</td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+{% endblock %}
+
+
+{% block scripts_src %}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
+    <script src="{% static 'lib/moment/moment.min.js' %}"></script>
+
+    <script>
+        let oLanguages = {
+            "sEmptyTable": "데이터가 없습니다",
+            "sInfo": "_START_ - _END_ / _TOTAL_",
+            "sInfoEmpty": "0 - 0 / 0",
+            "sInfoFiltered": "(총 _MAX_ 개)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ",",
+            "sLengthMenu": "페이지당 줄수 _MENU_",
+            "sLoadingRecords": "읽는중...",
+            "sProcessing": "처리중...",
+            "sSearch": "검색:",
+            "sZeroRecords": "검색 결과가 없습니다",
+            "oPaginate": {
+                "sFirst": "처음",
+                "sLast": "마지막",
+                "sNext": "다음",
+                "sPrevious": "이전"
+            },
+            "oAria": {
+                "sSortAscending": ": 오름차순 정렬",
+                "sSortDescending": ": 내림차순 정렬"
+            }
+        };
+
+        let dt_table;
+        dt_table = $('#history-table').dataTable({
+            "oLanguage": oLanguages,
+            "bFilter": true,
+            "iDisplayLength": 15,
+            "searching": false,
+            oPaginate: true,
+            "bAutoWidth": true,
+            columns: [
+                {
+                    data: '0',
+                    className: "center",
+                    width: '33%'
+                },
+                {
+                    data: '1',
+                    className: "center"
+                },
+                {
+                    data: '2',
+                    className: "center"
+                },
+            ],
+            "bProcessing": true,
+            "bServerSide": true,
+            "bStateSave": true,
+            "stripeClasses": [],
+            "ajax": {
+                "url": '{% url "core:user_balance_history_list_json" %}',
+            },
+            "columnDefs": [
+                {
+                    targets: 0,
+                    render: function (data, type, row) {
+                        if (type === "sort" || type === "type") {
+                            return data;
+                        }//Dec. 23, 2019, 10:16 p.m.
+                        return moment(data).format("MMM. DD, YYYY, hh:mm a");
+                    }
+                },
+            ]
+
+        });
+    </script>
+{% endblock %}

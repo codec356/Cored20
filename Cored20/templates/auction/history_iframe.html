@@ -1,0 +1,48 @@
+{% load bootstrap3 %}
+{% load static %}
+
+{% bootstrap_css %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>{{ offer.name }}</title>
+    <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
+    <link rel="stylesheet" href="{% static '/css/main.css' %}">
+    <link rel="stylesheet" href="{% static '/css/auction.css' %}">
+</head>
+
+<body>
+<div class="opi-offer-content" style="border-radius: 10px">
+    <ul class="bet-history-ul" style="flex-direction: column">
+        {% for bet in bets %}
+            <li class="bet-history-item">
+                <div>
+                    <div>
+                        <b>별명</b>{{ bet.user.profile.nickname }}
+                    </div>
+                    <div>
+                        <b>금액</b>{{ bet.amount }}
+                    </div>
+                    <div>
+                        <b>입찰 시간</b>{{ bet.dt_created }}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+</div>
+
+
+<script type="text/javascript" src="{% static "jquery/js/jquery-3.3.1.min.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>
+<script type="text/javascript" src="{% static "starrating/themes/krajee-fa/theme.min.js" %}"></script>
+{% bootstrap_javascript %}
+
+
+</body>
+</html>

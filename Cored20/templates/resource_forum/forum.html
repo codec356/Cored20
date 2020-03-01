@@ -14,9 +14,22 @@
 
 {% block content %}
     <div>
+
+        <div class="content" id="section-filter">
+            <div class="filter-header"><p>지역</p></div>
+            <div class="filter">
+                <ul class="filters">
+                    <li data-section-id="0" class="selected">모두</li>
+                    {% for sections in sections %}
+                        <li data-section-id="{{ sections.id }}">{{ sections.title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         <ul class="opi-actions right">
             <li>
-                <a class="opi-button" href="{% url 'core:create_topic' section %}" style="font-size: 1.7em;"><i class="fas fa-edit"></i>리뷰 쓰기</a>
+                <a class="opi-button" href="{% url 'core:rs_create_topic' section_type %}" style="font-size: 1.7em;"><i
+                        class="fas fa-edit"></i>리뷰 쓰기</a>
             </li>
         </ul>
         <div style="all:unset;">
@@ -27,6 +40,7 @@
                     <td style="text-align: center">테마</td>
                     <td style="text-align: center">저자</td>
                     <td style="text-align: center">작성일</td>
+                    <td style="text-align: center">별명</td>
                     <td style="text-align: center">조회</td>
                 </tr>
                 </thead>
@@ -41,18 +55,20 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
-    <script src="{% static 'js/forum/forum.js' %}"></script>
+    <script src="{% static 'js/resource_forum/resource_forum.js' %}"></script>
     <script src="{% static 'lib/moment/moment.min.js' %}"></script>
 
     <script>
-        let l_section_id = {{ section }};
+        let l_section_type_id = {{ section_type }};
+        let l_section_id = 0;
         const l_csrf_token = "{{ csrf_token }}";
-        let TOPIC_LIST_JSON_URL = '{% url "core:topic_list_json" %}';
+        let TOPIC_LIST_JSON_URL = '{% url "core:rs_topic_list_json" %}';
         let G_TOPIC_PAGE_URL =
             {% if user.is_authenticated %}
-                "{% url 'core:page_topic' topic=99999999999999 %}";
+                "{% url 'core:rs_page_topic' topic=99999999999999 %}";
             {% else %}
                 "{% url 'core:login_url' %}";
             {% endif %}
+        let MEDIA_ULR = "{{ MEDIA_URL }}";
     </script>
 {% endblock %}

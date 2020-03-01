@@ -1,0 +1,69 @@
+{% load bootstrap3 %}
+{% load static %}
+
+{% bootstrap_css %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>{{ offer.name }}</title>
+    <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
+    <link rel="stylesheet" href="{% static '/css/main.css' %}">
+    <link rel="stylesheet" href="{% static '/css/auction.css' %}">
+</head>
+
+<body style="overflow: hidden">
+<div class="opi-offer-content" style="border-radius: 10px">
+    <ul class="bet-iframe-ul">
+        <li>
+            <b class="current-price">마지막 입찰</b> {{ auction.current_price }}
+        </li>
+        <li>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fas fa-gem"></i></span>
+                <input type="number" class="form-control" id="amount"
+                       min="{% if auction.current_price %}{{ auction.current_price }}{% else %}{{ auction.start_price }}{% endif %}"
+                       value="{% if auction.current_price %}{{ auction.current_price }}{% else %}{{ auction.start_price }}{% endif %}">
+                <span class="input-group-addon"><a class="opi-button redirect" id="submit_a">내기</a></span>
+            </div>
+        </li>
+    </ul>
+
+
+</div>
+
+
+<script type="text/javascript" src="{% static "jquery/js/jquery-3.3.1.min.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>
+<script type="text/javascript" src="{% static "starrating/themes/krajee-fa/theme.min.js" %}"></script>
+{% bootstrap_javascript %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('submit_a').addEventListener('click', function () {
+            $.ajax({
+                "type": 'POST',
+                "url": "{% url 'core:create_bet_iframe' auction=auction.id %}",
+                "data": {
+                    "auction": {{ auction.id }},
+                    "amount": document.getElementById('amount').value,
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                },
+                "success": function (response) {
+                    console.log(response);
+                    if (response === null) {
+                        window.top.location.reload();
+                    } else {
+                        alert(response['message'])
+                    }
+                },
+            });
+        });
+    })
+
+</script>
+
+</body>
+</html>

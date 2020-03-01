@@ -64,6 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: '6',
                 className: "center"
             },
+            {
+                data: '7',
+                className: "center"
+            },
         ],
         "bProcessing": true,
         "bServerSide": true,
@@ -96,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (type === "sort" || type === "type") {
                         return data;
                     }//Dec. 23, 2019, 10:16 p.m.
-                    return moment(data).format("MMM. DD, YYYY, hh:mm a");
+                    return moment(data).format("MMM. DD, YYYY");
                 }
             },
         ]

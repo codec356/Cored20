@@ -14,8 +14,9 @@
 <!doctype html>
 <html lang="">
 <head>
-    <title>{% block title %}This is my new project home page{% endblock title %}</title>
+    <title>{% block title %}{% page_attribute page_title %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="{% page_attribute 'meta_description' %}">
     {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/sidebar.css' %}" type="text/css">
@@ -47,7 +48,24 @@
                 <li>
                 </li>
                 {% show_menu 0 10 10 10 "menu/custom-menu.html" %}
+                <li class="dropdown opi-dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        게임<b class="caret"></b></a>
+                    <ul class="dropdown-menu opi-dropdown-menu">
+                        <li><a class="opi-side-bar-li-title"
+                               href="{% url 'core:solitaire' %}"><i
+                                class="fa fa-gamepad"></i><b>촌충</b></a></li>
+                        <li><a
+                                class="opi-side-bar-li-title" href="{% url 'core:shooter' %}"><i
+                                class="fa fa-gamepad"></i><b>사수</b></a></li>
+                        <li><a
+                                class="opi-side-bar-li-title"
+                                href="{% url 'core:flappybird' %}"><i
+                                class="fa fa-gamepad"></i><b>플래 피 버드</b></a></li>
+                    </ul>
+                </li>
             </ul>
+
             <ul class="navbar-right opi-navbar-socials">
                 <li><a href="./" class="opi-navigation-icon"><i class="fab fa-telegram" style=""></i></a>
                 </li>
@@ -86,6 +104,12 @@
                         <li>
                             <a class="far fa-edit opi-button" href="{% url 'core:create_offer' %}">광고를 만들다</a>
                         </li>
+                        <li>
+                            <a class="far fa-edit opi-button" href="{% url 'core:create_auction' %}">경매에 응모하다</a>
+                        </li>
+                        <li>
+                            <a class="fa fa-list opi-button" href="{% url 'core:my_offers' %}">내 리스팅</a>
+                        </li>
 
                         {% if request.user.is_superuser %}
                             <li>
@@ -121,7 +145,7 @@
                             <div class="actions">
                                 <a class="fas fa-calendar-check" href="{% url 'core:attendance_page' %}"></a>
                                 <a class="fas fa-clipboard-list" href="{% url 'core:profile' %}"></a>
-                                <a class="fa fa-user"></a>
+                                <a class="fa fa-user" href="{% url 'core:profile' %}"></a>
                             </div>
                             <div class="balances">
                                 <span class="fas fa-gem"> {{ data.balances.value }}</span>
@@ -172,6 +196,24 @@
                         </ul>
                     </li>
                 {% endfor %}
+            </ul>
+        </div>
+        <div class="opi-side-bar col-sm-12">
+            <div class="opi-side-bar-block-header col-sm-12">
+                <a><i class="fa fa-gamepad"></i> 포인트 게임</a>
+            </div>
+            <ul class="opi-side-bar-ul col-sm-12">
+                <li class="opi-side-bar-item col-sm-12" style="justify-content: center;"><a
+                        class="opi-side-bar-li-title"
+                        href="{% url 'core:solitaire' %}"><i
+                        class="fa fa-gamepad"></i><b>촌충</b></a></li>
+                <li class="opi-side-bar-item col-sm-12" style="justify-content: center;"><a
+                        class="opi-side-bar-li-title" href="{% url 'core:shooter' %}"><i
+                        class="fa fa-gamepad"></i><b>사수</b></a></li>
+                <li class="opi-side-bar-item col-sm-12" style="justify-content: center;"><a
+                        class="opi-side-bar-li-title"
+                        href="{% url 'core:flappybird' %}"><i
+                        class="fa fa-gamepad"></i><b>플래 피 버드</b></a></li>
             </ul>
         </div>
     </div>

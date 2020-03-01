@@ -146,6 +146,7 @@ INSTALLED_APPS = [
     'bootstrap3_datepicker',
     'captcha',
     'django_celery_results',
+    'bootstrap_datepicker_plus',
 ]
 
 LANGUAGES = (
@@ -323,3 +324,8 @@ SUMMERNOTE_CONFIG = {
 
 RECAPTCHA_PUBLIC_KEY = '6LfFHMgUAAAAAF_Z70shQhnJrRbO-ELOV-VPwg1S'
 RECAPTCHA_PRIVATE_KEY = '6LfFHMgUAAAAAPLWSqXduwD2ZNXzUzsbzrxEOE-u'
+
+
+BOOTSTRAP3 = {
+    'include_jquery': False,
+}

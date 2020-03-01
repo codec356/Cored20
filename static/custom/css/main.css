@@ -319,4 +319,8 @@ ul.opi-actions li {
     margin: 0;
 }
 
-
+div.opi-default-page {
+    background: #262626;
+    border: 1px solid whitesmoke;
+    border-radius: 4px;
+}

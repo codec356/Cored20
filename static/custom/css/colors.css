@@ -83,3 +83,8 @@ div.container div.filter ul.filters li {
     background: #232323;
     border: 1px solid #d3d3d3;
 }
+
+
+.summernote-div a {
+    color: black;
+}

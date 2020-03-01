@@ -32,12 +32,10 @@ class TopicForm(forms.ModelForm):
                     ['view', ['fullscreen']],
                 ]
             }}))
-    dt_created = forms.DateTimeField(widget=forms.HiddenInput)
     section = forms.ModelChoiceField(queryset=Section.objects.all(), widget=forms.HiddenInput)
 
-    def __init__(self, request, *args, **kwargs):
-        super(TopicForm, self).__init__(data=request, *args, **kwargs)
-        self.fields['dt_created'].initial = datetime.now()
+    def __init__(self, *args, **kwargs):
+        super(TopicForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Topic

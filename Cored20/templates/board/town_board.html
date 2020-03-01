@@ -8,6 +8,53 @@
 {% endblock %}
 
 {% block content %}
+    <div class="opi-board col-sm-12" style="margin-bottom: 30px">
+        {% if offers_vip %}
+            {% for offer in offers_vip %}
+                <div class="opi-offer col-sm-6 col-md-3 col-xs-12">
+                    <ul class="opi-offer-ul offer-vip">
+                        <li class="opi-offer-image">
+                            <img src="{{ MEDIA_URL }}{{ offer.offer_avatar }}" alt="">
+                        </li>
+                        <li class="opi-offer-title">
+                            <p>{{ offer.name }}</p>
+                        </li>
+                        <li class="opi-offer-info">
+                            <ul class="opi-offer-info-ul">
+                                <li class="opi-offer-category">
+                                    <p>{{ offer.category_name }}</p>
+                                </li>
+                                <li class="opi-offer-timework">
+                                    <b>영업시간</b> {{ offer.offer_timework }}
+                                </li>
+                                <li class="opi-offer-phone">
+                                    <b>전화번호</b><a href="tel:${phone}"> {{ offer.offer_phone }}</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="opi-offer-actions">
+                            <ul class="opi-offer-action-ul">
+                                <li class="opi-action-li">
+                                    <div class="opi-action-fawpforms"><a aria-expanded="true"
+                                                                         data-offer-id="{{ offer.offer_id }}"
+                                                                         class="offer offer-iframe">
+                                        <i class="fab fa-wpforms"></i><br>출근부</a>
+                                    </div>
+                                </li>
+                                <li class="opi-action-li">
+                                    <div class="opi-action-facomments"><a aria-expanded="true"
+                                                                          data-offer-id="{{ offer.offer_id }}"
+                                                                          class="offer-comments reviews-iframe">
+                                        <i class="far fa-comment"></i><br>후기</a></div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
     <div class="content" id="text-filter">
         <div class="filter-header"><p>이름으로 검색</p></div>
         <div class="filter-search">
@@ -95,13 +142,13 @@
 
 {% block scripts_src %}
 
-    <script src="{% static 'fancybox/jquery.fancybox.pack.js' %}"></script>
-    <script src="{% static 'fancybox/jquery.fancybox.js' %}"></script>
     <script src="{% static 'js/boards/town_board.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.jqueryui.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.20/dataRender/datetime.js"></script>
+    <script src="{% static 'fancybox/jquery.fancybox.pack.js' %}"></script>
+    <script src="{% static 'fancybox/jquery.fancybox.js' %}"></script>
     <script src="{% static 'lib/moment/moment.min.js' %}"></script>
 {#    <script>#}
 {#        let is_auth;#}
@@ -137,5 +184,36 @@
             {% else %}
                 "{% url 'core:login_url' %}";
             {% endif %}
+
+
+        $(".offer-iframe").click(function () {
+            {% if user.is_authenticated %}
+                $.fancybox.open({
+                    href: {% if user.is_authenticated %}
+                        "{% url 'core:iframe_offer' offer=99999999999999 %}".replace('99999999999999', this.dataset.offerId) {% else %}
+                        "{% url 'core:login_url' %}" {% endif %},
+                    type: 'iframe',
+                    padding: 0,
+                    height: 800,
+                });
+            {% else %}
+                location.href = "{% url 'core:login_url' %}";
+            {% endif %}
+        });
+        $(".reviews-iframe").click(function () {
+            {% if user.is_authenticated %}
+                $.fancybox.open({
+                    href: {% if user.is_authenticated %}
+                        "{% url 'core:iframe_reviews' offer=99999999999999 %}".replace('99999999999999', this.dataset.offerId) {% else %}
+                        "{% url 'core:login_url' %}" {% endif %},
+                    type: 'iframe',
+                    padding: 0,
+                    height: 800,
+                    autoSize: false
+                });
+            {% else %}
+                location.href = "{% url 'core:login_url' %}";
+            {% endif %}
+        });
     </script>
 {% endblock %}

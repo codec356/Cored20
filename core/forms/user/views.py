@@ -4,13 +4,16 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, user_logged_in
+from django.db.models import F
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views import View
+from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from core.forms.user.forms import UserForm, UserProfileForm, UserCreationForm
-from core.models import BalanceMovements, TypesIncomes, Balances, Profile
+from core.models import BalanceMovements, TypesIncomes, Balances, Profile, Offers
 
 
 def profile_view(request):
@@ -36,14 +39,14 @@ def profile_view(request):
             return render(request=request, context={
                 "user_form": user,
                 "profile_form": profile
-            }, template_name='user/profile.html')
+            }, template_name='user/profile_bck.html')
     else:
         user = UserForm(instance=request.user)
         try:
             profile = UserProfileForm(instance=request.user.profile)
         except:
             profile = UserProfileForm()
-        return render(request=request, template_name='user/profile.html', context={
+        return render(request=request, template_name='user/profile_bck.html', context={
             "user_form": user,
             "profile_form": profile
         })
@@ -149,3 +152,78 @@ def attend(request):
 def count_attends(user):
     return BalanceMovements.objects.filter(user=user,
                                            type_id=TypesIncomes.objects.get(action='attend').id).count()
+
+
+class UserProfile(View):
+    template_name = 'user/profile.html'
+
+    def get(self, request, *args, **kwargs):
+        user = UserForm(instance=request.user)
+        try:
+            profile = UserProfileForm(instance=request.user.profile)
+        except:
+            profile = UserProfileForm()
+        return render(request=request, template_name=self.template_name, context={
+            "user_form": user,
+            "profile_form": profile
+        })
+
+    def post(self, request, *args, **kwargs):
+        user = UserForm(data=request.POST, instance=request.user)
+        try:
+            profile = UserProfileForm(data=request.POST, instance=request.user.profile, files=request.FILES)
+        except:
+            profile = UserProfileForm(data=request.POST, files=request.FILES, initial={'experience': 0})
+
+        if user.is_valid() and profile.is_valid():
+            user = user.save()
+            profile = profile.save(commit=False)
+            profile.user = user
+            profile.save()
+            return redirect(reverse('core:profile'))
+        else:
+            for rec in user.errors:
+                messages.error(request, rec)
+            for rec in profile.errors:
+                messages.error(request, rec)
+            messages.error(request=request, message='편집 중 오류')
+            return render(request=request, context={
+                "user_form": user,
+                "profile_form": profile
+            }, template_name=self.template_name)
+
+
+class UserHistoryPage(View):
+    template_name = 'user/history.html'
+
+    def get(self, request):
+        return render(request=request, template_name=self.template_name)
+
+
+class UserHistoryList(BaseDatatableView):
+    model = BalanceMovements
+    columns = ['dt_income', 'type__name', 'value']
+    order_columns = ['dt_income', 'type__name', 'value']
+
+    def filter_queryset(self, qs):
+        user = self.request.user
+        return self.model.objects.filter(user=user).values('type__name', 'value', 'dt_income')
+
+
+class UserOffers(View):
+    template_name = 'user/offers.html'
+
+    def get(self, request, *args, **kwargs):
+        offers = Offers.objects.filter(author=request.user).values(name=F('name_offer'),
+                                                                   category_name=F('category__name'),
+                                                                   offer_phone=F('phone'),
+                                                                   offer_timework=F('time_work'),
+                                                                   offer_avatar=F('author__profile__avatar'),
+                                                                   offer_id=F('id'),
+                                                                   published=F('is_published'),
+                                                                   expire=F('dt_expiration')).order_by(
+            '-dt_expiration')
+
+        return render(request=request, template_name=self.template_name, context={
+            "offers": offers
+        })

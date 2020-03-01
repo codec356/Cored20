@@ -17,6 +17,83 @@
 
 {% block content %}
     <div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="day-tab" data-toggle="tab" href="#day" role="tab" aria-controls="day"
+                   aria-selected="true">일간 조회수</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="week-tab" data-toggle="tab" href="#week" role="tab"
+                   aria-controls="week" aria-selected="false">주간 조회수</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="month-tab" data-toggle="tab" href="#month" role="tab"
+                   aria-controls="month" aria-selected="false">월간 조회수</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade" id="day" role="tabpanel" aria-labelledby="day-tab">
+                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">
+                    {% for rec in popular_day %}
+                        {% if forloop.counter == 1 %}
+                            <ul class="top-offers-ul">
+                        {% endif %}
+                    {% if forloop.counter == 6 %}
+                        </ul>
+                        <ul class="top-offers-ul">
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>
+                    </li>
+                    {% if  forloop.counter == 10 %}
+                        </ul>
+                    {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="week-tab">
+                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">
+                    {% for rec in popular_week %}
+                        {% if forloop.counter == 1 %}
+                            <ul class="top-offers-ul">
+                        {% endif %}
+                    {% if forloop.counter == 6 %}
+                        </ul>
+                        <ul class="top-offers-ul">
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>
+                    </li>
+                    {% if  forloop.counter == 10 %}
+                        </ul>
+                    {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">
+                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">
+                    {% for rec in popular_month %}
+                        {% if forloop.counter == 1 %}
+                            <ul class="top-offers-ul">
+                        {% endif %}
+                    {% if forloop.counter == 6 %}
+                        </ul>
+                        <ul class="top-offers-ul">
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>
+                    </li>
+                    {% if  forloop.counter == 10 %}
+                        </ul>
+                    {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
         <div class="content" id="region-filter">
             <div class="filter-header"><p>지구</p></div>
             <div class="filter">
@@ -55,6 +132,7 @@
                     <td style="text-align: center">제목</td>
                     <td style="text-align: center">작성자</td>
                     <td style="text-align: center">날짜</td>
+                    <td style="text-align: center">조회</td>
                 </tr>
                 </thead>
             </table>

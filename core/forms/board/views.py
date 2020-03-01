@@ -12,10 +12,24 @@ from core.models import Offers, Regions, Category, Towns
 
 
 def town_board(request, town):
-    offers = Offers.objects.filter(town=town).values(name=F('name_offer'), category_name=F('category__name'),
-                                                     offer_phone=F('phone'), offer_timework=F('time_work'),
-                                                     offer_avatar=F('author__profile__avatar'),
-                                                     offer_id=F('id')).order_by('-dt_updated')
+    offers = Offers.objects.filter(town=town,
+                                   is_published=True,
+                                   dt_expiration__gte=datetime.now()).values(name=F('name_offer'),
+                                                                             category_name=F('category__name'),
+                                                                             offer_phone=F('phone'),
+                                                                             offer_timework=F('time_work'),
+                                                                             offer_avatar=F('author__profile__avatar'),
+                                                                             offer_id=F('id')).order_by('-dt_updated')
+
+    offers_vip = Offers.objects.filter(is_published=True,
+                                       dt_expiration__gte=datetime.now(),
+                                       type__ident='VIP').values(name=F('name_offer'),
+                                                                 category_name=F('category__name'),
+                                                                 offer_phone=F('phone'),
+                                                                 offer_timework=F('time_work'),
+                                                                 offer_avatar=F('author__profile__avatar'),
+                                                                 offer_id=F('id')).order_by(
+        'dt_updated')[:4]
 
     regions = Regions.objects.filter(id_town=town)
     categories = Category.objects.all()
@@ -25,6 +39,7 @@ def town_board(request, town):
         "town": town,
         'regions': regions,
         'categories': categories,
+        'offers_vip': offers_vip
     })
 
 
@@ -36,11 +51,22 @@ def category_board(request, category):
     towns = Towns.objects.all()
     regions = Regions.objects.all()
 
+    offers_vip = Offers.objects.filter(is_published=True,
+                                       dt_expiration__gte=datetime.now(),
+                                       type__ident='VIP').values(name=F('name_offer'),
+                                                                 category_name=F('category__name'),
+                                                                 offer_phone=F('phone'),
+                                                                 offer_timework=F('time_work'),
+                                                                 offer_avatar=F('author__profile__avatar'),
+                                                                 offer_id=F('id')).order_by(
+        'dt_updated')[:4]
+
     return render(request=request, template_name='board/category_board.html', context={
         "offers": offers,
         "towns": towns,
         'regions': regions,
         'category': category,
+        'offers_vip': offers_vip
     })
 
 
@@ -132,7 +158,9 @@ class TownOffersListJson(BaseDatatableView):
         region = self.request.GET.get('region')
         category = self.request.GET.get('category')
         name = self.request.GET.get('name')
-        result = Offers.objects.filter(town=town)
+        result = Offers.objects.filter(town=town,
+                                       is_published=True,
+                                       dt_expiration__gte=datetime.now())
 
         if int(region) != 0:
             result = result.filter(region=region)

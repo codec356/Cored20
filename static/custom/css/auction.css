@@ -12,6 +12,8 @@ div.opi-auction-item ul.opi-auction-item-ul {
     padding: 0;
     margin: 0;
     list-style: none;
+    display: flex;
+    flex-direction: row;
     -webkit-transition: border, box-shadow .45s;
     -moz-transition: border, box-shadow .45s;
     -ms-transition: border, box-shadow .45s;
@@ -31,13 +33,14 @@ div.opi-auction-item ul.opi-auction-item-ul:focus {
 div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-image {
     padding: 0;
     overflow: hidden;
-    max-height: 160px;
-    min-height: 160px;
+    max-height: 250px;
+    flex: 0 0 25%
+
 }
 
 div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-image img {
     padding: 0;
-    height: auto;
+    height: 100%;
     width: 100%;
     object-fit: cover;
 }
@@ -47,20 +50,24 @@ div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-title {
     font-weight: bold;
     overflow: hidden;
     border-bottom: 1px dashed #eee;
-    height: 100px;
+    height: 50px;
 }
 
 div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-info {
     padding: 5px;
     overflow: hidden;
+    flex: 0 0 75%
 }
 
 div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul {
     padding: 0;
     margin: 0;
     overflow: hidden;
-    border-bottom: 1px dashed #eee;
+    display: flex;
+    flex-direction: column;
+    /*border-bottom: 1px dashed #eee;*/
 }
+
 
 div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-category {
     padding: 0;
@@ -72,6 +79,9 @@ div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-a
 
 div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-timework {
     padding: 4px 0;
+    display: flex;
+    justify-items: center;
+    border-bottom: 1px dashed #eee;
 }
 
 div.opi-auction-item ul.opi-auction-item-ul ul.opi-auction-item-info-ul li.opi-auction-item-timework b {
@@ -106,11 +116,15 @@ div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-actions {
     padding: 0;
     margin: 0;
     overflow: hidden;
+    flex: 0 0 25%
 }
 
 div.opi-auction-item ul.opi-auction-item-ul li.opi-auction-item-actions ul.opi-auction-item-action-ul {
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 ul.opi-auction-item-action-ul li.opi-action-li {
@@ -179,4 +193,72 @@ div.opi-action-fawpforms a {
     text-decoration: unset;
     cursor: pointer;
     font-weight: bold;
+}
+
+.bet-iframe-ul {
+    list-style: none;
+    display: flex;
+    padding: 35px;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background: #262626;
+    color: white;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.bet-iframe-ul > li {
+    padding: 5px;
+}
+
+.opi-auction-info-bl {
+    display: flex;flex-direction: row;justify-items: center;justify-content: space-around;flex: 0 0 100%;flex-wrap: wrap;flex-flow: column
+}
+
+.opi-auction-info-bl > div {
+    padding: 5px;
+}
+
+.current-price {
+    color: white;
+    background: #f96e5b;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+
+.bet-history-ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #262626;
+    color: white;
+    align-items: center;
+    height: inherit;
+}
+
+.bet-history-ul .bet-history-item {
+    width: 100%;
+}
+
+.bet-history-ul .bet-history-item > div {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    justify-items: stretch;
+}
+
+.bet-history-item > div > div {
+    flex: 0 0 33%;
+}
+
+.bet-history-ul .bet-history-item b {
+    color: white;
+    background: #f96e5b;
+    padding: 2px;
+    border-radius: 5px;
 }

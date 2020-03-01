@@ -6,12 +6,20 @@ from django_select2.forms import ModelSelect2Widget
 from django_summernote.widgets import SummernoteInplaceWidget
 
 from core.models import Towns, Regions, Discounts, Offers, Category, OfferComments, OfferReviews, RateType, \
-    OfferReviewRates, OfferReviewComments
+    OfferReviewRates, OfferReviewComments, OfferTypes
 
 
 class OffersForm(forms.ModelForm):
     name_offer = forms.CharField(max_length=100)
     phone = forms.CharField()
+    type = forms.ModelChoiceField(
+        queryset=OfferTypes.objects.all(),
+        widget=ModelSelect2Widget(
+            model=OfferTypes,
+            search_fields=['name__icontains'],
+            attrs={'data-minimum-input-length': 0},
+        )
+    )
     category = forms.ModelChoiceField(
         queryset=Category.objects.all(),
         widget=ModelSelect2Widget(
@@ -51,7 +59,7 @@ class OffersForm(forms.ModelForm):
     )
     author = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput())
     is_new = forms.BooleanField(required=False)
-    dt_expiration = forms.DateTimeField(widget=forms.HiddenInput())
+    dt_expiration = forms.DateTimeField(widget=forms.HiddenInput(), required=False)
     dt_updated = forms.DateTimeField(widget=forms.HiddenInput())
     dt_created = forms.DateTimeField(widget=forms.HiddenInput())
     html_content = forms.CharField(widget=SummernoteInplaceWidget())
