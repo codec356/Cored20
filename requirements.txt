@@ -83,7 +83,6 @@ python-dateutil==2.8.1
 pytz==2019.3
 requests==2.22.0
 reserve==0.3
-sc-pylibs==0.1.4
 simplejson==3.16.0
 six==1.12.0
 sorl-thumbnail==12.5.0

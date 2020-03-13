@@ -61,8 +61,8 @@ class TopicCommentForm(forms.ModelForm):
     dt_created = forms.DateTimeField(widget=forms.HiddenInput)
     topic = forms.ModelChoiceField(queryset=Topic.objects.all(), widget=forms.HiddenInput)
 
-    def __init__(self, request, *args, **kwargs):
-        super(TopicCommentForm, self).__init__(data=request, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(TopicCommentForm, self).__init__(*args, **kwargs)
         self.fields['dt_created'].initial = datetime.now()
 
     class Meta:

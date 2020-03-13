@@ -63,8 +63,7 @@ urlpatterns += [
     url(r'^section=(?P<section>[0-9]+)$', topic_board, name='table_topic_board'),
     url(r'^datatable/topics/$', TopicListJson.as_view(), name='topic_list_json'),
     url(r'^topic=(?P<topic>[0-9]+)$', topic_page, name='page_topic'),
-    url(r'^topic_comment/$', permission_required('is_authenticated')(topic_comment),
-        name="topic_comment"),
+    url(r'^topic_comment/$', topic_comment, name="topic_comment"),
 ]
 
 urlpatterns += [
@@ -116,6 +115,5 @@ urlpatterns += [
     url(r'^rs_section=(?P<section_type>[0-9]+)$', rs_topic_board, name='rs_table_topic_board'),
     url(r'^datatable/rs_topics/$', ResourceTopicListJson.as_view(), name='rs_topic_list_json'),
     url(r'^rs_topic=(?P<topic>[0-9]+)$', rs_topic_page, name='rs_page_topic'),
-    url(r'^rs_topic_comment/$', permission_required('is_authenticated')(rs_topic_comment),
-        name="rs_topic_comment"),
+    url(r'^rs_topic_comment/$', rs_topic_comment, name="rs_topic_comment"),
 ]

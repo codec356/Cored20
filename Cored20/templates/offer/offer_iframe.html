@@ -7,46 +7,65 @@
 <html lang="ko">
 <head>
     <title>{{ offer.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/animated-border.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
-    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hover-min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/figure.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/sideview.css' %}" type="text/css">
 </head>
 
-<body>
-<div class="opi-offer-content" style="border-radius: 10px">
-    <ul class="opi-offer-content-ul">
-        <li class="opi-offer-content-title">
-            {{ offer.name_offer }}
-        </li>
-        <li class="opi-offer-content-info">
-            <ul class="opi-offer-content-info-ul">
-                <li class="info">
-                    <p>{{ offer.author.nickname }} <i
-                            class="fa fa-clock-o"></i>수정일: {{ dt_updated }} {{ offer.dt_updated }} <i
-                            class="fas fa-phone"></i> {{ offer.phone }}</p>
-                </li>
-            </ul>
-        </li>
-        <li class="actions">
-            <ul class="actions right">
-                <li><a class="action redirect" href="{% url 'core:page_offer' offer.id %}" target="_top"><i class="fa fa-share"></i>오픈</a></li>
-{#                <li><a class="action"><i class="fa fa-share"></i></a></li>#}
-{#                <li class="right"><a class="action right"><i class="fa fa-share"></i></a></li>#}
-            </ul>
+<body style="width: 780px">
+<div>
+    <table style="background-color: #ffffffb9; width: 100%;">
+        <tbody>
+        <tr>
+            <td id="mw_basic">
+                <div class="mw_basic_view_subject" id="mw_basic_view_subject">
+                    <h1>{{ offer.name_offer }}</h1>
+                </div>
+                <div class="mw_basic_view_title">
+                    <span class="mw_basic_view_name">&nbsp;
+                        <span class="sv_wrap">
+                          <a class="sv_member" title="{{ offer.author.nickname }}"> {{ offer.author.nickname }}</a>
+                        </span>
+                    </span>
 
-        </li>
-        <li class="opi-offer-content-html">
-            {{ offer.html_content | safe }}
-        </li>
-    </ul>
+                    <span class="mw_basic_view_datetime media-date" style="float: right"><i
+                            class="fa fa-clock-o"></i> 수정일: {{ offer.dt_updated }}</span>
+                    <span class="mw_basic_view_hit"><i class="fa fa-eye"></i> {{ offer.views }}</span>
+                    <span>&nbsp;<i class="fa fa-volume-control-phone"></i> {{ offer.phone }}</span>
+                </div>
+                <div style="width:100%; margin:10px 0 10px 0">
+                    <table style="width:100%">
+                        <tbody>
+                        <tr style="line-height: 25px;">
+                            {#                            <td align="left">#}
+                            {#                                <a id="skipContent" class="fa-button" href="javascript:;"><i class="fa fa-share"></i><span>본문건너뛰기</span></a>&nbsp;#}
+                            {#                                <a class="fa-button" href=""><i class="fa fa-list-alt"></i><span>업소후기</span></a>#}
+                            {#                            </td>#}
+                            <td align="right">
+                                {#                                <a class="fa-button" href="../bbs/board.php?bo_table=lp_0110&amp;page="><i class="fa fa-list"></i><span>목록</span></a>#}
+                                <a class="fa-button primary" href="{% url 'core:create_review' %}"><i
+                                        class="fa fa-pencil"></i><span>글쓰기</span></a>&nbsp;
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mw_basic_view_content" style="width: 800px; padding: 0;text-align: center;">
+                    {{ offer.html_content | safe }}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 </div>
 
-
 <script type="text/javascript" src="{% static "jquery/js/jquery-3.3.1.min.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-<script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>
-<script type="text/javascript" src="{% static "starrating/themes/krajee-fa/theme.min.js" %}"></script>
 <script>
     $(".rating").rating({
         min: 0,

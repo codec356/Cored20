@@ -99,13 +99,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function ul_li_listener() {
             let regions_block = document.querySelector('#section-filter');
-            let sections = regions_block.querySelectorAll('li');
+            let sections = regions_block.querySelectorAll('a');
             [].forEach.call(sections, function (el) {
                 el.addEventListener('click', function () {
                     [].forEach.call(sections, function (element) {
-                        element.classList.remove('selected');
+                        element.children[0].classList.remove('cat_menu_btn_a');
+                        element.children[0].classList.add('cat_menu_btn');
                     });
-                    el.classList.add('selected');
+                    el.children[0].classList.remove('cat_menu_btn');
+                    el.children[0].classList.add('cat_menu_btn_a');
                     l_section_id = el.dataset.sectionId;
                     $('#forum-table').DataTable().ajax.reload();
                 })

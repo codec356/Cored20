@@ -31,7 +31,7 @@ SECRET_KEY = '!sji*p+0hc!bo0=c6l5f)4-^#2ayjk2w44*zr!9vp%scxm3ih^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', "renew.opi1.com", "opi1.com", "www.opi1.com"]
+ALLOWED_HOSTS = ['127.0.0.1', "renew.opi1.com", "opibam.com", "www.opibam.com"]
 
 # Application definition
 
@@ -183,26 +183,26 @@ CMS_PERMISSION = True
 
 CMS_PLACEHOLDER_CONF = {}
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'core_cms',
-        'USER': 'django',
-        'PASSWORD': 'db',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'opicom_20',
-#         'USER': 'opicom_dj',
-#         'PASSWORD': 'django_db',
+#         'NAME': 'core_cms',
+#         'USER': 'django',
+#         'PASSWORD': 'db',
 #         'HOST': '127.0.0.1',
 #         'PORT': '5432',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'opjoycom_bam',
+        'USER': 'opjoycom_django',
+        'PASSWORD': 'django_db',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
 
 MIGRATION_MODULES = {
 

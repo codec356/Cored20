@@ -111,28 +111,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function ul_li_listener() {
     let regions_block = document.querySelector('#region-filter');
-    let regions = regions_block.querySelectorAll('li');
+    let regions = regions_block.querySelectorAll('a');
     [].forEach.call(regions, function (el) {
         el.addEventListener('click', function () {
             [].forEach.call(regions, function (element) {
-                element.classList.remove('selected');
+                element.children[0].classList.remove('cat_menu_btn_a');
+                element.children[0].classList.add('cat_menu_btn');
             });
-            el.classList.add('selected');
-            l_region_id  = el.dataset.regionId;
-
+            el.children[0].classList.remove('cat_menu_btn');
+            el.children[0].classList.add('cat_menu_btn_a');
+            l_region_id = el.dataset.regionId;
             $('#reviews-table').DataTable().ajax.reload();
         })
     });
     let category_block = document.querySelector('#category-filter');
-    let category = category_block.querySelectorAll('li');
+    let category = category_block.querySelectorAll('a');
     [].forEach.call(category, function (el) {
         el.addEventListener('click', function () {
             [].forEach.call(category, function (element) {
-                element.classList.remove('selected');
+                element.children[0].classList.remove('cat_menu_btn2_a');
+                element.children[0].classList.add('cat_menu_btn2');
             });
-            el.classList.add('selected');
+            el.children[0].classList.remove('cat_menu_btn2');
+            el.children[0].classList.add('cat_menu_btn2_a');
             l_category_id = el.dataset.categoryId;
-
             $('#reviews-table').DataTable().ajax.reload();
         })
     })

@@ -2,63 +2,141 @@
 {% load static %}
 {% load bootstrap3 %}
 
-{% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
 
 {% block style_src %}
-    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
-    <link rel="stylesheet" href="{% static '/css/reviews.css' %}">
-
     {{ form_comment.media.css }}
 {% endblock %}
 
 
 {% block content %}
-    <div class="opi-offer-content" style="border-radius: 10px">
-        <ul class="opi-offer-content-ul">
-            <li class="opi-offer-content-title">
-                {{ topic.title }}
-            </li>
-            <li class="opi-offer-content-info">
-                <ul class="opi-offer-content-info-ul">
-                    <li class="info">
-                        <p>{{ topic.user.profile.nickname }} <i class="fa fa-clock-o"></i>수정일: {{ topic.dt_created }}</p>
-                    </li>
-                    <li class="actions"></li>
-                </ul>
-            </li>
-            <li class="opi-offer-content-html">
-                {{ topic.content | safe }}
-            </li>
+     <table width="100%" cellspacing="0" cellpadding="0" align="center" style="background-color: #ffffffb9;">
+        <tbody>
+        <tr>
+            <td id="mw_basic">
+                <div class="mw_basic_view_subject" id="mw_basic_view_subject">
+                    <h1>{{ topic.title }}</h1>
+                </div>
+                <div class="mw_basic_view_title">
+                    <span class="mw_basic_view_name">&nbsp;
+                        <span class="sv_wrap">
+                          <a class="sv_member" title="{{ topic.user.profile.nickname }}"> {{ topic.user.profile.nickname }}</a>
+                        </span>
+                    </span>
 
-            <li class="opi-offer-comments">
-                {% if comments %}
-                    <ul class="opi-comments">
-                        {% for comment in comments %}
-                            <li class="comment">
-                                <ul class="comment-item">
-                                    <li class="avatar">
-                                        <img src="{{ MEDIA_URL }}{{ comment.avatar }}" alt="">
-                                    </li>
-                                    <li class="body">
-                                        <ul class="body">
-                                            <li class="info"><p class="nickname">{{ comment.nickname }} </p><i
-                                                    class="fa fa-clock-o" aria-hidden="true"></i>
-                                                <p class="time"> {{ comment.time }}</p></li>
-                                            <li class="actions"></li>
-                                            <li class="content">{{ comment.html_content|safe }}</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </li>
-        </ul>
+                    <span class="mw_basic_view_datetime media-date" style="float: right"><i
+                            class="fa fa-clock-o"></i> 수정일: {{ topic.dt_created }}</span>
+                    <span class="mw_basic_view_hit"><i class="fa fa-eye"></i> {{ offer.views }}</span>
+                </div>
+                <div style="width:100%; margin:10px 0 10px 0">
+                    <table style="width:100%">
+                        <tbody>
+                        <tr style="line-height: 25px;">
+                            {#                            <td align="left">#}
+                            {#                                <a id="skipContent" class="fa-button" href="javascript:;"><i class="fa fa-share"></i><span>본문건너뛰기</span></a>&nbsp;#}
+                            {#                                <a class="fa-button" href=""><i class="fa fa-list-alt"></i><span>업소후기</span></a>#}
+                            {#                            </td>#}
 
-    </div>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mw_basic_view_content">
+                    {{ topic.content | safe }}
+                    {% if comments %}
+                        <div id="commentContents">
+                            {% for comment in comments %}
+                                <table style="margin-bottom:5px;" width="100%" height="1" cellspacing="0"
+                                       cellpadding="0">
+                                    <tbody>
+                                    <tr>
+                                        <td style="line-height:0;"></td>
+                                        <td style="border-top:1px solid #ddd;" width="100%" height="1"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table width="100%" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                    <tr>
+                                        <td style="text-align:left;" valign="top">
+                                            <div>
+                                                {% if comment.avatar %}
+                                                    <img src="{{ MEDIA_URL }}{{ comment.avatar }}" alt=""
+                                                         class="media-object"
+                                                         style="border:0;border-radius:10%; width:60px; height:60px; background-color:#f8f8f9; text-align:center;line-height:20px; margin-right:10px;">
+                                                {% else %}
+                                                    <img src="/static/plugins/images/img/noimg.png" alt=""
+                                                         class="media-object"
+                                                         style="border:0;border-radius:10%; width:60px; height:60px; background-color:#f8f8f9; text-align:center;line-height:20px; margin-right:10px;">
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td style="padding-left: 2px;" width="2" bgcolor="#dedede"></td>
+                                        <td>
+                                            <div style="width:10px;"></div>
+                                        </td>
+                                        <td width="100%" valign="top">
+                                            <table width="100%" height="28" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span class="mw_basic_comment_name">
+                                                            <a href="" class="sv_member"
+                                                               title="{{ comment.nickname }}" target="_blank"
+                                                               rel="nofollow"
+                                                               onclick="return false;"> {{ comment.nickname }}</a>
+                                                        </span>
+                                                        <span class="mw_basic_comment_datetime media-date"><i
+                                                                class="fa fa-clock-o"></i>
+                                                            <span title="{{ comment.time }}">{{ comment.time }}</span>
+                                                        </span>
+                                                        <div class="mw_basic_comment_func" style="float:right;">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="mw_basic_comment_content" width="100%" cellspacing="0"
+                                                   cellpadding="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <!-- 코멘트 출력 -->
+                                                        <div id="view_802">
+                                                            {{ comment.html_content|safe }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <div class="division"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" height="10"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            {% endfor %}
+
+                        </div>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <style>
+        .summernote-div {
+            width: 100% !important;
+        }
+        .summernote-div button {
+            color: black;
+        }
+    </style>
 
     <form class="form-horizontal" role="form" action="{% url 'core:topic_comment' %}" method="post"
           enctype="multipart/form-data" autocomplete="off">

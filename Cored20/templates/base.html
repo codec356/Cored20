@@ -17,242 +17,500 @@
     <title>{% block title %}{% page_attribute page_title %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="{% page_attribute 'meta_description' %}">
-    {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/board.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/wrapper.css' %}" type="text/css">
+    {#    {% bootstrap_css %}#}
+    <link rel="stylesheet" href="{% static 'css/animated-border.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
-    <link rel="stylesheet" href="{% static 'css/colors.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/hover-min.css' %}" type="text/css">
+    {#        <link rel="stylesheet" href="{% static 'css/color.css' %}" type="text/css">#}
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+    {#    <link rel="stylesheet" href="{% static 'css/menu.extend.css' %}" type="text/css">#}
+    <link rel="stylesheet" href="{% static 'css/sideview.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/figure.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
 
     {% block style_src %}
     {% endblock %}
 </head>
 {#        {% cms_toolbar %}#}
-<body class="opi-body">
 
-<nav class="navbar navbar-default navbar-fixed-top nav-bar-opi">
-    <div class="container">
-        <div class="navbar-header" style="padding: 0 15px 0 10px">
-            <a type="button" class="opi-navbar-toggle opi-navigation-icon opi collapsed" data-toggle="collapse"
-               data-target="#nav-bar-horizontal"
-               aria-expanded="false" aria-controls="nav-bar-horizontal">
-                <i class="fas fa-align-justify"></i>
-            </a>
-            <a href="/" class="opi-navigation-icon">
-                <i class="fa fa-home"></i>
-            </a>
-        </div>
-        <div id="nav-bar-horizontal" class="opi-navigation navbar-collapse collapse" role="navigation">
-            <ul class="opi-navigation-ul">
-                <li>
-                </li>
-                {% show_menu 0 10 10 10 "menu/custom-menu.html" %}
-                <li class="dropdown opi-dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        게임<b class="caret"></b></a>
-                    <ul class="dropdown-menu opi-dropdown-menu">
-                        <li><a class="opi-side-bar-li-title"
-                               href="{% url 'core:solitaire' %}"><i
-                                class="fa fa-gamepad"></i><b>촌충</b></a></li>
-                        <li><a
-                                class="opi-side-bar-li-title" href="{% url 'core:shooter' %}"><i
-                                class="fa fa-gamepad"></i><b>사수</b></a></li>
-                        <li><a
-                                class="opi-side-bar-li-title"
-                                href="{% url 'core:flappybird' %}"><i
-                                class="fa fa-gamepad"></i><b>플래 피 버드</b></a></li>
-                    </ul>
-                </li>
-            </ul>
 
-            <ul class="navbar-right opi-navbar-socials">
-                <li><a href="./" class="opi-navigation-icon"><i class="fab fa-telegram" style=""></i></a>
-                </li>
-                <li><a href="./" class="opi-navigation-icon"><i class="fab fa-twitter-square" style=""></i></a>
-                </li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'core:logout_url' %}" class="opi-navigation-icon"
-                           style="font-size: 30px;line-height: 20px;">Logout <i
-                            class="fas fa-sign-out-alt"></i></a></li>
-                {% else %}
-                    <li><a href="{% url 'core:register_url' %}" class="opi-navigation-icon"
-                           style="font-size: 30px;line-height: 20px;">SignUp <i
-                            class="fa fa-user-plus"></i></a></li>
-                    <li><a href="{% url 'core:login_url' %}" class="opi-navigation-icon"
-                           style="font-size: 30px;line-height: 20px;">Login <i
-                            class="fas fa-sign-in-alt"></i></a></li>
-
-                {% endif %}
-            </ul>
-
-        </div>
-    </div>
-</nav>
-
-<div class="wrapper"
-     style="background-size: 115%; background-image: url(/media/static_site/backgroud.jpg)">
-    <div class="container">
-        <ul class="opi-wrapper-ul">
-            <li class="opi-wrapper-logo opi-wrapper">
-                {#                <img src="/media/filer_public/e4/59/e4594aad-e435-47da-9fbf-c49136fd5eee/backgroud.jpg">#}
-            </li>
-            {% if request.user.is_staff %}
-                <li class="opi-wrapper-user-actions opi-wrapper text-center align-center">
-                    <h3>동작</h3>
-                    <ul class="opi-actions">
-                        <li>
-                            <a class="far fa-edit opi-button" href="{% url 'core:create_offer' %}">광고를 만들다</a>
-                        </li>
-                        <li>
-                            <a class="far fa-edit opi-button" href="{% url 'core:create_auction' %}">경매에 응모하다</a>
-                        </li>
-                        <li>
-                            <a class="fa fa-list opi-button" href="{% url 'core:my_offers' %}">내 리스팅</a>
-                        </li>
-
-                        {% if request.user.is_superuser %}
-                            <li>
-                                <a class="fa fa-user opi-button" href="{% url 'core:adm_main' %}">Админка</a>
-                            </li>
-                        {% endif %}
-                        {#                        <li><a class="fas fa-calendar-check opi-button" href="{% url 'core:checkin' %}">내 리스팅</a>#}
-                        {#                        </li>#}
-                    </ul>
-                </li>
-            {% endif %}
-            {% if request.user.is_authenticated %}
-                <li class="opi-wrapper-user-info opi-wrapper">
-                    <div class="user-card">
-                        <div class="avatar">
-                            {% if request.user.profile.avatar %}
-                                <img class="avatar"
-                                     src="{{ MEDIA_URL }}{{ request.user.profile.avatar }}"
-                                     alt="">
-                            {% else %}
-                                <i class="fa fa-user avatar"></i>
-                            {% endif %}
-                        </div>
-                        <div class="info">
-                            <div class="nickname">
-                                <b>{{ request.user.profile.nickname }}</b>
-                            </div>
-                            <div class="level-bar">
-                                <span style="width: {{ request.user.profile.experience|mul:100|intdiv:request.user.profile.level.value_to }}%">
-                                    {{ request.user.profile.experience|mul:100|intdiv:request.user.profile.level.value_to }}%
-                                </span>
-                            </div>
-                            <div class="actions">
-                                <a class="fas fa-calendar-check" href="{% url 'core:attendance_page' %}"></a>
-                                <a class="fas fa-clipboard-list" href="{% url 'core:profile' %}"></a>
-                                <a class="fa fa-user" href="{% url 'core:profile' %}"></a>
-                            </div>
-                            <div class="balances">
-                                <span class="fas fa-gem"> {{ data.balances.value }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            {% endif %}
-            <li class="opi-wrapper-login-form opi-wrapper">
-            </li>
-        </ul>
-    </div>
-
-</div>
-
-<div class="container">
-    <div class="opi-left-menu col-sm-2">
-        <div class="opi-side-bar col-sm-12">
-            <div class="opi-side-bar-block-header col-sm-12">
-                <a><i class="fa fa-bullhorn"></i> 업소리스트</a>
-            </div>
-            <ul class="opi-side-bar-ul col-sm-12">
-                {% for town in data.towns %}
-                    <li class="opi-side-bar-item col-sm-12">
-                        <ul>
-                            <li class="opi-side-title"><a class="opi-side-bar-li-title"><b>{{ town.name }}</b></a></li>
-                            <li class="opi-side-actions">
-                                <div class="opi-fawpforms">
-                                    <a href="{% url 'core:town_board' town.id %}"
-                                       aria-expanded="true"><i
-                                            class="fab fa-wpforms"></i><br>출근부</a>
-                                </div>
-                                <div class="opi-facomments">
-                                    <a href="{% url 'core:table_reviews_board' town.id %}"
-                                       aria-expanded="true"><i
-                                            class="far fa-comment"></i><br>후기</a>
-                                </div>
-
-                            </li>
-                            {#                            <li class="opi-fawpforms col-sm-3"><a href="{% url 'core:town_board' town.id %}"#}
-                            {#                                                                  aria-expanded="true"><i#}
-                            {#                                    class="fab fa-wpforms"></i><br>출근부</a>#}
-                            {#                            </li>#}
-                            {#                            <li class="opi-facomments col-sm-3"><a href="{% url 'core:table_reviews_board' town.id %}"#}
-                            {#                                                                   aria-expanded="true"><i#}
-                            {#                                    class="far fa-comment"></i><br>후기</a>#}
-                            {#                            </li>#}
-                        </ul>
+<body>
+<div id="thema_wrapper" class="ko">
+    <aside class="head_info">
+        <div class="container">
+            <nav class="head_menu_left">
+                <ul class="menu">
+{#                    <li>#}
+{#                        <a href="" target="_blank">#}
+{#                            <i class="fab fa-twitter-square" style="color:#55acef"#}
+{#                               title="조선의밤 공식 트위터"></i><span> 트위터</span>#}
+{#                        </a>#}
+{#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="/?device=mobile">#}
+                    {#                            <i class="fa fa-mobile" style="color:#ea990b" title="조선의밤 모바일 보기"></i><span>모바일</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                </ul>
+            </nav>
+            <nav class="head_menu_right">
+                <ul class="menu">
+                    <li>
+                        <a href="" target="_blank">
+                            <i class="fab fa-twitter-square" style="color:#55acef"
+                               title="조선의밤 공식 트위터"></i><span> 트위터</span>
+                        </a>
                     </li>
-                {% endfor %}
-            </ul>
+                    <li><a href="" class="win_password_lost"><i class="fa fa-search"></i> <span>정보찾기</span></a>
+                    </li>
+                    <li><a href="{% url 'core:register_url' %}"><i class="fa fa-user-plus"></i> <span><span
+                            class="lnb-txt">회원</span>가입</span></a>
+                    </li>
+                    {#                    <li><a href="{% url 'core:login_url' %}"><i class="fa fa-sign-in" style="color:#ff0000"></i> <span>로그인</span></a>#}
+                    {#                    </li>#}
+
+                </ul>
+            </nav>
         </div>
-        <div class="opi-side-bar col-sm-12">
-            <div class="opi-side-bar-block-header col-sm-12">
-                <a><i class="fa fa-gamepad"></i> 포인트 게임</a>
+    </aside>
+    <div class="wrapper ">
+        <header>
+            <div class="main_head_img">
+                <div class="main_head_area">
+                    <div class="main_head_logo"><a href="/"><img src="{% static 'images/logo.png' %}"></a>
+                    </div>
+                    <div class="main_head_menu">
+                        <div class="main_head_menu_info">
+                            <span style="text-align:center;font-family:Malgun Gothic; font-size:20px;color:#fcbc29;font-weight:bold;padding-bottom:5px"></span>
+                        </div>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><a href="guide.html"><span class="quick-menu_font">
+                          <img src="{% static 'images/menu_quick.png' %}"> 사이트안내</span></a>
+                                </td>
+                                <td><a href="{% url 'core:login_url' %}"><span class="quick-menu_font">
+                          <img src="{% static 'images/menu_quick.png' %}"> 제휴문의</span></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <ul class="opi-side-bar-ul col-sm-12">
-                <li class="opi-side-bar-item col-sm-12" style="justify-content: center;"><a
-                        class="opi-side-bar-li-title"
-                        href="{% url 'core:solitaire' %}"><i
-                        class="fa fa-gamepad"></i><b>촌충</b></a></li>
-                <li class="opi-side-bar-item col-sm-12" style="justify-content: center;"><a
-                        class="opi-side-bar-li-title" href="{% url 'core:shooter' %}"><i
-                        class="fa fa-gamepad"></i><b>사수</b></a></li>
-                <li class="opi-side-bar-item col-sm-12" style="justify-content: center;"><a
-                        class="opi-side-bar-li-title"
-                        href="{% url 'core:flappybird' %}"><i
-                        class="fa fa-gamepad"></i><b>플래 피 버드</b></a></li>
-            </ul>
-        </div>
+        </header>
     </div>
-    <div class="opi-content col-sm-10">
-        {% block content %}{% endblock content %}
+    <nav class="navbar navbar-expand-sm at-navbar">
+        <div class="container">
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item icon_home">
+                        <a href="/" data-toggle="tooltip" data-placement="top" title="대문으로" class="navigationIcon"><i
+                                class="fa fa-home" style="margin-top: 10px;"></i></a>
+                    </li>
+
+                    {% show_menu 0 10 10 10 "menu/custom-menu.html" %}
+
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item icon_home _right_icon" data-toggle="tooltip" data-placement="top"
+                            title="회원가입"
+                            style="border-left:0 solid #ebebeb;float: right;margin-left: 400px;">
+                            <a href="{% url 'core:register_url' %}" class="navigationIcon"><i class="fa fa-user-plus"
+                                                                                              style="margin-top:10px;"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item icon_home _right_icon" data-toggle="tooltip" data-placement="top"
+                            title="입궐하기"
+                            style="float: right;">
+                            <a href="{% url 'core:login_url' %}" class="navigationIcon"><i class="fa fa-sign-in"
+                                                                                           style="color:#ff0000;margin-top:10px"></i>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item icon_home _right_icon" data-toggle="tooltip" data-placement="top"
+                            title="내정보"
+                            style="border-left:0 solid #ebebeb; float: right;">
+                            <a href="{% url 'core:profile' %}">
+                                <i class="fa fa-user"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item icon_home _right_icon" data-toggle="tooltip" data-placement="top"
+                            title="퇴궐하기"
+                            style="padding:0; margin-right: 90px;">
+                            <a href="{% url 'core:logout_url' %}">
+                                <i class="fa fa-sign-out" style="color:#ff0000;margin-top:7px;"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="clearfix"></div>
+    <div class="container">
+        <div class="row at-row">
+            <!--LEFT-->
+            <div class="col-md-3 pull-left at-col at-side">
+                <div class="widget-side">
+                    <div class="hidden-sm hidden-xs">
+                        <div class="widget-box"
+                             style="border:1px solid #d3d3d3; border-radius:10px; margin-bottom: 5px;">
+                            <div class="outlogin">
+                                <div class="basic-outlogin">
+                                    {% if not user.is_authenticated %}
+                                        <section id="ol_before" class="ol">
+                                            <form id="basic_outlogin" name="basic_outlogin" method="post"
+                                                  action="//chobam.com/bbs/login_check.php" autocomplete="off"
+                                                  role="form"
+                                                  class="form" onsubmit="return basic_outlogin_form(this);" rsa="">
+                                                <input
+                                                        type="hidden" name="url" value="%2Fbbs%2Fcbmain.php">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                            class="fa fa-user gray"></i></span>
+                                                        <input type="text" id="ol_id" name="mb_id" required=""
+                                                               maxlength="20" class="form-control input-sm"
+                                                               placeholder="아이디">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                            class="fa fa-lock gray"></i></span>
+                                                        <input type="password" id="ol_pw" name="mb_password" required=""
+                                                               maxlength="20" class="form-control input-sm"
+                                                               placeholder="비밀번호">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="out-login-login_btn2" tabindex="-1">
+                                                        입궐하기
+                                                    </button>
+                                                </div>
+                                                <div style="letter-spacing:-1px; text-align:center; color: #000;">
+                                                    <a href="{% url 'core:register_url' %}"><font color="#000"><i
+                                                            class="fa fa-user-plus"></i> 회원가입</font></a>
+                                                </div>
+                                            </form>
+                                        </section>
+                                    {% else %}
+
+                                        <div class="profile">
+                                            <a target="_blank" class="win_memo"
+                                               title="사진등록">
+                                                <div class="photo pull-left"
+                                                     style="width: 62px; height: 62px; overflow: hidden; object-fit: cover;">
+                                                    {% if request.user.profile.avatar %}
+                                                        <img class="avatar" style="object-fit: cover;max-width: 62px;"
+                                                             src="{{ MEDIA_URL }}{{ request.user.profile.avatar }}"
+                                                             alt="">
+                                                    {% else %}
+                                                        <img src="{% static '/images/img/noimg.png' %}" title="사진등록">
+
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+
+                                            <h3>
+                                                <a href="{% url 'core:profile' %}">{{ request.user.profile.nickname }}<img
+                                                        src="//chobam.com/img/class/man/2.gif" alt="2"
+                                                        style="margin-top:-3px;max-width:28px">&nbsp;</a></h3>
+
+                                            <div style="margin:7px 10px 5px 3px; color:#000">
+                                                <a href="//chobam.com/bbs/member_class.php">
+                                                    <div style="width:110px; border:1px solid #ccc; height:12px;float:left;">
+                                                        <div style="background-color:#4970f3; width:{{ request.user.profile.experience|mul:100|intdiv:request.user.profile.level.value_to }}%; max-width:110px; height:10px;text-align:center; ">
+                                                        </div>
+                                                    </div>
+                                                </a><span style="float:right; margin-top:-5px; margin-right:-5px"><font
+                                                    color="red">{{ request.user.profile.experience|mul:100|intdiv:request.user.profile.level.value_to }}</font>%</span>
+                                            </div>
+                                            <div class="clearfix"></div>
+
+                                            <div style="float:right">
+                                                <div class="out-login-logout_btn" style="width:20px">
+                                                    <a href="{% url 'core:profile' %}"><font
+                                                            color="white"><i class="fa fa-user"
+                                                                             style="padding: 6px;"></i></font></a></div>
+                                                <div class="out-login-logout_btn" style="width:80px">
+                                                    <a href="{% url 'core:logout_url' %}"><font color="white"><i
+                                                            class="fa fa-power-off"></i> 퇴궐하기</font></a></div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-nav" style="padding:0">
+                            <div class="side_cate1">
+                                <span style="color:#fff; font-weight:bold">조선팔도 기방정보/야화</span>
+                            </div>
+                            <table style="width:100%" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        {#                          <li class="gnb_2da" style="padding: 19px;text-align: center;border-bottom: 2px solid #adadad;">#}
+                                        {#                            <a href=""><span style="text-align: center; font-size: 15px;">오피</span></a>#}
+                                        {#                          </li>#}
+                                        {% for town in data.towns %}
+                                            <li class="gnb_2da" style="padding-left:5px;">
+                                                <table cellpadding="0" cellspacing="0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td width="120" class="cate_3">
+                                                            <a href="" target="_self" title="{{ town.name }}">
+                                                                <span style="font-weight: bold;">{{ town.name }}</span>
+                                                            </a>
+                                                        </td>
+                                                        <td width="93" align="right" class="cate_1">
+                                                            <a href="{% url 'core:town_board' town.id %}" target="_self"
+                                                               title="강남권 오피 기방정보">
+                                            <li class="cate_1_bg" style="width:45px">
+                                                <div class="imgswap">
+                                                    <img src="{% static 'images/profile_t_btn.png' %}" title="">
+                                                    <img src="{% static 'images/profile_btn.png' %}" title="">
+                                                </div>
+                                            </li>
+                                            </a>
+                                            <a href="{% url 'core:table_reviews_board' town.id %}" target="_self"
+                                               title="강남권 오피 기방야화(후기)">
+                                                <li class="cate_2_bg" style="width:45px">
+                                                    <div class="imgswap2">
+                                                        <img src="{% static 'images/review_t_btn.png' %}" title="">
+                                                        <img src="{% static 'images/review_btn.png' %}" title="">
+                                                    </div>
+                                                </li>
+                                            </a>
+                                            </td>
+                                            </tr>
+                                            </tbody>
+                                            </table>
+                                            </li>
+                                        {% endfor %}
+                            </td>
+                            </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        {#                <div class="sidebar-nav">#}
+                        {#                  <div class="side_cate3">저잣거리#}
+                        {#                  </div>#}
+                        {#                  <table style="width:100%" cellpadding="0" cellspacing="0">#}
+                        {#                    <tbody>#}
+                        {#                      <tr>#}
+                        {#                        <td>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding:15px;">#}
+                        {#                            <a href="" target="_self" title="입궐(출석)명부">입궐(출석)명부</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="일일수행">일일수행</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="0" target="_self" title="공지사항">공지사항</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="0" target="_self" title="가입인사">가입인사</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="0" target="_self" title="자유게시판">자유게시판</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="0" target="_self" title="지식도감">지식도감</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="0" target="_self" title="질문게시판">질문게시판</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="0" target="_self" title="건의사항">건의사항</a>#}
+                        {#                          </li>#}
+                        {#                        </td>#}
+                        {#                      </tr>#}
+                        {#                    </tbody>#}
+                        {#                  </table>#}
+                        {#                </div>#}
+                        {#                <div class="sidebar-nav" style="padding:0">#}
+                        {#                  <div class="side_cate5" style="background-color:#9d2788">과거시험/연회</div>#}
+                        {#                  <table style="width:100%" cellpadding="0" cellspacing="0">#}
+                        {#                    <tbody>#}
+                        {#                      <tr>#}
+                        {#                        <td>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="조밤난장">조밤난장</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="기방연회">기방연회</a>#}
+                        {#                          </li>#}
+                        {#                        </td>#}
+                        {#                      </tr>#}
+                        {#                    </tbody>#}
+                        {#                  </table>#}
+                        {#                </div>#}
+                        {#                <div class="sidebar-nav" style="padding:0">#}
+                        {#                  <div class="side_cate4">규장각</div>#}
+                        {#                  <table style="width:100%" cellpadding="0" cellspacing="0">#}
+                        {#                    <tbody>#}
+                        {#                      <tr>#}
+                        {#                        <td>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="한국예능">한국예능</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="한국드라마">한국드라마</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="한국영화">한국영화</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="해외영화">해외영화</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="회원규장각">회원규장각</a>#}
+                        {#                          </li>#}
+                        {#                        </td>#}
+                        {#                      </tr>#}
+                        {#                    </tbody>#}
+                        {#                  </table>#}
+                        {#                </div>#}
+                        {#                <div class="sidebar-nav" style="padding:0">#}
+                        {#                  <div class="side_cate5">엽전 투전판</div>#}
+                        {#                  <table style="width:100%" cellpadding="0" cellspacing="0">#}
+                        {#                    <tbody>#}
+                        {#                      <tr>#}
+                        {#                        <td>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="화삼동패">화삼동패</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="가위바위보">가위바위보</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="춘향이의선택">춘향이의선택</a>#}
+                        {#                          </li>#}
+                        {#                        </td>#}
+                        {#                      </tr>#}
+                        {#                    </tbody>#}
+                        {#                  </table>#}
+                        {#                </div>#}
+                        {#                <div class="sidebar-nav" style="padding:0">#}
+                        {#                  <div class="side_cate6">신문고</div>#}
+                        {#                  <table style="width:100%" cellpadding="0" cellspacing="0">#}
+                        {#                    <tbody>#}
+                        {#                      <tr>#}
+                        {#                        <td>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="//chobam.com/bbs/board.php?bo_table=cus_0010" target="_self" title="제휴문의">제휴문의</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="//chobam.com/bbs/board.php?bo_table=cus_0020" target="_self" title="육의전(장터)">육의전(장터)</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="//chobam.com/bbs/board.php?bo_table=cus_0030" target="_self" title="구인구직">구인구직</a>#}
+                        {#                          </li>#}
+                        {#                        </td>#}
+                        {#                      </tr>#}
+                        {#                    </tbody>#}
+                        {#                  </table>#}
+                        {#                </div>#}
+                        {#                <div class="sidebar-nav" style="padding:0">#}
+                        {#                  <div class="side_cate6">논공행상#}
+                        {#                  </div>#}
+                        {#                  <table style="width:100%" cellpadding="0" cellspacing="0">#}
+                        {#                    <tbody>#}
+                        {#                      <tr>#}
+                        {#                        <td>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="공덕/엽전순위">공덕/엽전순위</a>#}
+                        {#                          </li>#}
+                        {#                          <li class="gnb_2da " style="width:50%;float:left;padding: 15px;">#}
+                        {#                            <a href="" target="_self" title="장원급제명부">장원급제명부</a>#}
+                        {#                          </li>#}
+                        {#                        </td>#}
+                        {#                      </tr>#}
+                        {#                    </tbody>#}
+                        {#                  </table>#}
+                        {#                </div>#}
+                    </div>
+                </div>
+            </div>
+            <!--RIGHT-->
+            <div class="col-md-9 pull-right at-col at-main" style="margin-bottom:-30px;">
+
+                {% block content %}{% endblock content %}
+                {#                <div>#}
+                {#                    <a href="/" title="전체">#}
+                {#                        <div class="cat_menu_btn_a">전체<br><span class="badge pull-center">1,181</span></div>#}
+                {#                    </a>#}
+                {#                    <a href="bbs/opi.html" title="오피">#}
+                {#                        <div class="cat_menu_btn">오피<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="안마">#}
+                {#                        <div class="cat_menu_btn">안마<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="건마">#}
+                {#                        <div class="cat_menu_btn">건마<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="술집">#}
+                {#                        <div class="cat_menu_btn">술집<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="휴게텔">#}
+                {#                        <div class="cat_menu_btn">휴게텔<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="키스방">#}
+                {#                        <div class="cat_menu_btn">키스방<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="립카페">#}
+                {#                        <div class="cat_menu_btn"> 립카페<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="핸플">#}
+                {#                        <div class="cat_menu_btn">핸플<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="패티쉬">#}
+                {#                        <div class="cat_menu_btn">패티쉬<br></div>#}
+                {#                    </a>#}
+                {#                    <a href="" title="기타">#}
+                {#                        <div class="cat_menu_btn">기타<br></div>#}
+                {#                    </a>#}
+                {#                </div>#}
+                <div class="clearfix"></div>
+            </div>
+        </div>
     </div>
 </div>
+<div class="clearfix"></div>
+<div class="footer">
+    <div style="position:relative; bottom:0; width:100%; height: 64px; margin-top: 0; background-color:#471b1c; color:#fff; padding:10px 0 10px 0; clear:both;">
+        <table align="center" style="width:1300px; min-width:1300px">
+            <tbody>
+            <tr>
+                <td rowspan="2" align="center" style="width:200px">
+                    <div style="font-size:25px; border:2px solid #fff; border-radius:50%; width:40px; height:40px; color:#fff; line-height:35px">
+                        19
+                    </div>
+                </td>
+                <td style="font-size:12px;color:#fff">
+                    본 사이트에서는 회원들간 자료공유에 따른 중계역할만 하며, 저작권에 대한 책임은 업로드를 한 회원에게 있습니다. 또한 해당 자료에 대한 원본파일은 서버에 보관하지 않습니다.
+                    <br>
+                    각각의 게시물에 대한 내용은 본 사이트에서 보증하지 않으며, 유해하다고 판단될시 관리자에 의해 삭제조치 될 수 있습니다. 사이트 이용에 따라 자료에 대한 판단 책임은 이용자에게
+                    있습니다.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <script type="text/javascript" src="{% static 'jquery/js/jquery-3.3.1.min.js' %}"></script>
-<script>
-    (function (d) {
-        function c(k) {
-            return (d.cookie.match('(^|; )' + k + '=([^;]*)') || 0)[2];
-        }
 
-        var ua = navigator.userAgent,
-            ismobile = / mobile/i.test(ua),
-            mgecko = !!(/ gecko/i.test(ua) && / firefox\//i.test(ua)),
-            wasmobile = c('wasmobile') === "was",
-            desktopvp = 'user-scalable=yes, width=1310, minimum-width=1310',
-            el;
-        if (ismobile && !wasmobile) {
-            d.cookie = "wasmobile=was";
-        } else if (!ismobile && wasmobile) {
-            if (mgecko) {
-                el = d.createElement('meta');
-                el.setAttribute('content', desktopvp);
-                el.setAttribute('name', 'viewport');
-                d.getElementsByTagName('head')[0].appendChild(el);
-            } else {
-                d.getElementsByName('viewport')[0].setAttribute('content', desktopvp);
-            }
-        }
-    }(document));
-</script>
 {% bootstrap_javascript %}
-
+<script type="text/javascript" src="{% static 'up.js' %}"></script>
+<div id="toTop"><img src="{% static 'images/up.png' %}"></div>
 
 {% block scripts_src %}
 {% endblock %}
-
 </body>
 </html>

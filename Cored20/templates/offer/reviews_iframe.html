@@ -10,55 +10,122 @@
     <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
     <link rel="stylesheet" href="{% static '/starrating/css/star-rating.min.css' %}">
     <link rel="stylesheet" href="{% static '/starrating/themes/krajee-fa/theme.min.css' %}">
-    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
-    <link rel="stylesheet" href="{% static '/css/reviews.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animated-border.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/fontawesome-all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hover-min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/figure.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/common.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/sideview.css' %}" type="text/css">
 </head>
 
 <body>
-<div class="opi-offer-content" style="border-radius: 10px">
-{% if reviews %}
-    <ul class="opi-comments">
-        {% for review in reviews %}
-            <li class="comment">
-                <ul class="comment-item">
-                    <li class="avatar">
-                        {% if review.avatar %}
-                            <img src="{{ MEDIA_URL }}{{ review.avatar }}" alt="">
-                        {% else %}
-                            <i class="fa fa-user avatar"></i>
-                        {% endif %}
-                    </li>
-                    <li class="body">
-                        <ul class="body">
-                            <li class="info"><p class="nickname">{{ review.author }} </p><i
-                                    class="fa fa-clock-o" aria-hidden="true"></i>
-                                <p class="time"> {{ review.dt_created }}</p></li>
-                            <li class="actions"></li>
-                            <li class="content">
-                                <ul class="opi-ratings">
-                                    {% for rating in review.ratings %}
-                                        <li class="opi-rating-item">
-                                            <b>{{ rating.name }}</b>
-                                            <label>
-                                                <input class="rating-sm"
-                                                       value="{{ rating.n_rate }}"
-                                                       type="text">
-                                            </label>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                                {{ review.content|safe }}</li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <h3 style="text-align: center">리뷰 없음</h3>
-{% endif %}
-</div>
 
+<table width="100%" cellspacing="0" cellpadding="0" align="center" style="background-color: #ffffffb9;">
+    <tbody>
+    <tr>
+        <td id="mw_basic">
+            <div class="mw_basic_view_content">
+                {% if reviews %}
+                    <div id="commentContents">
+                        {% for review in reviews %}
+                            <table style="margin-bottom:5px;" width="100%" height="1" cellspacing="0"
+                                   cellpadding="0">
+                                <tbody>
+                                <tr>
+                                    <td style="line-height:0;"></td>
+                                    <td style="border-top:1px solid #ddd;" width="100%" height="1"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr>
+                                    <td style="text-align:left;" valign="top">
+                                        <div>
+                                            {% if review.avatar %}
+                                                <img src="{{ MEDIA_URL }}{{ review.avatar }}" alt=""
+                                                     class="media-object"
+                                                     style="border:0;border-radius:10%; width:60px; height:60px; background-color:#f8f8f9; text-align:center;line-height:20px; margin-right:10px;">
+                                            {% else %}
+                                                <img src="/static/plugins/images/img/noimg.png" alt=""
+                                                     class="media-object"
+                                                     style="border:0;border-radius:10%; width:60px; height:60px; background-color:#f8f8f9; text-align:center;line-height:20px; margin-right:10px;">
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td style="padding-left: 2px;" width="2" bgcolor="#dedede"></td>
+                                    <td>
+                                        <div style="width:10px;"></div>
+                                    </td>
+                                    <td width="100%" valign="top">
+                                        <table width="100%" height="28" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                        <span class="mw_basic_comment_name">
+                                                            <a href="" class="sv_member"
+                                                               title="{{ review.author }}" target="_blank"
+                                                               rel="nofollow"
+                                                               onclick="return false;"> {{ review.author }}</a>
+                                                        </span>
+                                                    <span class="mw_basic_comment_datetime media-date"><i
+                                                            class="fa fa-clock-o"></i>
+                                                            <span title="{{ review.dt_created }}">{{ review.dt_created }}</span>
+                                                        </span>
+                                                    <div class="mw_basic_comment_func" style="float:right;">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="mw_basic_comment_content" width="100%" cellspacing="0"
+                                               cellpadding="0">
+                                            <tbody>
+                                            <tr>
+                                                <td valign="top">
+                                                    <!-- 코멘트 출력 -->
+                                                    <ul style="display: flex;flex-wrap: wrap;">
+                                                        {% for rating in review.ratings %}
+                                                            <li class="opi-rating-item">
+                                                                <b>{{ rating.name }}</b>
+                                                                <label>
+                                                                    <input class="rating-sm"
+                                                                           value="{{ rating.n_rate }}"
+                                                                           type="text">
+                                                                </label>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    <div id="view_802">
+                                                        {{ review.content|safe }}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="division"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" height="10"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        {% endfor %}
+
+                    </div>
+                {% else %}
+                    <h3 style="text-align: center">리뷰 없음</h3>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 <script type="text/javascript" src="{% static "jquery/js/jquery-3.3.1.min.js" %}"></script>
 <script type="text/javascript" src="{% static "starrating/js/star-rating.min.js" %}"></script>

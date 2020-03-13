@@ -9,12 +9,11 @@ from core.models import ResourceTopic, ResourceTopicComment, SectionResource
 
 
 def rs_topic(request, section_type):
-    print('geerere')
     if request.method == 'POST':
         form = ResourceTopicForm(request.POST, request.FILES)
         if form.is_valid():
             topic_obj = form.save()
-            return redirect(reverse('core:rs_page_topic', kwargs={'topic': topic_obj}))
+            return redirect(reverse('core:rs_page_topic', kwargs={'topic': topic_obj.pk}))
     else:
         form = ResourceTopicForm(initial={'user': request.user.id, 'section_type': section_type})
     return render(request, 'resource_forum/create_topic.html', {
@@ -68,20 +67,15 @@ def rs_topic_page(request, topic):
                                                  initial={'user': request.user.id,
                                                           'topic': topic_obj})
     }
-    return render(request=request, template_name='forum/topic.html', context=context)
+    return render(request=request, template_name='resource_forum/topic.html', context=context)
 
 
 @transaction.atomic
 def rs_topic_comment(request):
     if request.method == 'POST':
         form = ResourceTopicCommentForm(request.POST)
-
         if form.is_valid():
-            print(form.cleaned_data.values())
             form.save(commit=True)
             return redirect(request.META.get('HTTP_REFERER'))
         else:
-            print(form.errors)
-            print(form.non_field_errors())
-            print('errror')
             return redirect(request.META.get('HTTP_REFERER'))

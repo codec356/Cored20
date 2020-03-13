@@ -175,9 +175,9 @@ class ReviewListJson(BaseDatatableView):
         result = OfferReviews.objects.filter(offer__town=town).order_by('-dt_created', '-views')
 
         if int(region) != 0:
-            result.filter(offer__region=region)
+            result = result.filter(offer__region=region)
         if int(category) != 0:
-            result.filter(offer__category=category)
+            result = result.filter(offer__category=category)
 
         return result.values(review_id=F('id'),
                              town=F('offer__town__name'),

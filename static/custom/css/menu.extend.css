@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+/* 공통 */
+* {box-sizing: border-box;}
+body {font-size:14px; font-family: "나눔고딕", "NanumGothic", "Malgun Gothic", "Gulim", "dotum" !important;}
+a, a:hover, a:link, a:active {text-decoration: none; color: inherit;}
+ul,li {list-style: none;margin: 0;padding: 0;}
+#container {z-index:auto;}
+.xrap {position: relative; width: 100%; margin: 0 auto; box-sizing: border-box; max-width:1000px;}
+
+/* 메뉴 */
+.menux {font-size:13px; font-family: "나눔고딕", "NanumGothic", "Malgun Gothic", "Gulim", "dotum" !important;clear: both;}
+.menux * {box-sizing: border-box;}
+.menux .xrap {position: relative; width: 100%; margin: 0 auto; box-sizing: border-box; max-width:1000px;}
+.menux ul,.menux li {list-style: none;margin: 0;padding: 0;}
+.menux a,.menux a:hover,.menux a:link,.menux a:active {text-decoration: none; color: inherit;}
+.xnb {position: relative;}
+.xnb .xnb_depth1{width: 100%;}
+.xnb .xnb_depth1 >li{display: inline-block;width: 145px;text-align: center;}
+.xnb .xnb_depth1 >li a{padding: 7px 0;display: inline-block;color: #f5f4f4;font-weight: 600;font-size: 13px;}
+.xnb .xnb_depth1 >li a:hover{color: #f2f734;}
+/*.xnb .xnb_depth2 {display:none;position: absolute;top:34px;z-index:100;left: 0;width: 100%; background: #4f4e4b;border-bottom: 1px solid #333333; font-size: 0.9em; border-radius: 10px;}*/
+.xnb .xnb_depth2 {display:none;position: absolute;top:34px;left:7px;z-index:100;width: 100%; font-size: 0.9em; border: 1px solid #4e4d4d;}
+.xnb:hover .xnb_depth2{display: block;}
+.xnb .xnb_depth2 .xrap >ul {display: block;}
+/*.xnb .xnb_depth2 .xrap >ul >li {display: inline-block;text-align: left; width: 140px;line-height: 1.4em;border-left: 1px dotted #ddd; border-bottom: 1px solid #333333; padding:0;box-sizing: border-box;-ms-filter: "box-sizing:border-box";float: left;height: 500px; background: #fff; border-radius: 10px;}*/
+.xnb .xnb_depth2 .xrap >ul >li {display: inline-block;text-align: center; width: 140px;line-height: 1.4em;border-left: 1px dotted #ddd; padding:7px;box-sizing: border-box;-ms-filter: "box-sizing:border-box";float: left; background: #fff; height: 30px; border-right:1px solid #4e4d4d;}
+.xnb .xnb_depth2 .xrap >ul >li:first-child {border-right:1px solid #4e4d4d;}
+.xnb .xnb_depth2 .xrap >ul >li:last-child {border-right:1px solid #4e4d4d;}
+.xnb .xnb_depth2 .xrap >ul >li:nth-of-type(even) {background: #f3faff;}
+.xnb .xnb_depth2 .xrap >ul >li ul li a {padding: 3px 0 3px 15px;display: block;box-sizing: border-box;-ms-filter: "box-sizing:border-box";}
+.xnb .xnb_depth2 .xrap >ul >li:hover {padding-left:-15px;background: #5f5f5f;color: #fff;}
+
+/*
+* {box-sizing: border-box;}
+body {font-size:14px; font-family: "나눔고딕", "NanumGothic", "Malgun Gothic", "Gulim", "dotum" !important;}
+a, a:hover, a:link, a:active {text-decoration: none; color: inherit;}
+ul,li {list-style: none;margin: 0;padding: 0;}
+#container {z-index:auto;}
+.xrap {position: relative; width: 100%; margin: 0 auto; box-sizing: border-box; max-width:1000px;}
+
+
+.menux {font-size:13px; font-family: "나눔고딕", "NanumGothic", "Malgun Gothic", "Gulim", "dotum" !important;clear: both;}
+.menux * {box-sizing: border-box;}
+.menux .xrap {position: relative; width: 100%; margin: 0 auto; box-sizing: border-box; max-width:1000px;}
+.menux ul,.menux li {list-style: none;margin: 0;padding: 0;}
+.menux a,.menux a:hover,.menux a:link,.menux a:active {text-decoration: none; color: inherit;}
+.xnb {position: relative;}
+.xnb .xnb_depth1{width: 100%;}
+.xnb .xnb_depth1 >li{display: inline-block;width: 140px;text-align: center;}
+.xnb .xnb_depth1 >li a{padding: 7px 0;display: inline-block;color: #f5f4f4;font-weight: 600;font-size: 13px;}
+.xnb .xnb_depth1 >li a:hover {color: #f2f734;}
+.xnb .xnb_depth2 {display:none;position: absolute;top:34px;z-index:100;left: 0;width: 100%; font-size: 0.9em; border-radius: 10px;}
+.xnb:hover .xnb_depth2{display: block;}
+.xnb .xnb_depth2 .xrap >ul {display: block;height: 500px;}
+.xnb .xnb_depth2 .xrap >ul >li {display: inline-block;text-align: left; width: 140px;line-height: 1.4em;border-left: 1px dotted #ddd; border-bottom: 1px solid #333333; padding:0;box-sizing: border-box;-ms-filter: "box-sizing:border-box";float: left;height: 500px; background: #fff; border-radius: 10px;}
+.xnb .xnb_depth2 .xrap >ul >li:first-child {border-left:1px solid #333333;}
+.xnb .xnb_depth2 .xrap >ul >li:last-child {border-right:1px solid #333333;}
+.xnb .xnb_depth2 .xrap >ul >li:nth-of-type(even) {background: #f9f9f9;}
+.xnb .xnb_depth2 .xrap >ul >li ul li a {padding: 3px 0 3px 15px;display: block;box-sizing: border-box;-ms-filter: "box-sizing:border-box";}
+.xnb .xnb_depth2 .xrap >ul >li a:hover {padding-left:-15px;background: #333333;color: #fff; border-radius: 10px;}
+
+*/

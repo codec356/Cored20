@@ -9,12 +9,14 @@
 {% block style_src %}
     <link rel="stylesheet" href="{% static '/starrating/css/star-rating.min.css' %}">
     <link rel="stylesheet" href="{% static '/starrating/themes/krajee-fa/theme.min.css' %}">
-    <link rel="stylesheet" href="{% static '/css/offer.css' %}">
-    <link rel="stylesheet" href="{% static '/css/reviews.css' %}">
 
     <style>
         .summernote-div {
             width: 100% !important;
+        }
+
+        .summernote-div button {
+            color: black;
         }
     </style>
     {{ form_message.media.css }}
@@ -22,40 +24,103 @@
 
 
 {% block content %}
-    <div class="opi-offer-content" style="border-radius: 4px">
-        <ul class="opi-offer-content-ul">
-            <li class="opi-offer-content-title">
-                {{ resort.title }}
-            </li>
-            <li class="opi-offer-comments">
-                {% if messages %}
-                    <ul class="opi-comments">
-                        {% for message in messages %}
-                            <li class="comment">
-                                <ul class="comment-item">
-                                    <li class="avatar">
-                                        {% if message.avatar %}
-                                            <img src="{{ MEDIA_URL }}{{ message.avatar }}" alt="">
-                                        {% else %}
-                                            <i class="fa fa-user avatar"></i>
-                                        {% endif %}
-                                    </li>
-                                    <li class="body">
-                                        <ul class="body">
-                                            <li class="info"><p class="nickname">{{ message.nickname }} </p><i
-                                                    class="fa fa-clock-o" aria-hidden="true"></i>
-                                                <p class="time"> {{ message.time }}</p></li>
-                                            <li class="actions"></li>
-                                            <li class="content">{{ message.html_content|safe }}</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </li>
-        </ul>
+
+    <table width="100%" cellspacing="0" cellpadding="0" align="center" style="background-color: #ffffffb9;">
+        <tbody>
+        <tr>
+            <td id="mw_basic">
+                <div class="mw_basic_view_subject" id="mw_basic_view_subject" style="padding:10px">
+                    <h1>{{ resort.title }}</h1>
+                </div>
+
+                <div class="mw_basic_view_content">
+                    {% if messages %}
+                        <div id="commentContents">
+                            {% for message in messages %}
+                                <table style="margin-bottom:5px;" width="100%" height="1" cellspacing="0"
+                                       cellpadding="0">
+                                    <tbody>
+                                    <tr>
+                                        <td style="line-height:0;"></td>
+                                        <td style="border-top:1px solid #ddd;" width="100%" height="1"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table width="100%" cellspacing="0" cellpadding="0">
+                                    <tbody>
+                                    <tr>
+                                        <td style="text-align:left;" valign="top">
+                                            <div>
+                                                {% if message.avatar %}
+                                                    <img src="{{ MEDIA_URL }}{{ message.avatar }}" alt=""
+                                                         class="media-object"
+                                                         style="border:0;border-radius:10%; width:60px; height:60px; background-color:#f8f8f9; text-align:center;line-height:20px; margin-right:10px;">
+                                                {% else %}
+                                                    <img src="/static/plugins/images/img/noimg.png" alt=""
+                                                         class="media-object"
+                                                         style="border:0;border-radius:10%; width:60px; height:60px; background-color:#f8f8f9; text-align:center;line-height:20px; margin-right:10px;">
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td style="padding-left: 2px;" width="2" bgcolor="#dedede"></td>
+                                        <td>
+                                            <div style="width:10px;"></div>
+                                        </td>
+                                        <td width="100%" valign="top">
+                                            <table width="100%" height="28" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span class="mw_basic_comment_name">
+                                                            <a href="" class="sv_member"
+                                                               title="{{ message.nickname }}" target="_blank"
+                                                               rel="nofollow"
+                                                               onclick="return false;"> {{ message.nickname }}</a>
+                                                        </span>
+                                                        <span class="mw_basic_comment_datetime media-date"><i
+                                                                class="fa fa-clock-o"></i>
+                                                            <span title="{{ message.time }}">{{ message.time }}</span>
+                                                        </span>
+                                                        <div class="mw_basic_comment_func" style="float:right;">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="mw_basic_comment_content" width="100%" cellspacing="0"
+                                                   cellpadding="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td valign="top">
+                                                        <!-- 코멘트 출력 -->
+                                                        <div id="view_802">
+                                                            {{ message.html_content|safe }}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <div class="division"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" height="10"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            {% endfor %}
+
+                        </div>
+                    {% endif %}
+                </div>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 
         <form class="form-horizontal" role="form" action="{% url 'core:resort_page' resort.id %}" method="post"
               enctype="multipart/form-data" autocomplete="off">
@@ -72,7 +137,6 @@
             </div>
 
         </form>
-    </div>
 
 
 {% endblock %}

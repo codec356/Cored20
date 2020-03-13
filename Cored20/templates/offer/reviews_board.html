@@ -16,128 +16,147 @@
 
 
 {% block content %}
-    <div>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="day-tab" data-toggle="tab" href="#day" role="tab" aria-controls="day"
-                   aria-selected="true">일간 조회수</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="week-tab" data-toggle="tab" href="#week" role="tab"
-                   aria-controls="week" aria-selected="false">주간 조회수</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="month-tab" data-toggle="tab" href="#month" role="tab"
-                   aria-controls="month" aria-selected="false">월간 조회수</a>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade" id="day" role="tabpanel" aria-labelledby="day-tab">
-                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">
-                    {% for rec in popular_day %}
-                        {% if forloop.counter == 1 %}
-                            <ul class="top-offers-ul">
-                        {% endif %}
-                    {% if forloop.counter == 6 %}
-                        </ul>
-                        <ul class="top-offers-ul">
-                    {% endif %}
-                    <li>
-                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>
-                    </li>
-                    {% if  forloop.counter == 10 %}
-                        </ul>
-                    {% endif %}
-                    {% endfor %}
+    <table width="100%" align="center" cellpadding="0" cellspacing="0">
+        <tbody>
+        <tr>
+            <td id="mw_basic">
 
-                </div>
-            </div>
-            <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="week-tab">
-                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">
-                    {% for rec in popular_week %}
-                        {% if forloop.counter == 1 %}
-                            <ul class="top-offers-ul">
-                        {% endif %}
-                    {% if forloop.counter == 6 %}
-                        </ul>
-                        <ul class="top-offers-ul">
-                    {% endif %}
-                    <li>
-                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>
-                    </li>
-                    {% if  forloop.counter == 10 %}
-                        </ul>
-                    {% endif %}
-                    {% endfor %}
 
-                </div>
-            </div>
-            <div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">
-                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">
-                    {% for rec in popular_month %}
-                        {% if forloop.counter == 1 %}
-                            <ul class="top-offers-ul">
-                        {% endif %}
-                    {% if forloop.counter == 6 %}
-                        </ul>
-                        <ul class="top-offers-ul">
-                    {% endif %}
-                    <li>
-                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>
-                    </li>
-                    {% if  forloop.counter == 10 %}
-                        </ul>
-                    {% endif %}
-                    {% endfor %}
+                <div class="clearfix"></div>
 
-                </div>
-            </div>
-        </div>
-
-        <div class="content" id="region-filter">
-            <div class="filter-header"><p>지구</p></div>
-            <div class="filter">
-                <ul class="filters">
-                    <li data-region-id="0" class="selected">모두</li>
+                <div id="region-filter">
+                    <a data-region-id="0" title="모두">
+                        <div class="cat_menu_btn_a">모두<br></div>
+                    </a>
                     {% for region in regions %}
-                        <li data-region-id="{{ region.id }}">{{ region.name }}</li>
+                        <a data-region-id="{{ region.id }}" title="{{ region.name }}">
+                            <div class="cat_menu_btn">{{ region.name }}<br></div>
+                        </a>
                     {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="content" id="category-filter">
-            <div class="filter-header"><p>카테고리</p></div>
-            <div class="filter">
-                <ul class="filters">
-                    <li data-category-id="0" class="selected">모두</li>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div id="category-filter" class="2nd_cate">
+                    <a data-category-id="0" title="모두">
+                        <div class="cat_menu_btn2_a">모두<br></div>
+                    </a>
                     {% for category in categories %}
-                        <li data-category-id="{{ category.id }}">{{ category.name }}</li>
+                        <a data-category-id="{{ category.id }}" title="{{ category.name }}">
+                            <div class="cat_menu_btn2">{{ category.name }}<br></div>
+                        </a>
                     {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <ul class="opi-actions right">
-            <li>
-                <a class="opi-button" href="{% url 'core:create_review' %}"><i class="fas fa-edit"></i>리뷰 쓰기</a>
-            </li>
-        </ul>
-        <div style="all:unset;">
-            <table id="reviews-table" class="display hover" style="width: 100%">
-                <thead>
-                <tr>
-                    <td style="text-align: center">번호</td>
-                    <td style="text-align: center">v_name_town</td>
-                    <td style="text-align: center">v_name_region</td>
-                    <td style="text-align: center">v_name_offer</td>
-                    <td style="text-align: center">제목</td>
-                    <td style="text-align: center">작성자</td>
-                    <td style="text-align: center">날짜</td>
-                    <td style="text-align: center">조회</td>
-                </tr>
-                </thead>
-            </table>
-        </div>
+                </div>
+                <div class="clearfix"></div>
+
+
+                <div style="float:right; margin:-43px 10px 0 0;">
+                    <a href="{% url 'core:create_review' %}">
+                        <div style="border:1px solid #999; padding:5px; float:left; margin:10px 0 10px 5px; border-radius: 2px; background-color: #555555; color: white;">
+                            <i class="fa fa-pencil"></i> 글쓰기
+                        </div>
+                    </a>
+                </div>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="all:unset;">
+        <table id="reviews-table" class="display hover" style="width: 100%">
+            <thead>
+            <tr>
+                <td style="text-align: center">번호</td>
+                <td style="text-align: center">v_name_town</td>
+                <td style="text-align: center">v_name_region</td>
+                <td style="text-align: center">v_name_offer</td>
+                <td style="text-align: center">제목</td>
+                <td style="text-align: center">작성자</td>
+                <td style="text-align: center">날짜</td>
+                <td style="text-align: center">조회</td>
+            </tr>
+            </thead>
+        </table>
     </div>
+    {#    <div>#}
+    {#        <ul class="nav nav-tabs" id="myTab" role="tablist">#}
+    {#            <li class="nav-item">#}
+    {#                <a class="nav-link active" id="day-tab" data-toggle="tab" href="#day" role="tab" aria-controls="day"#}
+    {#                   aria-selected="true">일간 조회수</a>#}
+    {#            </li>#}
+    {#            <li class="nav-item">#}
+    {#                <a class="nav-link" id="week-tab" data-toggle="tab" href="#week" role="tab"#}
+    {#                   aria-controls="week" aria-selected="false">주간 조회수</a>#}
+    {#            </li>#}
+    {#            <li class="nav-item">#}
+    {#                <a class="nav-link" id="month-tab" data-toggle="tab" href="#month" role="tab"#}
+    {#                   aria-controls="month" aria-selected="false">월간 조회수</a>#}
+    {#            </li>#}
+    {#        </ul>#}
+    {#        <div class="tab-content" id="myTabContent">#}
+    {#            <div class="tab-pane fade" id="day" role="tabpanel" aria-labelledby="day-tab">#}
+    {#                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">#}
+    {#                    {% for rec in popular_day %}#}
+    {#                        {% if forloop.counter == 1 %}#}
+    {#                            <ul class="top-offers-ul">#}
+    {#                        {% endif %}#}
+    {#                    {% if forloop.counter == 6 %}#}
+    {#                        </ul>#}
+    {#                        <ul class="top-offers-ul">#}
+    {#                    {% endif %}#}
+    {#                    <li>#}
+    {#                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>#}
+    {#                    </li>#}
+    {#                    {% if  forloop.counter == 10 %}#}
+    {#                        </ul>#}
+    {#                    {% endif %}#}
+    {#                    {% endfor %}#}
+    {##}
+    {#                </div>#}
+    {#            </div>#}
+    {#            <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="week-tab">#}
+    {#                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">#}
+    {#                    {% for rec in popular_week %}#}
+    {#                        {% if forloop.counter == 1 %}#}
+    {#                            <ul class="top-offers-ul">#}
+    {#                        {% endif %}#}
+    {#                    {% if forloop.counter == 6 %}#}
+    {#                        </ul>#}
+    {#                        <ul class="top-offers-ul">#}
+    {#                    {% endif %}#}
+    {#                    <li>#}
+    {#                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>#}
+    {#                    </li>#}
+    {#                    {% if  forloop.counter == 10 %}#}
+    {#                        </ul>#}
+    {#                    {% endif %}#}
+    {#                    {% endfor %}#}
+    {##}
+    {#                </div>#}
+    {#            </div>#}
+    {#            <div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">#}
+    {#                <div style="display: flex;justify-content: space-evenly;flex-direction: row;">#}
+    {#                    {% for rec in popular_month %}#}
+    {#                        {% if forloop.counter == 1 %}#}
+    {#                            <ul class="top-offers-ul">#}
+    {#                        {% endif %}#}
+    {#                    {% if forloop.counter == 6 %}#}
+    {#                        </ul>#}
+    {#                        <ul class="top-offers-ul">#}
+    {#                    {% endif %}#}
+    {#                    <li>#}
+    {#                        <a href="{% url 'core:page_offer' rec.offer_id %}">{{ forloop.counter }}. {{ rec.offer_name }} </a>#}
+    {#                    </li>#}
+    {#                    {% if  forloop.counter == 10 %}#}
+    {#                        </ul>#}
+    {#                    {% endif %}#}
+    {#                    {% endfor %}#}
+    {##}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
 {% endblock %}
 
 

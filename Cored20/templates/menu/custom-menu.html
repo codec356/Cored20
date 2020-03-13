@@ -1,22 +1,61 @@
+{#{% for child in children %}#}
+{#    {% if child.is_leaf_node %}#}
+{#        <li><a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a></li>#}
+{#    {% endif %}#}
+{#    {% if not child.is_leaf_node or child.ancestor %}#}
+{#        <li class="dropdown opi-dropdown">#}
+{#            <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                {{ child.get_menu_title }}<b class="caret"></b></a>#}
+{#            <ul class="dropdown-menu opi-dropdown-menu">#}
+{#                {% if child.get_descendants %}#}
+{#                    {% for kid in child.get_descendants %}#}
+{#                        <li>#}
+{#                            <a href="{{ kid.get_absolute_url }}">#}
+{#                                {{ kid.get_menu_title }}#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    {% endfor %}#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </li>#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+
+{% load static %}
+
+
 {% for child in children %}
     {% if child.is_leaf_node %}
         <li><a href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a></li>
     {% endif %}
     {% if not child.is_leaf_node or child.ancestor %}
-        <li class="dropdown opi-dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                {{ child.get_menu_title }}<b class="caret"></b></a>
-            <ul class="dropdown-menu opi-dropdown-menu">
-                {% if child.get_descendants %}
-                    {% for kid in child.get_descendants %}
-                        <li>
-                            <a href="{{ kid.get_absolute_url }}">
-                                {{ kid.get_menu_title }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
+        <li>
+            <div class="xrap">
+                <ul class="xnb_depth1">
+                    <li>
+                        <a target="_self">
+                            <div style="float:left;width:26px;margin-top:2px;margin-right:5px;height:20px;background-repeat:no-repeat;color:#fff;z-index:999">
+                                <div style="margin-top:-3px;"><img src="{% static 'images/palgak1.png' %}">
+                                </div>
+                            </div>
+                            {{ child.get_menu_title }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="xnb_depth2">
+                <div class="xrap">
+                    <ul>
+                        {% if child.get_descendants %}
+                            {% for kid in child.get_descendants %}
+                                <li class="list_b">
+                                    <a href="{{ kid.get_absolute_url }}" target="_self">{{ kid.get_menu_title }}</a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
         </li>
     {% endif %}
 {% endfor %}

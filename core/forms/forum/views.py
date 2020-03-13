@@ -62,17 +62,17 @@ def topic_page(request, topic):
 
 @transaction.atomic
 def topic_comment(request):
-    if request.method == 'POST':
-        form = TopicCommentForm(request.POST)
-        form.content = request.POST.get('content')
-        form.topic = request.POST.get('topic')
-        form.user = request.POST.get('user')
-        form.dt_created = request.POST.get('dt_created')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = TopicCommentForm(request.POST)
 
-        if form.is_valid():
-            print(form.cleaned_data.values())
-            form.save(commit=True)
-            return redirect(request.META.get('HTTP_REFERER'))
-        else:
             print('errror')
-            return redirect(request.META.get('HTTP_REFERER'))
+            if form.is_valid():
+                print(form.cleaned_data.values())
+                form.save(commit=True)
+                return redirect(request.META.get('HTTP_REFERER'))
+            else:
+                print('errror')
+                return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        return redirect(reverse('core:login_url'))

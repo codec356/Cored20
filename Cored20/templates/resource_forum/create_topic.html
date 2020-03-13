@@ -9,6 +9,15 @@
 {% block style_src %}
     <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
     {{ form.media.css }}
+    <style>
+        .summernote-div {
+            width: 100% !important;
+        }
+
+        .summernote-div button {
+            color: black;
+        }
+    </style>
 {% endblock %}
 
 
