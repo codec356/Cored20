@@ -16,7 +16,7 @@ class LevelMap(models.Model):
     value_from = models.IntegerField(blank=False, null=False)
     value_to = models.IntegerField(blank=False, null=False)
     n_level = models.IntegerField(blank=False, null=False)
-    image = models.IntegerField(blank=True, null=True)
+    image = models.ImageField(upload_to='level/%Y/%m/%d', blank=True, null=True)
 
     class Meta:
         verbose_name = 'Level settings'

@@ -94,6 +94,10 @@ div.user-card div.info {
     padding: 0 0 5px 5px;
 }
 
+div.info > .nickname > img {
+    width: 40px;
+}
+
 div.user-card div.info div.level-bar {
     padding: 0;
     margin: 0;

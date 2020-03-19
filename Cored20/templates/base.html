@@ -135,7 +135,7 @@
                         </div>
                         <div class="info">
                             <div class="nickname">
-                                <b>{{ request.user.profile.nickname }}</b>
+                                <img src="{{ MEDIA_URL }}{{ request.user.profile.level.image }}" alt="{{ request.user.profile.level.image }}">  <b>{{ request.user.profile.nickname }}</b>
                             </div>
                             <div class="level-bar">
                                 <span style="width: {{ request.user.profile.experience|mul:100|intdiv:request.user.profile.level.value_to }}%">
